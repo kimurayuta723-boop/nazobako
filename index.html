@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F7F3EC">
+<title>ナゾ箱｜プレゼント交換</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Shippori+Mincho+B1:wght@500;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F7F3EC; --paper:#FFFDF9; --ink:#1F2A24; --ink2:#4A524C; --mute:#8D877B; --line:#E6DFD1; --line2:#D8CFBE;
+    --forest:#23402F; --forest2:#335A44; --wine:#8A2C2C; --gold:#B8975A; --gold2:#D9C49A;
+    --serif:"Shippori Mincho B1","Hiragino Mincho ProN",serif;
+    --latin:"Cormorant Garamond","Shippori Mincho B1",serif;
+    --sans:"Zen Kaku Gothic New","Hiragino Sans",sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--bg);color:var(--ink)}
+  body{font-family:var(--sans);font-weight:400;line-height:1.7;-webkit-font-smoothing:antialiased;
+    min-height:100vh;padding-bottom:calc(120px + env(safe-area-inset-bottom));letter-spacing:.02em;word-break:auto-phrase}
+  button,input,select{font:inherit;color:inherit;letter-spacing:inherit}
+  button{cursor:pointer;border:none;background:none}
+  main{max-width:500px;margin:0 auto;padding:8px 20px 20px;position:relative;z-index:1}
+
+  /* snow (ごく控えめ) */
+  .snow{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+  .snow i{position:absolute;top:-10px;width:4px;height:4px;border-radius:50%;background:var(--gold2);opacity:.45}
+  @media (prefers-reduced-motion:no-preference){ .snow i{animation:fall linear infinite} }
+  @keyframes fall{to{transform:translate3d(30px,105vh,0)}}
+
+  /* header */
+  .hd{position:sticky;top:0;z-index:5;background:rgba(247,243,236,.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+    padding:calc(10px + env(safe-area-inset-top)) 20px 10px;border-bottom:1px solid var(--line)}
+  .hd-in{max-width:460px;margin:0 auto;display:flex;align-items:center;gap:10px}
+  .logo{font-family:var(--serif);font-weight:700;font-size:18px;letter-spacing:.14em;display:flex;align-items:center;gap:6px}
+  .star{color:var(--gold);font-size:11px;transform:translateY(-1px)}
+  .host{font-size:10px;border:1px solid var(--gold);color:var(--gold);border-radius:3px;padding:0 5px;letter-spacing:.1em}
+  .code{margin-left:auto;font-family:var(--latin);font-size:13px;color:var(--mute);letter-spacing:.08em}
+  .code b{font-family:var(--latin);font-weight:600;font-size:17px;color:var(--ink);letter-spacing:.2em;margin-left:4px}
+  .share{width:34px;height:34px;border-radius:50%;border:1px solid var(--line2);display:grid;place-items:center;color:var(--ink2)}
+  .share svg{width:15px;height:15px}
+
+  /* typography */
+  h1{font-family:var(--serif);font-weight:700;font-size:40px;letter-spacing:.2em;line-height:1.2}
+  h2{font-family:var(--serif);font-weight:700;font-size:18px;letter-spacing:.06em;margin-bottom:4px}
+  .eyebrow{font-family:var(--latin);font-style:italic;font-size:15px;color:var(--gold);letter-spacing:.06em}
+  .sub{font-size:13px;color:var(--mute);line-height:1.7}
+  .sec{display:flex;align-items:center;gap:10px;margin:26px 2px 12px;font-family:var(--serif);font-size:14px;font-weight:700;letter-spacing:.1em;color:var(--ink2)}
+  .sec::after{content:"";flex:1;height:1px;background:var(--line)}
+
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:20px;margin-bottom:12px}
+
+  /* form */
+  .lbl{display:block;font-size:12px;color:var(--mute);margin:18px 0 6px;letter-spacing:.08em}
+  .inp,.sel{width:100%;border:1px solid var(--line2);background:#fff;border-radius:10px;padding:12px 14px;font-size:16px;outline:none;transition:border-color .2s,box-shadow .2s}
+  .inp::placeholder{color:#BDB6A8}
+  .inp:focus,.sel:focus{border-color:var(--forest2);box-shadow:0 0 0 3px rgba(51,90,68,.1)}
+  .sel{appearance:none;-webkit-appearance:none;font-size:16px;color:var(--ink2);
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%238D877B' stroke-width='1.3'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;background-position:right 12px center;padding-right:30px}
+  .hint-row{margin-top:16px;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:8px;align-items:center}
+  .hint-n{grid-column:1/-1;display:flex;align-items:center;gap:8px;font-family:var(--latin);font-style:italic;font-size:14px;color:var(--gold)}
+  .hint-n::after{content:"";flex:1;height:1px;background:var(--line)}
+
+  .btn{display:block;width:100%;border-radius:999px;padding:15px;font-weight:500;font-size:15px;letter-spacing:.12em;margin-top:22px;transition:transform .1s,opacity .2s,background .2s}
+  .btn:active{transform:scale(.985)}
+  .btn:disabled{opacity:.35}
+  .primary{background:var(--forest);color:#F7F3EC}
+  .wine{background:var(--wine);color:#FBF3EE}
+  .ghost{background:transparent;border:1px solid var(--line2);color:var(--ink2)}
+  .text{background:none;color:var(--mute);font-size:13px;margin-top:10px;padding:8px;letter-spacing:.06em}
+  .msg{font-size:12px;margin-top:10px;min-height:1em;text-align:center}
+  .msg.ok{color:var(--forest2)} .msg.ng{color:var(--wine)}
+  .row{display:flex;gap:8px;margin-top:12px}
+  .row .inp{text-transform:uppercase;letter-spacing:.4em;text-align:center;font-family:var(--latin);font-weight:600;font-size:22px;padding:8px 14px}
+  .row .btn{width:auto;margin-top:0;padding:12px 22px;white-space:nowrap}
+
+  /* hero */
+  .hero{text-align:center;padding:44px 0 28px}
+  .orn{display:flex;align-items:center;justify-content:center;gap:10px;color:var(--gold);margin:18px auto 0;font-size:10px}
+  .orn::before,.orn::after{content:"";width:46px;height:1px;background:var(--gold2)}
+  .hero .sub{margin-top:14px;font-size:14px;color:var(--ink2)}
+  .wreath{width:96px;height:96px;margin:0 auto 22px;position:relative}
+  .wreath svg{width:100%;height:100%}
+  .steps{list-style:none;display:grid;gap:14px}
+  .steps li{display:grid;grid-template-columns:34px 1fr;align-items:baseline;font-size:14px;color:var(--ink2)}
+  .steps b{font-family:var(--latin);font-style:italic;font-weight:500;font-size:22px;color:var(--gold);line-height:1}
+  .or{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--mute);margin:22px 0 0;letter-spacing:.08em}
+  .or::before,.or::after{content:"";flex:1;height:1px;background:var(--line)}
+
+  /* members */
+  .count{display:flex;align-items:baseline;gap:6px}
+  .count b{font-family:var(--latin);font-weight:600;font-size:44px;line-height:1;color:var(--forest)}
+  .count span{font-size:13px;color:var(--mute)}
+  .mem{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+  .mem span{border:1px solid var(--line2);border-radius:999px;padding:3px 12px;font-size:13px;color:var(--ink2)}
+  .mem span.me{background:var(--forest);border-color:var(--forest);color:#F7F3EC}
+
+  /* round */
+  .round{display:flex;align-items:baseline;justify-content:space-between;margin:18px 2px 8px}
+  .round h2{margin:0}
+  .round .eyebrow{font-size:14px}
+  .round .cnt{font-size:12px;color:var(--mute)}
+  .round .cnt b{font-family:var(--latin);font-size:18px;color:var(--ink);font-weight:600}
+  .prog{height:2px;background:var(--line);margin:0 2px 18px;border-radius:1px;overflow:hidden}
+  .prog i{display:block;height:100%;background:var(--gold);transition:width .4s}
+
+  /* gift boxes */
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .box{--c:#23402F;text-align:left;background:var(--paper);border:1px solid var(--line);border-radius:14px;overflow:hidden;position:relative;transition:transform .15s,border-color .15s,box-shadow .15s}
+  .box:active:not(:disabled){transform:scale(.97)}
+  .wrap{height:76px;background:var(--c);position:relative;overflow:hidden}
+  .wrap::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.09) 1px,transparent 1.2px);background-size:9px 9px}
+  .rib-v{position:absolute;top:0;bottom:0;left:58%;width:7px;background:var(--gold2);opacity:.85}
+  .rib-h{position:absolute;left:0;right:0;top:46%;height:7px;background:var(--gold2);opacity:.85}
+  .bow{position:absolute;left:calc(58% + 3.5px);top:calc(46% + 3.5px);width:0;height:0}
+  .bow::before,.bow::after{content:"";position:absolute;width:14px;height:10px;border:2px solid var(--gold2);border-radius:50% 50% 50% 0;top:-12px}
+  .bow::before{left:-15px;transform:rotate(-15deg)} .bow::after{left:1px;transform:scaleX(-1) rotate(-15deg)}
+  .tagno{position:absolute;left:10px;top:10px;background:var(--paper);color:var(--ink);font-family:var(--latin);font-weight:600;font-size:15px;line-height:1;
+    padding:5px 8px 5px 12px;border-radius:3px;clip-path:polygon(7px 0,100% 0,100% 100%,7px 100%,0 50%)}
+  .tagno small{font-style:italic;font-weight:500;font-size:11px;color:var(--mute);margin-right:1px}
+  .hints{list-style:none;padding:10px 12px 12px;display:grid;gap:7px}
+  .hints li{font-size:14px;font-weight:500;line-height:1.35;word-break:break-all;color:var(--ink)}
+  .hints li span{display:block;font-size:10px;font-weight:400;color:var(--mute);letter-spacing:.06em}
+  .box.is-sel{border-color:var(--gold);box-shadow:0 0 0 2px var(--gold),0 10px 24px rgba(31,42,36,.1);transform:translateY(-2px)}
+  .box.is-sel .check{opacity:1;transform:scale(1)}
+  .check{position:absolute;right:9px;top:9px;width:24px;height:24px;border-radius:50%;background:var(--paper);color:var(--forest);display:grid;place-items:center;opacity:0;transform:scale(.6);transition:.2s;z-index:2}
+  .check svg{width:12px;height:12px}
+  .box.own{opacity:.4}
+  .box.own .wrap{filter:grayscale(.8)}
+  .box.lock{opacity:.55}
+  .owntag{position:absolute;right:8px;top:10px;font-size:10px;color:var(--ink);background:var(--paper);border-radius:3px;padding:2px 6px;letter-spacing:.06em;z-index:2}
+  .taken{font-size:12px;color:var(--mute);margin:18px 2px 0;line-height:2}
+  .taken b{font-family:var(--latin);font-weight:600;font-size:14px;color:var(--ink2);border:1px solid var(--line2);border-radius:4px;padding:0 7px;margin-right:4px}
+
+  .bar{position:fixed;left:0;right:0;bottom:0;padding:28px 20px calc(16px + env(safe-area-inset-bottom));z-index:6;
+    background:linear-gradient(rgba(247,243,236,0),var(--bg) 40%)}
+  .bar .btn{max-width:460px;margin:0 auto;box-shadow:0 8px 24px rgba(35,64,47,.22)}
+
+  /* status */
+  .status{display:flex;align-items:center;gap:14px}
+  .mini{--c:#23402F;flex:none;width:56px;height:56px;border-radius:10px;background:var(--c);position:relative;overflow:hidden}
+  .mini::before{content:"";position:absolute;top:0;bottom:0;left:58%;width:5px;background:var(--gold2);opacity:.85}
+  .mini::after{content:"";position:absolute;left:0;right:0;top:46%;height:5px;background:var(--gold2);opacity:.85}
+  .mini b{position:absolute;left:4px;top:4px;font-family:var(--latin);font-weight:600;color:var(--ink);background:var(--paper);font-size:13px;line-height:1;padding:3px 5px;border-radius:3px;z-index:1}
+  .link{font-size:12px;color:var(--wine);margin-top:4px;padding:2px 0;border-bottom:1px solid currentColor;letter-spacing:.06em}
+
+  /* janken */
+  .conflict{border-color:var(--wine);position:relative}
+  .conf-head{display:flex;align-items:baseline;gap:8px;margin-bottom:14px}
+  .conf-head .eyebrow{color:var(--wine)}
+  .conf-body{display:grid;grid-template-columns:minmax(0,128px) minmax(0,1fr);gap:14px;align-items:start}
+  .conf-body .box{width:100%}
+  .vs{font-family:var(--serif);font-size:17px;font-weight:700;line-height:1.5}
+  .vs em{font-style:normal;font-family:var(--latin);font-style:italic;color:var(--gold);font-weight:500;margin:0 4px}
+  .wins{display:grid;gap:8px;margin-top:16px}
+  .win{border:1px solid var(--line2);border-radius:999px;padding:12px;font-weight:500;font-size:15px;transition:.15s}
+  .win.pend{background:var(--forest);border-color:var(--forest);color:#F7F3EC}
+  .ledger{list-style:none;display:grid;gap:4px}
+  .ledger li{display:flex;align-items:center;gap:10px;font-size:14px;padding:6px 0}
+  .ledger li::after{content:"";order:2;flex:1;border-bottom:1px dotted var(--line2)}
+  .ledger .nm{order:3}
+  .chipno{font-family:var(--latin);font-weight:600;font-size:15px;color:var(--ink2);min-width:38px}
+  .chipno small{font-style:italic;font-weight:500;font-size:11px;color:var(--mute)}
+
+  /* reveal — gift tag */
+  .tagwrap{position:relative;padding:34px 0 8px;animation:swing 1s cubic-bezier(.3,1.5,.5,1) both;transform-origin:50% 0;filter:drop-shadow(0 0 .6px #CFC5B2) drop-shadow(0 8px 18px rgba(31,42,36,.07))}
+  @keyframes swing{0%{transform:rotate(-6deg);opacity:0}60%{transform:rotate(2deg);opacity:1}100%{transform:none}}
+  .string{position:absolute;left:50%;top:0;width:1px;height:46px;background:var(--gold)}
+  .gtag{background:var(--paper);margin:0 auto;max-width:340px;padding:46px 26px 28px;text-align:center;position:relative;
+    clip-path:polygon(50% 0,100% 18%,100% 100%,0 100%,0 18%);border-radius:0 0 14px 14px}
+  .gtag::before{content:"";position:absolute;left:50%;top:22px;width:12px;height:12px;margin-left:-6px;border-radius:50%;border:1.5px solid var(--gold);background:var(--bg)}
+  .gtag .lbl2{font-family:var(--latin);font-style:italic;font-size:18px;color:var(--gold);line-height:1}
+  .gtag .who{font-family:var(--serif);font-weight:700;font-size:28px;letter-spacing:.06em;margin:4px 0 14px}
+  .gtag .who small{font-size:14px;color:var(--mute);margin-left:4px;font-weight:500}
+  .gtag hr{border:none;border-top:1px dashed var(--line2);margin:4px 20px 16px}
+  .gtag .boxline{display:flex;align-items:center;justify-content:center;gap:10px;font-size:13px;color:var(--ink2)}
+  .give{background:var(--forest);border-color:var(--forest);color:#F7F3EC;text-align:center;padding:22px}
+  .give .k{font-size:12px;color:rgba(247,243,236,.7);letter-spacing:.1em}
+  .give .to{font-family:var(--serif);font-size:24px;font-weight:700;letter-spacing:.06em;margin-top:2px}
+  .give .to small{font-size:14px;font-weight:500;opacity:.7;margin-left:4px}
+  .note{font-size:12px;border-left:2px solid var(--gold);padding:4px 0 4px 12px;margin:4px 2px 14px;color:var(--ink2)}
+  .pair{display:grid;grid-template-columns:40px 1fr 20px 1fr;align-items:center;gap:6px;font-size:14px;padding:10px 0;border-bottom:1px solid var(--line)}
+  .pair:last-child{border:none}
+  .pair .ar{color:var(--gold);text-align:center;font-family:var(--latin)}
+  .pair .me{font-weight:700;color:var(--forest)}
+  .center{text-align:center}
+  .spin{width:26px;height:26px;border:2px solid var(--line);border-top-color:var(--gold);border-radius:50%;margin:80px auto;animation:sp 1s linear infinite}
+  @keyframes sp{to{transform:rotate(360deg)}}
+  .pin{letter-spacing:.7em;text-align:center;font-family:var(--latin);font-weight:600;font-size:20px;padding-left:calc(14px + .7em)}
+  .pin::placeholder{letter-spacing:.2em;font-family:var(--sans);font-size:14px;font-weight:400}
+  .linkbtn{display:block;margin:0 auto 4px;font-size:13px;color:var(--forest2);border-bottom:1px solid currentColor;padding:2px 0;letter-spacing:.04em}
+  .login{border-color:var(--gold2)}
+  .dt{margin:18px 2px 0;font-size:13px;color:var(--ink2)}
+  .dt summary{cursor:pointer;color:var(--mute);list-style:none;text-align:center;padding:8px}
+  .dt summary::-webkit-details-marker{display:none}
+  .dt[open] summary{color:var(--ink2)}
+  .dt .card{margin-top:6px}
+  .chipbtn{border:1px solid var(--line2);border-radius:999px;padding:5px 12px;font-size:13px;color:var(--ink2)}
+  .chipbtn.pend{background:var(--wine);border-color:var(--wine);color:#fff}
+  .toast{position:fixed;left:50%;bottom:calc(30px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--ink);color:#F7F3EC;border-radius:999px;padding:10px 20px;font-size:13px;z-index:20;opacity:0;transition:opacity .2s;pointer-events:none;white-space:nowrap}
+  .toast.on{opacity:1}
+</style>
+</head>
+<body>
+<div class="snow" id="snow"></div>
+<div id="app"><div class="spin"></div></div>
+<div class="toast" id="toast"></div>
+
+<script type="module">
+/* =====================================================
+   ① Firebaseの設定（ここだけ書き換えてください）
+   Firebaseコンソール → プロジェクトの設定 → マイアプリ(</>) の値を貼り付け
+   ===================================================== */
+const firebaseConfig = {
+  apiKey: "AIzaSyA44gCa2gd4p44IO9MuiPuMaRer3XoVYFA",
+  authDomain: "nazobako-d0347.firebaseapp.com",
+  databaseURL: "https://nazobako-d0347-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "nazobako-d0347",
+  storageBucket: "nazobako-d0347.firebasestorage.app",
+  messagingSenderId: "526688434081",
+  appId: "1:526688434081:web:fc4fb9e85fa401905dbde0"
+};
+/* ===================================================== */
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getDatabase, ref, onValue, set, get, runTransaction, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+// LOGIC START ---------------------------------------------------
+// 交換の進行ロジック（Firebaseに依存しない純粋な関数）
+function shuffle(a){ a=[...a]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+
+// R: まだ受け取る箱が決まっていない人 / B: まだ行き先が決まっていない箱(=贈り主)
+function remaining(g){
+  const players = Object.keys(g.players||{});
+  const asg = g.assigned||{};
+  const givers = new Set(Object.values(asg));
+  return { R: players.filter(p=>!(p in asg)), B: players.filter(p=>!givers.has(p)) };
+}
+
+function autoAssign(g, R, B){
+  g.assigned = g.assigned||{};
+  if(R.length===1){
+    const a=R[0], b=B[0];
+    if(a!==b){ g.assigned[a]=b; g.autoNote={type:'one',a}; }
+    else{
+      // 自分の箱しか残らなかった → すでに決まった誰かと入れ替える
+      const c = shuffle(Object.keys(g.assigned))[0];
+      const gv = g.assigned[c];
+      g.assigned[a]=gv; g.assigned[c]=a;
+      g.autoNote={type:'swap',a,c};
+    }
+  }else{
+    const [a,b]=R; const [x,y]=shuffle(B);
+    if(x!==a && y!==b){ g.assigned[a]=x; g.assigned[b]=y; }
+    else{ g.assigned[a]=y; g.assigned[b]=x; }
+    g.autoNote={type:'two',a,b};
+  }
+}
+
+// 次のラウンドへ（残り2人以下なら自動で振り分けて終了）
+function advance(g){
+  g.picks=null; g.conflicts=null;
+  g.round=(g.round||0)+1;
+  const {R,B}=remaining(g);
+  if(R.length===0){ g.status='done'; return g; }
+  if(R.length<=2){ autoAssign(g,R,B); g.status='done'; return g; }
+  g.status='picking';
+  return g;
+}
+
+function resolveRound(g, R){
+  const by={};
+  R.forEach(r=>{ (by[g.picks[r]] ||= []).push(r); });
+  g.assigned=g.assigned||{};
+  const conflicts={};
+  for(const [gv,list] of Object.entries(by)){
+    if(list.length===1) g.assigned[list[0]]=gv;
+    else conflicts[gv]=Object.fromEntries(list.map(u=>[u,true]));
+  }
+  g.lastPicks={...g.picks}; g.lastRound=g.round;
+  if(Object.keys(conflicts).length){ g.conflicts=conflicts; g.status='janken'; }
+  else advance(g);
+}
+
+function applyPick(g, me, giver){
+  if(g.status!=='picking') return false;
+  const {R,B}=remaining(g);
+  if(!R.includes(me) || !B.includes(giver) || giver===me) return false;
+  g.picks=g.picks||{}; g.picks[me]=giver;
+  if(R.every(r=>g.picks[r])) resolveRound(g,R);
+  return true;
+}
+
+function applyCancel(g, me){
+  if(g.status!=='picking' || !g.picks || !g.picks[me]) return false;
+  delete g.picks[me];
+  return true;
+}
+
+function applyWinner(g, giver, winner){
+  if(g.status!=='janken') return false;
+  const c=g.conflicts && g.conflicts[giver];
+  if(!c || !c[winner]) return false;
+  g.assigned=g.assigned||{};
+  g.assigned[winner]=giver;
+  delete g.conflicts[giver];
+  if(Object.keys(g.conflicts).length===0) advance(g);
+  return true;
+}
+
+function startGame(memberIds){
+  const g={ players:Object.fromEntries(memberIds.map(u=>[u,true])), round:0, assigned:{}, status:'picking' };
+  return advance(g);
+}
+// LOGIC END -----------------------------------------------------
+
+const QUESTIONS=['色は？','どこで使う？','大きさは？','食べられる？','ひとことで','季節感は？','重さは？','自由ヒント'];
+// 落ち着いたクリスマスカラー
+const COLORS=['#23402F','#8A2C2C','#2E3F5C','#7A6232','#5B3A4E','#3E5A57','#9A5530','#4F5A34','#6B4A3A','#3A4450','#7C3A46','#3F5F74'];
+
+const ICON_SHARE='<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 10V2M5 5l3-3 3 3M3 9v4h10V9"/></svg>';
+const ICON_CHECK='<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 6.5l2.3 2.2L9.5 3.5"/></svg>';
+const WREATH=`<svg viewBox="0 0 96 96" fill="none">
+  <circle cx="48" cy="48" r="34" stroke="#23402F" stroke-width="1.2" stroke-dasharray="1 5" stroke-linecap="round"/>
+  ${Array.from({length:18},(_,i)=>{const a=i/18*Math.PI*2, x=48+Math.cos(a)*34, y=48+Math.sin(a)*34, r=a*180/Math.PI+90;
+    return `<ellipse cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" rx="3" ry="7" transform="rotate(${r.toFixed(0)} ${x.toFixed(1)} ${y.toFixed(1)}) rotate(${i%2?28:-28} ${x.toFixed(1)} ${y.toFixed(1)})" fill="${i%2?'#335A44':'#23402F'}" opacity=".9"/>`}).join('')}
+  ${[0.15,0.4,0.62,0.85].map(t=>{const a=t*Math.PI*2;return `<circle cx="${(48+Math.cos(a)*34).toFixed(1)}" cy="${(48+Math.sin(a)*34).toFixed(1)}" r="2.6" fill="#8A2C2C"/>`}).join('')}
+  <path d="M48 80l-6 8M48 80l6 8" stroke="#B8975A" stroke-width="1.4" stroke-linecap="round"/>
+  <path d="M48 80c-8-6-12-2-8 1s8-1 8-1zM48 80c8-6 12-2 8 1s-8-1-8-1z" stroke="#B8975A" stroke-width="1.4"/>
+  <text x="48" y="56" text-anchor="middle" font-family="Cormorant Garamond,serif" font-style="italic" font-size="24" fill="#B8975A">?</text>
+</svg>`;
+
+// 端末ごとのID（テスト用に ?me=xxx で別人になれる）
+const mem={};
+const store={
+  get(k){ try{return localStorage.getItem(k)}catch(e){return mem[k]??null} },
+  set(k,v){ try{localStorage.setItem(k,v)}catch(e){mem[k]=v} }
+};
+const params=new URLSearchParams(location.search);
+let uid = params.get('me') ? 'test_'+params.get('me') : store.get('nazo_uid');
+if(!uid){ uid='u'+Math.random().toString(36).slice(2,10)+Date.now().toString(36).slice(-4); store.set('nazo_uid',uid); }
+
+const configured = !!firebaseConfig.databaseURL;
+let db=null;
+if(configured){ db=getDatabase(initializeApp(firebaseConfig)); }
+
+const S={ code:null, data:null, loading:false, unsub:null, key:null, draft:null, sel:null, winPend:null, resetPend:false, err:'', showLogin:false, dtOpen:false, pinResetPend:null };
+
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const M=()=>S.data?.members||{};
+const nm=u=>M()[u]?.name||'？';
+const no=u=>M()[u]?.boxNo||'?';
+const col=u=>COLORS[((M()[u]?.boxNo||1)-1)%COLORS.length];
+const isHost=()=>S.data?.host===uid;
+const noTag=u=>`<span class="chipno"><small>No.</small>${no(u)}</span>`;
+
+function toast(t){ const el=document.getElementById('toast'); el.textContent=t; el.classList.add('on'); clearTimeout(toast.t); toast.t=setTimeout(()=>el.classList.remove('on'),1800); }
+
+// ごく控えめな雪
+(function(){ const el=document.getElementById('snow'); let h='';
+  for(let i=0;i<16;i++){ const s=2+Math.random()*3; h+=`<i style="left:${Math.random()*100}%;width:${s}px;height:${s}px;animation-duration:${14+Math.random()*16}s;animation-delay:-${Math.random()*30}s"></i>`; }
+  el.innerHTML=h; })();
+
+// ---------- room ----------
+function genCode(){ const ch='ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; let s=''; for(let i=0;i<4;i++) s+=ch[Math.floor(Math.random()*ch.length)]; return s; }
+
+async function createRoom(){
+  try{
+    let code;
+    for(let i=0;i<5;i++){ code=genCode(); const s=await get(ref(db,'rooms/'+code)); if(!s.exists()) break; }
+    await set(ref(db,'rooms/'+code),{ host:uid, phase:'register', createdAt:serverTimestamp() });
+    joinRoom(code);
+  }catch(e){ console.error(e); toast('ルームを作れませんでした'); }
+}
+
+async function joinRoom(code){
+  code=(code||'').trim().toUpperCase();
+  if(!code){ S.err='合言葉を入れてください'; render(); return; }
+  S.loading=true; S.err=''; render();
+  try{
+    const s=await get(ref(db,'rooms/'+code));
+    if(!s.exists()){ S.loading=false; S.err='その合言葉のルームは見つかりません'; render(); return; }
+  }catch(e){ console.error(e); S.loading=false; S.err='接続できませんでした'; render(); return; }
+  if(S.unsub) S.unsub();
+  S.code=code; S.draft=null; S.key=null;
+  store.set('nazo_last',code);
+  const p=new URLSearchParams(location.search); p.set('room',code);
+  history.replaceState(null,'','?'+p.toString());
+  S.unsub=onValue(ref(db,'rooms/'+code),snap=>{
+    S.loading=false;
+    if(!snap.exists()){ leave(); toast('ルームがなくなりました'); return; }
+    S.data=snap.val(); render();
+  });
+}
+
+function leave(){
+  if(S.unsub) S.unsub();
+  S.unsub=null; S.code=null; S.data=null; S.key=null; S.draft=null;
+  const p=new URLSearchParams(location.search); p.delete('room');
+  history.replaceState(null,'',location.pathname+(p.toString()?'?'+p:''));
+  render();
+}
+
+// すべてのゲーム操作はトランザクションで（同時押しでも矛盾しない）
+function tx(fn){
+  return runTransaction(ref(db,'rooms/'+S.code),cur=>{
+    if(cur===null) return cur;
+    return fn(cur)===false ? undefined : cur;
+  }).catch(e=>{ console.error(e); toast('通信エラー。もう一度押してください'); });
+}
+
+// ---------- 暗証番号 ----------
+const validPin=p=>/^\d{4}$/.test(p);
+async function pinHash(u,pin){
+  const t=`nazobako|${S.code}|${u}|${pin}`;
+  if(window.crypto&&crypto.subtle){
+    const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t));
+    return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');
+  }
+  let h=2166136261; for(const c of t){ h^=c.charCodeAt(0); h=Math.imul(h,16777619); } return 'f'+(h>>>0).toString(16);
+}
+function adopt(u){
+  uid=u; if(!params.get('me')) store.set('nazo_uid',u);
+  S.draft=null; S.key=null; S.showLogin=false; render();
+  toast(`${nm(u)}さんとして入り直しました`);
+}
+async function login(){
+  const u=document.getElementById('loginName').value, pin=document.getElementById('loginPin').value.trim();
+  const msg=document.getElementById('loginMsg'); const bad=t=>{ msg.className='msg ng'; msg.textContent=t; };
+  if(!u) return bad('名前を選んでください');
+  if(!validPin(pin)) return bad('暗証番号は4桁の数字で入れてください');
+  const m=M()[u]; if(!m) return bad('その名前の登録が見つかりません');
+  const h=await pinHash(u,pin);
+  if(!m.pinHash){
+    // 幹事がリセットした人：ここで新しい番号を決める
+    try{ await set(ref(db,`rooms/${S.code}/members/${u}/pinHash`),h); }catch(e){ console.error(e); return bad('保存できませんでした'); }
+  }else if(m.pinHash!==h) return bad('暗証番号が違います');
+  adopt(u);
+}
+async function resetPin(u){
+  try{ await set(ref(db,`rooms/${S.code}/members/${u}/pinHash`),null); toast(`${nm(u)}さんの暗証番号をリセットしました`); }
+  catch(e){ console.error(e); toast('リセットできませんでした'); }
+}
+function loginCard(note){
+  const ms=M(); const ids=Object.keys(ms).sort((a,b)=>ms[a].name.localeCompare(ms[b].name,'ja'));
+  return `<section class="card login"><h2>登録済みの方</h2>
+    <p class="sub">${note||'別の端末やブラウザで開いたときは、名前と暗証番号で入り直せます。'}</p>
+    <label class="lbl">お名前</label>
+    <select class="sel" id="loginName"><option value="">選んでください</option>${ids.map(u=>`<option value="${u}">${esc(ms[u].name)}</option>`).join('')}</select>
+    <label class="lbl">暗証番号</label>
+    <input class="inp pin" id="loginPin" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="off" placeholder="4桁の数字">
+    <button class="btn primary" data-act="login">入り直す</button>
+    <p class="msg" id="loginMsg"></p>
+  </section>`;
+}
+// 入力中の内容を消さずに一部だけ書き換える
+function fillArea(id,key,html){
+  const el=document.getElementById(id); if(!el||el.dataset.k===key) return;
+  const n=document.getElementById('loginName')?.value, pw=document.getElementById('loginPin')?.value;
+  el.innerHTML=html; el.dataset.k=key;
+  const ln=document.getElementById('loginName'), lp=document.getElementById('loginPin');
+  if(ln&&n) ln.value=n; if(lp&&pw) lp.value=pw;
+}
+function hostTools(){
+  if(!isHost()) return '';
+  const ms=M(), ids=Object.keys(ms);
+  return `<details class="dt" data-dt ${S.dtOpen?'open':''}><summary>暗証番号を忘れた人がいたら（幹事のみ）</summary>
+    <section class="card"><p class="sub">リセットした人は、次に入り直すときに新しい番号を決められます。名前を押して、もう一度押すとリセットします。</p>
+    <div class="mem">${ids.map(u=>{const pd=S.pinResetPend===u;
+      return `<button class="chipbtn ${pd?'pend':''}" data-act="pinreset" data-u="${u}">${pd?`${esc(ms[u].name)}さんをリセット`:esc(ms[u].name)+(ms[u].pinHash?'':'（未設定）')}</button>`}).join('')}</div></section>
+  </details>`;
+}
+
+// ---------- actions ----------
+async function saveMember(){
+  const d=S.draft, msg=document.getElementById('saveMsg');
+  const name=d.name.trim();
+  const bad = t=>{ msg.className='msg ng'; msg.textContent=t; };
+  if(!name) return bad('名前を入れてください');
+  if(d.hints.some(h=>!h.a.trim())) return bad('ヒントを3つとも入れてください');
+  if(Object.entries(M()).some(([u,m])=>u!==uid && m.name===name)) return bad('同じ名前の人がいます。登録済みの方は、上の「すでに登録した方はこちら」から入り直してください');
+  const pin=(d.pin||'').trim(), cur=M()[uid];
+  if(pin && !validPin(pin)) return bad('暗証番号は4桁の数字にしてください');
+  if(!pin && !(cur&&cur.pinHash)) return bad('暗証番号（4桁の数字）を決めてください');
+  if(S.data.phase!=='register') return bad('もう締め切られています');
+  try{
+    const ph = pin ? await pinHash(uid,pin) : cur.pinHash;
+    await set(ref(db,`rooms/${S.code}/members/${uid}`),{ name, hints:d.hints.map(h=>({q:h.q,a:h.a.trim()})), pinHash:ph, updatedAt:serverTimestamp() });
+    d.pin=''; const pe=document.querySelector('[data-f="pin"]'); if(pe){ pe.value=''; pe.placeholder='変えるときだけ入力'; }
+    msg.className='msg ok'; msg.textContent='登録しました。当日まで何度でも直せます';
+  }catch(e){ console.error(e); bad('保存できませんでした'); }
+}
+
+function start(){
+  tx(r=>{
+    if(r.phase!=='register' || r.host!==uid) return false;
+    const ids=Object.keys(r.members||{});
+    if(ids.length<3) return false;
+    shuffle(ids).forEach((u,i)=>{ r.members[u].boxNo=i+1; });
+    r.game=startGame(ids);
+    r.phase='game';
+  });
+}
+
+function share(){
+  const url=location.origin+location.pathname+'?room='+S.code;
+  const text=`プレゼント交換「ナゾ箱」\n合言葉：${S.code}\n${url}`;
+  if(navigator.share){ navigator.share({title:'ナゾ箱',text,url}).catch(()=>{}); return; }
+  navigator.clipboard?.writeText(text).then(()=>toast('招待文をコピーしました'),()=>toast(url));
+}
+
+// ---------- views ----------
+function header(){
+  return `<header class="hd"><div class="hd-in">
+    <div class="logo"><span class="star">✦</span>ナゾ箱</div>
+    ${isHost()?'<span class="host">幹事</span>':''}
+    <span class="code">合言葉<b>${S.code}</b></span>
+    <button class="share" data-act="share" aria-label="招待する">${ICON_SHARE}</button>
+  </div></header>`;
+}
+
+function viewSetup(){
+  return `<main><div class="hero"><div class="wreath">${WREATH}</div><h1>ナゾ箱</h1></div>
+    <section class="card"><h2>Firebaseの設定がまだです</h2>
+    <p class="sub">index.html の上のほうにある firebaseConfig に、Firebaseの設定値を貼り付けてください。</p></section></main>`;
+}
+
+function viewHome(){
+  if(S.loading||(S.code&&!S.data)) return '<div class="spin"></div>';
+  const last=store.get('nazo_last');
+  return `<main>
+    <div class="hero">
+      <div class="wreath">${WREATH}</div>
+      <div class="eyebrow">Christmas gift exchange</div>
+      <h1>ナゾ箱</h1>
+      <div class="orn">✦</div>
+      <p class="sub">ヒントだけを頼りに選ぶ、プレゼント交換</p>
+    </div>
+    <section class="card">
+      <ol class="steps">
+        <li><b>i.</b>事前に、プレゼントのヒントを3つ登録</li>
+        <li><b>ii.</b>当日、ヒントを見て箱を選ぶ</li>
+        <li><b>iii.</b>かぶったら、じゃんけんで決める</li>
+        <li><b>iv.</b>全員決まったら、贈り主が分かる</li>
+      </ol>
+    </section>
+    <section class="card">
+      <h2>参加する</h2>
+      <p class="sub">幹事から届いた合言葉を入れてください</p>
+      <div class="row">
+        <input class="inp" id="codeIn" maxlength="4" placeholder="ABCD" autocomplete="off" value="${esc(params.get('room')||'')}">
+        <button class="btn primary" data-act="join">参加</button>
+      </div>
+      <p class="msg ng">${esc(S.err)}</p>
+      ${last?`<button class="btn ghost" data-act="rejoin" style="margin-top:6px">前回のルーム ${esc(last)} に戻る</button>`:''}
+      <div class="or">幹事の方</div>
+      <button class="btn ghost" data-act="create" style="margin-top:12px">ルームを作る</button>
+    </section>
+  </main>`;
+}
+
+function viewRegister(){
+  const me=M()[uid];
+  if(!S.draft){
+    S.draft = me ? { name:me.name, hints:me.hints.map(h=>({...h})) }
+                 : { name:'', hints:[{q:QUESTIONS[0],a:''},{q:QUESTIONS[1],a:''},{q:QUESTIONS[2],a:''}] };
+    S.draft.pin='';
+  }
+  const d=S.draft;
+  return header()+`<main>
+    <div id="loginArea" style="margin-top:18px"></div>
+    <div class="sec">あなたのプレゼント</div>
+    <section class="card">
+      <p class="sub">ヒントは当日、箱に書かれてみんなに見えます。中身がバレすぎないくらいが、ちょうどいい。</p>
+      <label class="lbl">お名前</label>
+      <input class="inp" data-f="name" maxlength="12" value="${esc(d.name)}" placeholder="例：さとう">
+      <label class="lbl">暗証番号（4桁の数字）</label>
+      <input class="inp pin" data-f="pin" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="new-password" placeholder="${me&&me.pinHash?'変えるときだけ入力':'4桁の数字'}">
+      <p class="sub" style="font-size:11px;margin-top:6px">別の端末やブラウザから入り直すときに使います。忘れたら幹事がリセットできます。</p>
+      ${['i','ii','iii'].map((r,i)=>{const h=d.hints[i]; return `
+        <div class="hint-row">
+          <div class="hint-n">Hint ${r}.</div>
+          <select class="sel" data-f="q" data-i="${i}">${QUESTIONS.map(q=>`<option ${q===h.q?'selected':''}>${q}</option>`).join('')}</select>
+          <input class="inp" data-f="a" data-i="${i}" maxlength="20" value="${esc(h.a)}" placeholder="例：あったかい">
+        </div>`}).join('')}
+      <button class="btn primary" data-act="save" id="saveBtn">登録する</button>
+      <p class="msg" id="saveMsg"></p>
+    </section>
+    <div class="sec">登録状況</div>
+    <section class="card"><div id="members"></div></section>
+    <div id="startArea"></div>
+    <button class="btn text" data-act="leave">ホームに戻る</button>
+  </main>`;
+}
+
+function updateRegister(){
+  const ms=M(), ids=Object.keys(ms);
+  document.getElementById('members').innerHTML=
+    `<div class="count"><b>${ids.length}</b><span>人が登録済み</span></div>
+     <div class="mem">${ids.map(u=>`<span class="${u===uid?'me':''}">${esc(ms[u].name)}</span>`).join('')||'<span>まだいません</span>'}</div>`;
+  const sb=document.getElementById('saveBtn'); if(sb) sb.textContent = ms[uid]?'更新する':'登録する';
+  const showArea=!ms[uid] && ids.length>0;
+  fillArea('loginArea', showArea+'|'+S.showLogin+'|'+ids.map(u=>u+ms[u].name).join(','),
+    !showArea ? '' : S.showLogin
+      ? loginCard()+'<button class="linkbtn" data-act="hideLogin" style="margin-bottom:8px">閉じる</button>'
+      : '<button class="linkbtn" data-act="showLogin">すでに登録した方はこちら</button>');
+  document.getElementById('startArea').innerHTML = isHost()
+    ? `<div class="sec">幹事メニュー</div>
+       <section class="card"><p class="sub">全員そろったら箱選びを始めます。始めると登録は締め切られます。</p>
+        <button class="btn wine" data-act="start" ${ids.length<3?'disabled':''}>箱選びを始める</button>
+        ${ids.length<3?'<p class="msg">3人以上で始められます</p>':''}</section>${hostTools()}`
+    : `<p class="sub center" style="margin:16px 0 0">幹事が始めるまで、少しお待ちください</p>`;
+}
+
+function giftWrap(giver){
+  return `<div class="wrap"><div class="rib-v"></div><div class="rib-h"></div><div class="bow"></div>
+    <span class="tagno"><small>No.</small>${no(giver)}</span></div>`;
+}
+
+function boxCard(giver,o={}){
+  const m=M()[giver];
+  return `<button class="box ${o.cls||''}" ${o.act?`data-act="${o.act}" data-g="${giver}"`:''} ${o.disabled?'disabled':''} style="--c:${col(giver)}">
+    ${giftWrap(giver)}
+    <span class="check">${ICON_CHECK}</span>
+    ${o.own?'<span class="owntag">あなたの箱</span>':''}
+    <ul class="hints">${(m.hints||[]).map(h=>`<li><span>${esc(h.q)}</span>${esc(h.a)}</li>`).join('')}</ul>
+  </button>`;
+}
+
+function viewPick(g){
+  const {R,B}=remaining(g), asg=g.assigned||{}, picks=g.picks||{};
+  const done=R.filter(r=>picks[r]).length;
+  const mine=picks[uid], fixed=asg[uid];
+  const boxes=[...B].sort((a,b)=>no(a)-no(b));
+  const takenBoxes=Object.values(asg).sort((a,b)=>no(a)-no(b));
+  const locked = !!(mine||fixed);
+  let top='';
+  if(fixed){
+    top=`<section class="card status"><div class="mini" style="--c:${col(fixed)}"><b>${no(fixed)}</b></div>
+      <div><h2>No.${no(fixed)} に決まりました</h2><p class="sub">ほかの人が選び終わるのを待っています</p></div></section>`;
+  }else if(mine){
+    top=`<section class="card status"><div class="mini" style="--c:${col(mine)}"><b>${no(mine)}</b></div>
+      <div><h2>No.${no(mine)} で決定</h2><p class="sub">全員がそろったら結果が出ます</p>
+      <button class="link" data-act="cancel">選び直す</button></div></section>`;
+  }else{
+    top=`<p class="sub" style="margin:0 2px 14px">ヒントを見て、ほしい箱をひとつ選んでください。</p>`;
+  }
+  const grid=boxes.map(gv=>{
+    if(gv===uid) return boxCard(gv,{cls:'own',disabled:true,own:true});
+    if(locked) return boxCard(gv,{cls:gv===mine?'is-sel':'lock',disabled:true});
+    return boxCard(gv,{act:'sel',cls:S.sel===gv?'is-sel':''});
+  }).join('');
+  const myBoxGone = !B.includes(uid);
+  return `<main>
+    <div class="round"><div><div class="eyebrow">Round ${g.round}</div><h2>箱選び</h2></div>
+      <div class="cnt">決定 <b>${done}</b> / ${R.length}</div></div>
+    <div class="prog"><i style="width:${R.length?done/R.length*100:0}%"></i></div>
+    ${top}
+    <div class="grid">${grid}</div>
+    ${myBoxGone?`<p class="taken">あなたの箱 No.${no(uid)} は、もう行き先が決まりました</p>`:''}
+    ${hostTools()}
+    ${takenBoxes.length?`<p class="taken">決まった箱　${takenBoxes.map(t=>`<b>${no(t)}</b>`).join('')}</p>`:''}
+  </main>
+  ${!locked && R.includes(uid)?`<div class="bar"><button class="btn primary" data-act="pick" ${S.sel&&B.includes(S.sel)&&S.sel!==uid?'':'disabled'}>${S.sel&&B.includes(S.sel)?`No.${no(S.sel)} に決める`:'箱を選んでください'}</button></div>`:''}`;
+}
+
+function viewJanken(g){
+  const asg=g.assigned||{}, last=g.lastPicks||{};
+  const confl=Object.entries(g.conflicts||{}).sort((a,b)=>no(a[0])-no(b[0]));
+  const settled=Object.keys(last).filter(r=>asg[r]===last[r]).sort((a,b)=>no(asg[a])-no(asg[b]));
+  const cards=confl.map(([gv,us])=>{
+    const names=Object.keys(us), canPick=us[uid]||isHost();
+    return `<section class="card conflict">
+      <div class="conf-head"><span class="eyebrow">Rock, paper, scissors</span></div>
+      <div class="conf-body">
+        <div>${boxCard(gv,{disabled:true})}</div>
+        <div><h2>No.${no(gv)} が<br>かぶりました</h2>
+          <p class="vs">${names.map(n=>esc(nm(n))).join('<em>&amp;</em>')}</p>
+          <p class="sub" style="margin-top:4px">じゃんけんで決めます</p></div>
+      </div>
+      ${canPick
+        ? `<div class="wins">${names.map(n=>{const k=gv+'|'+n, p=S.winPend===k;
+             return `<button class="win ${p?'pend':''}" data-act="win" data-g="${gv}" data-u="${n}">${p?`${esc(nm(n))} さんで確定`:`${esc(nm(n))} さんの勝ち`}</button>`}).join('')}</div>
+           <p class="sub center" style="margin-top:8px;font-size:11px">勝った人をタップ → もう一度タップで確定</p>`
+        : `<p class="sub center" style="margin-top:14px">勝敗の登録を待っています</p>`}
+    </section>`;
+  }).join('');
+  return `<main>
+    <div class="round"><div><div class="eyebrow">Round ${g.lastRound||g.round}</div><h2>結果</h2></div></div>
+    ${cards}
+    ${settled.length?`<div class="sec">このラウンドで決まった人</div>
+      <section class="card"><ul class="ledger">${settled.map(r=>`<li>${noTag(asg[r])}<span class="nm">${esc(nm(r))}</span></li>`).join('')}</ul></section>`:''}
+    <p class="sub center" style="margin-top:14px">負けた人は、次のラウンドで残りの箱から選び直します</p>
+    ${hostTools()}
+  </main>`;
+}
+
+function noteText(n){
+  if(!n) return '';
+  if(n.type==='swap') return `最後に${esc(nm(n.a))}さんの箱だけが残ったため、${esc(nm(n.c))}さんの箱と自動で入れ替えました。`;
+  if(n.type==='two') return `残りの2人（${esc(nm(n.a))}さん・${esc(nm(n.b))}さん）は自動で振り分けました。`;
+  if(n.type==='one') return `最後の1人（${esc(nm(n.a))}さん）は、残った箱に決まりました。`;
+  return '';
+}
+
+function viewDone(g){
+  const asg=g.assigned||{};
+  const from=asg[uid], to=Object.keys(asg).find(r=>asg[r]===uid);
+  const pairs=Object.keys(asg).sort((a,b)=>no(asg[a])-no(asg[b]));
+  return `<main>
+    ${from?`
+    <div class="tagwrap"><div class="string"></div>
+      <div class="gtag">
+        <div class="lbl2">To</div>
+        <div class="who">${esc(nm(uid))}<small>さん</small></div>
+        <hr>
+        <div class="lbl2">From</div>
+        <div class="who" style="margin-bottom:18px">${esc(nm(from))}<small>さん</small></div>
+        <div class="boxline"><div class="mini" style="--c:${col(from)};width:40px;height:40px;border-radius:7px"><b>${no(from)}</b></div>No.${no(from)} の箱を受け取ります</div>
+      </div>
+    </div>
+    <section class="card give" style="margin-top:16px">
+      <div class="k">あなたのプレゼントを渡す相手</div>
+      <div class="to">${esc(nm(to))}<small>さん</small></div>
+    </section>`:`<div class="hero" style="padding-bottom:10px"><div class="eyebrow">Merry Christmas</div><h2 style="font-size:22px">交換が決まりました</h2></div>`}
+    ${noteText(g.autoNote)?`<p class="note">${noteText(g.autoNote)}</p>`:''}
+    <div class="sec">みんなの交換表</div>
+    <section class="card" style="padding:8px 20px">
+      ${pairs.map(r=>`<div class="pair">${noTag(asg[r])}
+        <span class="${asg[r]===uid?'me':''}">${esc(nm(asg[r]))}</span><span class="ar">→</span>
+        <span class="${r===uid?'me':''}">${esc(nm(r))}</span></div>`).join('')}
+    </section>
+    <p class="center eyebrow" style="margin:22px 0 4px">Merry Christmas ✦</p>
+    ${!from?loginCard('この端末では、あなたの登録が見つかりません。登録した方は、名前と暗証番号で入り直すと自分の結果が見られます。'):''}
+    ${hostTools()}
+    ${isHost()?`<button class="btn text" data-act="reset">${S.resetPend?'本当にやり直しますか？（もう一度押す）':'登録画面からやり直す（幹事のみ）'}</button>`:''}
+  </main>`;
+}
+
+function viewGame(){
+  const g=S.data.game||{};
+  const inGame=g.players&&g.players[uid];
+  let body;
+  if(g.status==='done') body=viewDone(g);
+  else if(g.status==='janken') body=viewJanken(g);
+  else body=viewPick(g);
+  return header()+body;
+}
+
+function render(){
+  const app=document.getElementById('app');
+  let key, html, upd=null;
+  if(!configured){ key='setup'; html=viewSetup(); }
+  else if(!S.code||!S.data){ key='home'; html=viewHome(); }
+  else if(S.data.phase==='register'){ key='register'; upd=updateRegister; if(S.key===key){ upd(); return; } html=viewRegister(); }
+  else{
+    const g=S.data.game||{};
+    if(!(g.players&&g.players[uid]) && g.status!=='done'){
+      key='outsider'; if(S.key===key) return;
+      html=header()+`<main><section class="card" style="margin-top:20px"><h2>交換が進行中です</h2>
+        <p class="sub">この端末では、あなたの登録が見つかりません。すでに登録した方は、下から名前と暗証番号で入り直してください。登録の締切後に来た方は、見るだけになります。</p></section>
+        ${loginCard(' ')}</main>`;
+    }else{ key='game:'+(g.status||''); html=viewGame(); }
+  }
+  const sy=window.scrollY, same=S.key===key;
+  S.key=key; app.innerHTML=html; if(upd) upd();
+  if(same) window.scrollTo(0,sy);
+}
+
+// ---------- events ----------
+document.addEventListener('input',e=>{
+  const f=e.target.dataset.f; if(!f||!S.draft) return;
+  if(f==='name') S.draft.name=e.target.value;
+  if(f==='a') S.draft.hints[+e.target.dataset.i].a=e.target.value;
+  if(f==='pin'){ e.target.value=e.target.value.replace(/\D/g,'').slice(0,4); S.draft.pin=e.target.value; }
+});
+document.addEventListener('input',e=>{ if(e.target.id==='loginPin') e.target.value=e.target.value.replace(/\D/g,'').slice(0,4); });
+document.addEventListener('toggle',e=>{ if(e.target.matches&&e.target.matches('[data-dt]')) S.dtOpen=e.target.open; },true);
+document.addEventListener('change',e=>{
+  if(e.target.dataset.f==='q') S.draft.hints[+e.target.dataset.i].q=e.target.value;
+});
+document.addEventListener('keydown',e=>{ if(e.key==='Enter'&&e.target.id==='codeIn') joinRoom(e.target.value); });
+document.addEventListener('click',e=>{
+  const t=e.target.closest('[data-act]'); if(!t||t.disabled) return;
+  const a=t.dataset.act;
+  if(a!=='win') S.winPend=null;
+  if(a!=='reset') S.resetPend=false;
+  if(a!=='pinreset') S.pinResetPend=null;
+  switch(a){
+    case 'create': createRoom(); break;
+    case 'join': joinRoom(document.getElementById('codeIn').value); break;
+    case 'rejoin': joinRoom(store.get('nazo_last')); break;
+    case 'leave': leave(); break;
+    case 'share': share(); break;
+    case 'save': saveMember(); break;
+    case 'start': start(); break;
+    case 'sel': S.sel = S.sel===t.dataset.g ? null : t.dataset.g; render(); break;
+    case 'pick': { const gv=S.sel; S.sel=null; tx(r=>applyPick(r.game,uid,gv)); break; }
+    case 'cancel': tx(r=>applyCancel(r.game,uid)); break;
+    case 'win': {
+      const k=t.dataset.g+'|'+t.dataset.u;
+      if(S.winPend!==k){ S.winPend=k; render(); break; }
+      S.winPend=null; const gv=t.dataset.g, w=t.dataset.u;
+      tx(r=>applyWinner(r.game,gv,w)); break;
+    }
+    case 'login': login(); break;
+    case 'showLogin': S.showLogin=true; render(); break;
+    case 'hideLogin': S.showLogin=false; render(); break;
+    case 'pinreset': {
+      const u=t.dataset.u;
+      if(S.pinResetPend!==u){ S.pinResetPend=u; render(); break; }
+      S.pinResetPend=null; resetPin(u); break;
+    }
+    case 'reset':
+      if(!S.resetPend){ S.resetPend=true; render(); break; }
+      S.resetPend=false;
+      tx(r=>{ if(r.host!==uid) return false; r.phase='register'; r.game=null; });
+      break;
+  }
+});
+
+// ---------- boot ----------
+if(configured && params.get('room')) joinRoom(params.get('room'));
+else render();
+</script>
+</body>
+</html>
