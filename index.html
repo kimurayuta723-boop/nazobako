@@ -263,6 +263,19 @@
   .hintline.go{color:var(--gold);font-weight:500}
   @media (prefers-reduced-motion:no-preference){ .hintline.go{animation:blink 1.6s ease-in-out infinite} }
   @keyframes blink{50%{opacity:.35}}
+  /* サウンド */
+  .sndwrap{position:relative}
+  .snd.on{color:var(--gold);border-color:var(--gold2)}
+  .sndmenu{position:absolute;right:-6px;top:44px;width:230px;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:6px;box-shadow:0 12px 30px rgba(31,42,36,.14);display:none;z-index:10;text-align:left}
+  .sndwrap.open .sndmenu{display:block}
+  .swrow{display:flex;width:100%;align-items:center;justify-content:space-between;gap:10px;padding:10px 10px;font-size:14px;border-radius:10px}
+  .swrow:active{background:var(--bg)}
+  .swrow span{text-align:left}
+  .swrow small{display:block;font-size:11px;color:var(--mute);letter-spacing:.04em}
+  .sw{width:40px;height:23px;border-radius:999px;background:var(--line2);position:relative;transition:background .2s;flex:none}
+  .sw::after{content:"";position:absolute;left:3px;top:3px;width:17px;height:17px;border-radius:50%;background:#fff;transition:left .2s;box-shadow:0 1px 2px rgba(0,0,0,.15)}
+  .sw.on{background:var(--forest)} .sw.on::after{left:20px}
+  .sndmenu p{font-size:11px;color:var(--mute);padding:8px 10px 4px;border-top:1px solid var(--line);margin-top:2px;line-height:1.6}
   .toast{position:fixed;left:50%;bottom:calc(30px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--ink);color:#F7F3EC;border-radius:999px;padding:10px 20px;font-size:13px;z-index:20;opacity:0;transition:opacity .2s;pointer-events:none;white-space:nowrap}
   .toast.on{opacity:1}
 </style>
@@ -414,7 +427,7 @@ const configured = !!firebaseConfig.databaseURL;
 let db=null;
 if(configured){ db=getDatabase(initializeApp(firebaseConfig)); }
 
-const S={ code:null, data:null, loading:false, unsub:null, key:null, draft:null, sel:null, winPend:null, resetPend:false, err:'', showLogin:false, dtOpen:false, pinResetPend:null, cdActive:false, risen:null, opening:false };
+const S={ code:null, data:null, loading:false, unsub:null, key:null, draft:null, sel:null, winPend:null, resetPend:false, err:'', showLogin:false, dtOpen:false, pinResetPend:null, cdActive:false, risen:null, opening:false, sndOpen:false };
 
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const M=()=>S.data?.members||{};
@@ -499,12 +512,123 @@ function tx(fn){
   }).catch(e=>{ console.error(e); toast('通信エラー。もう一度押してください'); });
 }
 
+// ---------- サウンド（音声ファイルは使わず、その場で合成） ----------
+const SND={ ctx:null, master:null, bgmGain:null, noise:null,
+  sfx: store.get('nazo_sfx')==='1', bgm: store.get('nazo_bgm')==='1', timer:null, loopStart:0, idx:0 };
+function actx(){
+  if(!SND.ctx){
+    const C=window.AudioContext||window.webkitAudioContext; if(!C) return null;
+    const c=SND.ctx=new C();
+    SND.master=c.createGain(); SND.master.gain.value=.9; SND.master.connect(c.destination);
+    SND.bgmGain=c.createGain(); SND.bgmGain.gain.value=.5; SND.bgmGain.connect(SND.master);
+    const len=c.sampleRate; const buf=c.createBuffer(1,len,c.sampleRate); const d=buf.getChannelData(0);
+    for(let i=0;i<len;i++) d[i]=Math.random()*2-1;
+    SND.noise=buf;
+  }
+  if(SND.ctx.state==='suspended') SND.ctx.resume();
+  return SND.ctx;
+}
+const NOTE=n=>{ const m={C:0,'C#':1,D:2,'D#':3,E:4,F:5,'F#':6,G:7,'G#':8,A:9,'A#':10,B:11}; const r=n.match(/^([A-G]#?)(\d)$/);
+  return 440*Math.pow(2,(m[r[1]]+(+r[2]-4)*12-9)/12); };
+function tone(f,t,dur,o={}){
+  const c=SND.ctx, osc=c.createOscillator(), g=c.createGain();
+  osc.type=o.type||'sine'; osc.frequency.value=f;
+  g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(o.vol??.2,t+(o.attack??.005)); g.gain.exponentialRampToValueAtTime(.0001,t+dur);
+  osc.connect(g); g.connect(o.dest||SND.master); osc.start(t); osc.stop(t+dur+.05);
+}
+// 鈴・オルゴールのような音（倍音を重ねる）
+function bell(f,t,dur=1.2,vol=.18,dest){ tone(f,t,dur,{vol,dest}); tone(f*2.76,t,dur*.45,{vol:vol*.35,dest}); tone(f*5.4,t,dur*.25,{vol:vol*.12,dest}); }
+function noiseHit(t,dur,o={}){
+  const c=SND.ctx, src=c.createBufferSource(), f=c.createBiquadFilter(), g=c.createGain();
+  src.buffer=SND.noise; f.type=o.type||'bandpass'; f.frequency.setValueAtTime(o.freq||2000,t);
+  if(o.freqEnd) f.frequency.exponentialRampToValueAtTime(o.freqEnd,t+dur);
+  f.Q.value=o.q??1; g.gain.setValueAtTime(o.vol??.2,t); g.gain.exponentialRampToValueAtTime(.0001,t+dur);
+  src.connect(f); f.connect(g); g.connect(SND.master); src.start(t,Math.random()*.5); src.stop(t+dur+.05);
+}
+// 効果音の間はBGMを小さくする
+function duck(sec){
+  if(!SND.bgmGain) return; const g=SND.bgmGain.gain, t=SND.ctx.currentTime;
+  g.cancelScheduledValues(t); g.setValueAtTime(g.value,t); g.linearRampToValueAtTime(.12,t+.15);
+  g.setValueAtTime(.12,t+sec); g.linearRampToValueAtTime(.5,t+sec+.8);
+}
+const sfx={
+  // 1. 決定：鈴「チリン」
+  chime(){ if(!SND.sfx||!actx()) return; const t=SND.ctx.currentTime+.01;
+    duck(.8); bell(NOTE('E6'),t,1.1,.16); bell(NOTE('B6'),t+.07,.9,.08); },
+  // 2. 結果発表：ドラムロール → シンバル＋和音
+  drumroll(total){ if(!SND.sfx||!actx()) return; const t0=SND.ctx.currentTime+.02;
+    duck(total+1);
+    for(let t=0;t<total;t+=.045){ const p=t/total; noiseHit(t0+t,.06,{vol:.04+.22*p*p,freq:1700+700*p,q:.8}); }
+    const te=t0+total;
+    noiseHit(te,1.5,{vol:.3,type:'highpass',freq:5500,q:.3});
+    tone(140,te,.35,{vol:.5}); tone(70,te,.4,{vol:.35});
+    ['C5','E5','G5','C6'].forEach((n,i)=>bell(NOTE(n),te+.015*i,1.6,.08)); },
+  // 3. かぶった：「ジャ、ジャーン」
+  jan(){ if(!SND.sfx||!actx()) return; const c=SND.ctx, t=c.currentTime+.02;
+    duck(1.2);
+    const stab=(st,d,vol)=>['D3','G#3','D4','F4'].forEach(n=>{
+      const o=c.createOscillator(), f=c.createBiquadFilter(), g=c.createGain();
+      o.type='sawtooth'; o.frequency.value=NOTE(n); f.type='lowpass'; f.frequency.value=1500;
+      g.gain.setValueAtTime(0,st); g.gain.linearRampToValueAtTime(vol,st+.012); g.gain.exponentialRampToValueAtTime(.0001,st+d);
+      o.connect(f); f.connect(g); g.connect(SND.master); o.start(st); o.stop(st+d+.05); });
+    stab(t,.13,.06); stab(t+.17,.75,.07); tone(73,t+.17,.6,{vol:.3}); },
+  // 4. 開封：シュルッ → キラララン → ベル
+  open(){ if(!SND.sfx||!actx()) return; const t=SND.ctx.currentTime+.02;
+    duck(3);
+    noiseHit(t,.4,{vol:.16,freq:600,freqEnd:3400,q:2.5});
+    ['C6','E6','G6','C7','E7'].forEach((n,i)=>bell(NOTE(n),t+.55+i*.07,.9,.06));
+    ['C5','E5','G5','C6'].forEach(n=>bell(NOTE(n),t+1.25,2.2,.07)); },
+};
+// BGM：ジングルベル（1857年の曲・パブリックドメイン）をオルゴール風に
+const JB=(()=>{ const M=[['E5',1],['E5',1],['E5',2],['E5',1],['E5',1],['E5',2],['E5',1],['G5',1],['C5',1.5],['D5',.5],['E5',4],
+  ['F5',1],['F5',1],['F5',1.5],['F5',.5],['F5',1],['E5',1],['E5',1],['E5',.5],['E5',.5],['E5',1],['D5',1],['D5',1],['E5',1],['D5',2],['G5',2],
+  ['E5',1],['E5',1],['E5',2],['E5',1],['E5',1],['E5',2],['E5',1],['G5',1],['C5',1.5],['D5',.5],['E5',4],
+  ['F5',1],['F5',1],['F5',1.5],['F5',.5],['F5',1],['E5',1],['E5',1],['E5',.5],['E5',.5],['G5',1],['G5',1],['F5',1],['D5',1],['C5',4]];
+  const B=['C3','C3','C3','C3','C3','G2','C3','C3','F3','F3','C3','C3','D3','D3','G2','G2','C3','C3','C3','C3','C3','G2','C3','C3','F3','F3','C3','C3','G2','G2','C3','C3'];
+  const ev=[]; let b=0; M.forEach(([n,d])=>{ ev.push({b,f:NOTE(n),d,k:'m'}); b+=d; });
+  B.forEach((n,i)=>ev.push({b:i*2,f:NOTE(n),d:2,k:'b'}));
+  ev.sort((x,y)=>x.b-y.b); return {ev,len:68}; })();
+const BEAT=.3;
+function bgmTick(){
+  const c=SND.ctx; if(!c) return;
+  while(true){
+    const e=JB.ev[SND.idx], t=SND.loopStart+e.b*BEAT;
+    if(t>c.currentTime+.6) break;
+    if(t>=c.currentTime-.05){
+      if(e.k==='m') bell(e.f,t,e.d*BEAT+.5,.12,SND.bgmGain);
+      else tone(e.f,t,BEAT*1.8,{type:'triangle',vol:.09,dest:SND.bgmGain});
+    }
+    SND.idx++; if(SND.idx>=JB.ev.length){ SND.idx=0; SND.loopStart+=JB.len*BEAT; }
+  }
+}
+function bgmStart(){ if(SND.timer||!actx()) return; SND.loopStart=SND.ctx.currentTime+.15; SND.idx=0; SND.timer=setInterval(bgmTick,120); bgmTick(); }
+function bgmStop(){ clearInterval(SND.timer); SND.timer=null; }
+document.addEventListener('visibilitychange',()=>{ if(document.hidden) bgmStop(); else if(SND.bgm&&SND.ctx) bgmStart(); });
+// スマホは最初のタップまで音を出せないので、タップ時に準備する
+document.addEventListener('pointerdown',()=>{ if(SND.sfx||SND.bgm){ actx(); if(SND.bgm) bgmStart(); } },{passive:true});
+
+const ICON_SND_ON='<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 6.2h2.3L8 3.5v9L4.8 9.8H2.5z"/><path d="M10.6 5.6a3.4 3.4 0 010 4.8M12.4 3.9a5.8 5.8 0 010 8.2"/></svg>';
+const ICON_SND_OFF='<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 6.2h2.3L8 3.5v9L4.8 9.8H2.5z"/><path d="M10.6 6.2l3.4 3.6M14 6.2l-3.4 3.6"/></svg>';
+function soundUI(){
+  const any=SND.sfx||SND.bgm;
+  return `<div class="sndwrap ${S.sndOpen?'open':''}">
+    <button class="share snd ${any?'on':''}" data-act="sndmenu" aria-label="サウンド設定">${any?ICON_SND_ON:ICON_SND_OFF}</button>
+    <div class="sndmenu">
+      <button class="swrow" data-act="sfx"><span>効果音</span><i class="sw ${SND.sfx?'on':''}"></i></button>
+      <button class="swrow" data-act="bgm"><span>BGM<small>ジングルベル</small></span><i class="sw ${SND.bgm?'on':''}"></i></button>
+      <p>マナーモード中は鳴らないことがあります</p>
+    </div></div>`;
+}
+function syncSoundUI(){ document.querySelectorAll('.sndwrap').forEach(w=>{ w.outerHTML=soundUI(); }); }
+document.addEventListener('click',e=>{ if(S.sndOpen && !e.target.closest('.sndwrap')){ S.sndOpen=false; syncSoundUI(); } },true);
+
 // ---------- 演出 ----------
 function countdown(label){
   const el=document.getElementById('cd'); let n=3;
   S.cdActive=true; clearInterval(countdown.t);
   const show=()=>{ el.innerHTML=`<div class="cd-in"><div class="eyebrow">${label}</div><div class="cd-n">${n}</div></div>`; };
   el.classList.add('on'); show();
+  sfx.drumroll(2.4);
   countdown.t=setInterval(()=>{
     n--; if(n>0){ show(); return; }
     clearInterval(countdown.t); el.classList.remove('on'); el.innerHTML='';
@@ -622,6 +746,7 @@ function header(){
     <div class="logo"><span class="star">✦</span>ナゾ箱</div>
     ${isHost()?'<span class="host">幹事</span>':''}
     <span class="code">合言葉<b>${S.code}</b></span>
+    ${soundUI()}
     <button class="share" data-act="share" aria-label="招待する">${ICON_SHARE}</button>
   </div></header>`;
 }
@@ -777,7 +902,7 @@ function viewJanken(g){
   const confl=Object.entries(g.conflicts||{}).sort((a,b)=>no(a[0])-no(b[0]));
   const settled=Object.keys(last).filter(r=>asg[r]===last[r]).sort((a,b)=>no(asg[a])-no(asg[b]));
   const rise = !S.cdActive && S.risen!==(g.lastRound||g.round);
-  if(rise) S.risen=(g.lastRound||g.round);
+  if(rise){ S.risen=(g.lastRound||g.round); setTimeout(()=>sfx.jan(),40); }
   const cards=confl.map(([gv,us],i)=>{
     const names=Object.keys(us), canPick=us[uid]||isHost();
     return `<section class="card conflict ${rise?'rise':''}" style="animation-delay:${i*0.15}s">
@@ -930,9 +1055,12 @@ document.addEventListener('keydown',e=>{ if(e.key==='Enter'&&e.target.id==='code
 document.addEventListener('click',e=>{
   const t=e.target.closest('[data-act]'); if(!t||t.disabled) return;
   const a=t.dataset.act;
-  if(a!=='win') S.winPend=null;
-  if(a!=='reset') S.resetPend=false;
-  if(a!=='pinreset') S.pinResetPend=null;
+  const soundAct=['sndmenu','sfx','bgm'].includes(a);
+  if(!soundAct){
+    if(a!=='win') S.winPend=null;
+    if(a!=='reset') S.resetPend=false;
+    if(a!=='pinreset') S.pinResetPend=null;
+  }
   switch(a){
     case 'create': createRoom(); break;
     case 'join': joinRoom(document.getElementById('codeIn').value); break;
@@ -942,7 +1070,10 @@ document.addEventListener('click',e=>{
     case 'save': saveMember(); break;
     case 'start': start(); break;
     case 'sel': S.sel = S.sel===t.dataset.g ? null : t.dataset.g; render(); break;
-    case 'pick': { const gv=S.sel; S.sel=null; tx(r=>applyPick(r.game,uid,gv)); break; }
+    case 'pick': { const gv=S.sel; S.sel=null; sfx.chime(); tx(r=>applyPick(r.game,uid,gv)); break; }
+    case 'sndmenu': S.sndOpen=!S.sndOpen; syncSoundUI(); break;
+    case 'sfx': SND.sfx=!SND.sfx; store.set('nazo_sfx',SND.sfx?'1':'0'); if(SND.sfx){ actx(); sfx.chime(); } syncSoundUI(); break;
+    case 'bgm': SND.bgm=!SND.bgm; store.set('nazo_bgm',SND.bgm?'1':'0'); if(SND.bgm) bgmStart(); else bgmStop(); syncSoundUI(); break;
     case 'cancel': tx(r=>applyCancel(r.game,uid)); break;
     case 'win': {
       const k=t.dataset.g+'|'+t.dataset.u;
@@ -954,7 +1085,7 @@ document.addEventListener('click',e=>{
     case 'reveal': reveal(); break;
     case 'open': {
       if(S.cdActive||S.opening) break;
-      S.opening=true; t.classList.remove('ready'); t.classList.add('opening'); const hl=document.querySelector('.hintline'); if(hl){ hl.style.transition='opacity .3s'; hl.style.animation='none'; hl.style.opacity='0'; }
+      S.opening=true; sfx.open(); t.classList.remove('ready'); t.classList.add('opening'); const hl=document.querySelector('.hintline'); if(hl){ hl.style.transition='opacity .3s'; hl.style.animation='none'; hl.style.opacity='0'; }
       const g=S.data.game;
       setTimeout(()=>{ store.set(openKey(g),'1'); S.opening=false; S.key=null; render(); },1250);
       break;
