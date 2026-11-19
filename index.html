@@ -25,10 +25,17 @@
   main{max-width:500px;margin:0 auto;padding:8px 20px 20px;position:relative;z-index:1}
 
   /* snow (ごく控えめ) */
-  .snow{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
-  .snow i{position:absolute;top:-10px;width:4px;height:4px;border-radius:50%;background:var(--gold2);opacity:.45}
-  @media (prefers-reduced-motion:no-preference){ .snow i{animation:fall linear infinite} }
-  @keyframes fall{to{transform:translate3d(30px,105vh,0)}}
+  /* 雪：カードの上にも重ねて、ふわっと見えるように（押す操作は邪魔しない） */
+  .snow{position:fixed;inset:0;pointer-events:none;z-index:4;overflow:hidden}
+  .snow i{position:absolute;top:0;display:block;transform:translateY(var(--y))}
+  .snow b{display:block;border-radius:50%;background:radial-gradient(circle,var(--sc) 0 42%,rgba(255,255,255,0) 72%)}
+  .snow b.k{background:none;border-radius:0;color:var(--sc);font-weight:400;line-height:1;font-family:sans-serif}
+  @media (prefers-reduced-motion:no-preference){
+    .snow i{animation:fall linear infinite}
+    .snow b{animation:sway ease-in-out infinite alternate}
+  }
+  @keyframes fall{from{transform:translateY(-30px)}to{transform:translateY(calc(100vh + 30px))}}
+  @keyframes sway{from{transform:translateX(-12px) rotate(-20deg)}to{transform:translateX(12px) rotate(20deg)}}
 
   /* header */
   .hd{position:sticky;top:0;z-index:5;background:rgba(247,243,236,.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
@@ -360,9 +367,21 @@ const noTag=u=>`<span class="chipno"><small>No.</small>${no(u)}</span>`;
 function toast(t){ const el=document.getElementById('toast'); el.textContent=t; el.classList.add('on'); clearTimeout(toast.t); toast.t=setTimeout(()=>el.classList.remove('on'),1800); }
 
 // ごく控えめな雪
-(function(){ const el=document.getElementById('snow'); let h='';
-  for(let i=0;i<16;i++){ const s=2+Math.random()*3; h+=`<i style="left:${Math.random()*100}%;width:${s}px;height:${s}px;animation-duration:${14+Math.random()*16}s;animation-delay:-${Math.random()*30}s"></i>`; }
-  el.innerHTML=h; })();
+(function(){
+  const el=document.getElementById('snow'); let h='';
+  const tones=['#C9B07A','#B7C6C8','#D9C49A','#A9BBBE'];   // シャンパンゴールドと霜の色
+  const R=(a,b)=>a+Math.random()*(b-a);
+  for(let i=0;i<26;i++){
+    const c=tones[i%tones.length], dur=R(13,24), sw=R(2.8,5.5), op=R(.55,.9);
+    const pos=`left:${R(0,100).toFixed(1)}%;--y:${R(0,95).toFixed(0)}vh;animation-duration:${dur.toFixed(1)}s;animation-delay:-${R(0,dur).toFixed(1)}s`;
+    const crystal = i%5===0;   // 5つに1つだけ結晶の形
+    const inner = crystal
+      ? `<b class="k" style="--sc:${c};font-size:${R(14,20).toFixed(0)}px;opacity:${op.toFixed(2)};animation-duration:${sw.toFixed(1)}s">❅</b>`
+      : (()=>{ const s=R(5,11).toFixed(1); return `<b style="--sc:${c};width:${s}px;height:${s}px;opacity:${op.toFixed(2)};animation-duration:${sw.toFixed(1)}s"></b>`; })();
+    h+=`<i style="${pos}">${inner}</i>`;
+  }
+  el.innerHTML=h;
+})();
 
 // ---------- room ----------
 function genCode(){ const ch='ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; let s=''; for(let i=0;i<4;i++) s+=ch[Math.floor(Math.random()*ch.length)]; return s; }
