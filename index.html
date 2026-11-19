@@ -207,6 +207,54 @@
   .dt .card{margin-top:6px}
   .chipbtn{border:1px solid var(--line2);border-radius:999px;padding:5px 12px;font-size:13px;color:var(--ink2)}
   .chipbtn.pend{background:var(--wine);border-color:var(--wine);color:#fff}
+  /* まだ選んでいない人 */
+  .waiting{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:-8px 2px 16px;font-size:12px;color:var(--mute)}
+  .waiting span{margin-right:2px;letter-spacing:.06em}
+  .waiting em{font-style:normal;border:1px dashed var(--line2);border-radius:999px;padding:1px 10px;color:var(--ink2);font-size:12px}
+  .waiting em.me{border-style:solid;border-color:var(--wine);color:var(--wine)}
+
+  /* カウントダウン */
+  .cd{position:fixed;inset:0;z-index:30;display:none;place-items:center;background:rgba(247,243,236,.88);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+  .cd.on{display:grid}
+  .cd-in{text-align:center}
+  .cd-in .eyebrow{font-size:20px}
+  .cd-n{font-family:var(--latin);font-weight:500;font-size:132px;line-height:1.1;color:var(--forest);animation:cdpop .8s ease-out both}
+  @keyframes cdpop{0%{transform:scale(1.7);opacity:0}25%{opacity:1}100%{transform:scale(.92);opacity:.6}}
+
+  /* かぶった箱が浮かび上がる */
+  .rise{animation:rise .7s cubic-bezier(.2,1.2,.4,1) both}
+  @keyframes rise{from{transform:translateY(26px) scale(.96);opacity:0}to{transform:none;opacity:1}}
+
+  /* 開封前の大きな箱 */
+  .stage{text-align:center}
+  .giftbig{--c:#23402F;position:relative;display:block;width:210px;height:200px;margin:34px auto 6px;cursor:default}
+  .giftbig[data-act="open"]{cursor:pointer}
+  .gb-body{position:absolute;left:14px;right:14px;bottom:0;height:136px;background:var(--c);border-radius:6px;overflow:hidden}
+  .gb-body::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.1) 1.2px,transparent 1.5px);background-size:12px 12px}
+  .gb-lid{position:absolute;left:0;right:0;top:40px;height:42px;background:var(--c);filter:brightness(1.18);border-radius:6px;z-index:2;
+    transition:transform .75s cubic-bezier(.5,-0.4,.6,1) .35s,opacity .6s .45s}
+  .gb-rv{position:absolute;left:50%;margin-left:-9px;width:18px;top:40px;bottom:0;background:var(--gold2);z-index:3;transform-origin:50% 0;transition:transform .45s ease-in}
+  .gb-rh{position:absolute;left:14px;right:14px;top:118px;height:15px;background:var(--gold2);z-index:3;transform-origin:50% 50%;transition:transform .45s ease-in}
+  .gb-bow{position:absolute;left:50%;top:40px;width:0;height:0;z-index:4;transition:transform .5s ease-in,opacity .4s}
+  .gb-bow::before,.gb-bow::after{content:"";position:absolute;top:-30px;width:38px;height:28px;border:5px solid var(--gold2);border-radius:50% 50% 50% 0}
+  .gb-bow::before{left:-40px;transform:rotate(-12deg)} .gb-bow::after{left:2px;transform:scaleX(-1) rotate(-12deg)}
+  .gb-no{position:absolute;left:26px;bottom:16px;z-index:4;background:var(--paper);color:var(--ink);font-family:var(--latin);font-weight:600;font-size:20px;line-height:1;
+    padding:5px 10px 5px 17px;border-radius:3px;clip-path:polygon(9px 0,100% 0,100% 100%,9px 100%,0 50%)}
+  .gb-no small{font-style:italic;font-weight:500;font-size:13px;color:var(--mute)}
+  .gb-glow{position:absolute;left:50%;top:70px;width:220px;height:220px;margin:-110px 0 0 -110px;border-radius:50%;
+    background:radial-gradient(circle,rgba(217,196,154,.75),rgba(217,196,154,0) 65%);opacity:0;transform:scale(.3);z-index:1;transition:opacity .5s .6s,transform .8s .6s}
+  @media (prefers-reduced-motion:no-preference){ .giftbig.ready{animation:wiggle 2.6s ease-in-out infinite} }
+  @keyframes wiggle{0%,78%,100%{transform:rotate(0)}82%{transform:rotate(-4deg)}86%{transform:rotate(4deg)}90%{transform:rotate(-3deg)}94%{transform:rotate(2deg)}}
+  .giftbig.opening{animation:none}
+  .giftbig.opening .gb-bow{transform:translateY(-36px) scale(.3);opacity:0}
+  .giftbig.opening .gb-rv{transform:scaleY(0)}
+  .giftbig.opening .gb-rh{transform:scaleX(0)}
+  .giftbig.opening .gb-lid{transform:translateY(-80px) rotate(-16deg);opacity:0}
+  .giftbig.opening .gb-glow{opacity:1;transform:scale(1.2)}
+  .hintline{font-size:13px;color:var(--mute);letter-spacing:.12em;margin-top:10px}
+  .hintline.go{color:var(--gold);font-weight:500}
+  @media (prefers-reduced-motion:no-preference){ .hintline.go{animation:blink 1.6s ease-in-out infinite} }
+  @keyframes blink{50%{opacity:.35}}
   .toast{position:fixed;left:50%;bottom:calc(30px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--ink);color:#F7F3EC;border-radius:999px;padding:10px 20px;font-size:13px;z-index:20;opacity:0;transition:opacity .2s;pointer-events:none;white-space:nowrap}
   .toast.on{opacity:1}
 </style>
@@ -215,6 +263,7 @@
 <div class="snow" id="snow"></div>
 <div id="app"><div class="spin"></div></div>
 <div class="toast" id="toast"></div>
+<div class="cd" id="cd"></div>
 
 <script type="module">
 /* =====================================================
@@ -354,7 +403,7 @@ const configured = !!firebaseConfig.databaseURL;
 let db=null;
 if(configured){ db=getDatabase(initializeApp(firebaseConfig)); }
 
-const S={ code:null, data:null, loading:false, unsub:null, key:null, draft:null, sel:null, winPend:null, resetPend:false, err:'', showLogin:false, dtOpen:false, pinResetPend:null };
+const S={ code:null, data:null, loading:false, unsub:null, key:null, draft:null, sel:null, winPend:null, resetPend:false, err:'', showLogin:false, dtOpen:false, pinResetPend:null, cdActive:false, risen:null, opening:false };
 
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const M=()=>S.data?.members||{};
@@ -411,7 +460,15 @@ async function joinRoom(code){
   S.unsub=onValue(ref(db,'rooms/'+code),snap=>{
     S.loading=false;
     if(!snap.exists()){ leave(); toast('ルームがなくなりました'); return; }
-    S.data=snap.val(); render();
+    const prevG=S.data&&S.data.game, val=snap.val(), g=val.game;
+    S.data=val;
+    if(prevG && g && val.phase==='game'){
+      const roundEnded = prevG.status==='picking' && (g.status!=='picking' || (g.round||0)>(prevG.round||0));
+      const revealNow = !prevG.revealed && g.revealed;
+      if(roundEnded) countdown('結果発表');
+      else if(revealNow) countdown('せーの');
+    }
+    render();
   });
 }
 
@@ -430,6 +487,22 @@ function tx(fn){
     return fn(cur)===false ? undefined : cur;
   }).catch(e=>{ console.error(e); toast('通信エラー。もう一度押してください'); });
 }
+
+// ---------- 演出 ----------
+function countdown(label){
+  const el=document.getElementById('cd'); let n=3;
+  S.cdActive=true; clearInterval(countdown.t);
+  const show=()=>{ el.innerHTML=`<div class="cd-in"><div class="eyebrow">${label}</div><div class="cd-n">${n}</div></div>`; };
+  el.classList.add('on'); show();
+  countdown.t=setInterval(()=>{
+    n--; if(n>0){ show(); return; }
+    clearInterval(countdown.t); el.classList.remove('on'); el.innerHTML='';
+    S.cdActive=false; S.key=null; render();
+  },800);
+}
+const openKey=g=>`nazo_open_${S.code}_${g.startedAt||'x'}_${uid}`;
+const isOpened=g=>store.get(openKey(g))==='1';
+function reveal(){ tx(r=>{ if(r.host!==uid || !r.game || r.game.status!=='done' || r.game.revealed) return false; r.game.revealed=true; }); }
 
 // ---------- 暗証番号 ----------
 const validPin=p=>/^\d{4}$/.test(p);
@@ -520,6 +593,7 @@ function start(){
     if(ids.length<3) return false;
     shuffle(ids).forEach((u,i)=>{ r.members[u].boxNo=i+1; });
     r.game=startGame(ids);
+    r.game.startedAt=Date.now();
     r.phase='game';
   });
 }
@@ -677,6 +751,7 @@ function viewPick(g){
     <div class="round"><div><div class="eyebrow">Round ${g.round}</div><h2>箱選び</h2></div>
       <div class="cnt">決定 <b>${done}</b> / ${R.length}</div></div>
     <div class="prog"><i style="width:${R.length?done/R.length*100:0}%"></i></div>
+    ${done>0 && done<R.length ? `<div class="waiting"><span>まだ選んでいない人</span>${R.filter(r=>!picks[r]).map(r=>`<em class="${r===uid?'me':''}">${esc(nm(r))}${r===uid?'（あなた）':''}</em>`).join('')}</div>`:''}
     ${top}
     <div class="grid">${grid}</div>
     ${myBoxGone?`<p class="taken">あなたの箱 No.${no(uid)} は、もう行き先が決まりました</p>`:''}
@@ -690,9 +765,11 @@ function viewJanken(g){
   const asg=g.assigned||{}, last=g.lastPicks||{};
   const confl=Object.entries(g.conflicts||{}).sort((a,b)=>no(a[0])-no(b[0]));
   const settled=Object.keys(last).filter(r=>asg[r]===last[r]).sort((a,b)=>no(asg[a])-no(asg[b]));
-  const cards=confl.map(([gv,us])=>{
+  const rise = !S.cdActive && S.risen!==(g.lastRound||g.round);
+  if(rise) S.risen=(g.lastRound||g.round);
+  const cards=confl.map(([gv,us],i)=>{
     const names=Object.keys(us), canPick=us[uid]||isHost();
-    return `<section class="card conflict">
+    return `<section class="card conflict ${rise?'rise':''}" style="animation-delay:${i*0.15}s">
       <div class="conf-head"><span class="eyebrow">Rock, paper, scissors</span></div>
       <div class="conf-body">
         <div>${boxCard(gv,{disabled:true})}</div>
@@ -729,6 +806,40 @@ function viewDone(g){
   const asg=g.assigned||{};
   const from=asg[uid], to=Object.keys(asg).find(r=>asg[r]===uid);
   const pairs=Object.keys(asg).sort((a,b)=>no(asg[a])-no(asg[b]));
+  const revealed=!!g.revealed;
+  const hostReveal = isHost()&&!revealed
+    ? `<button class="btn wine" data-act="reveal">せーので開ける</button><p class="sub center" style="margin-top:8px">押すと、全員の画面でカウントダウンが始まります</p>` : '';
+  const hostReset = isHost()?`<button class="btn text" data-act="reset">${S.resetPend?'本当にやり直しますか？（もう一度押す）':'登録画面からやり直す（幹事のみ）'}</button>`:'';
+  // 開封前（自分の箱がある人）
+  if(from && !isOpened(g)){
+    const ready = revealed && !S.cdActive;
+    return `<main class="stage">
+      <div class="eyebrow" style="margin-top:30px">Merry Christmas</div>
+      <h2 style="font-size:22px">交換が決まりました</h2>
+      <p class="sub">あなたが受け取るのは、この箱です</p>
+      <button class="giftbig ${ready?'ready':''}" ${ready?'data-act="open"':'disabled'} style="--c:${col(from)}" aria-label="箱を開ける">
+        <span class="gb-glow"></span><span class="gb-body"></span><span class="gb-lid"></span>
+        <span class="gb-rv"></span><span class="gb-rh"></span><span class="gb-bow"></span>
+        <span class="gb-no"><small>No.</small>${no(from)}</span>
+      </button>
+      <p class="hintline ${ready?'go':''}">${ready?'タップして開ける':'幹事の合図を待っています'}</p>
+      ${hostReveal}
+      ${hostTools()}
+      ${hostReset}
+    </main>`;
+  }
+  // 登録が見つからない人：開封の合図まで交換表は伏せる
+  if(!from && !revealed){
+    return `<main class="stage">
+      <div class="eyebrow" style="margin-top:30px">Merry Christmas</div>
+      <h2 style="font-size:22px">交換が決まりました</h2>
+      <p class="sub">幹事の合図で、みんなの交換表が見られます</p>
+      ${hostReveal}
+      ${loginCard('この端末では、あなたの登録が見つかりません。登録した方は、名前と暗証番号で入り直すと自分の箱が見られます。')}
+      ${hostTools()}
+      ${hostReset}
+    </main>`;
+  }
   return `<main>
     ${from?`
     <div class="tagwrap"><div class="string"></div>
@@ -755,7 +866,7 @@ function viewDone(g){
     <p class="center eyebrow" style="margin:22px 0 4px">Merry Christmas ✦</p>
     ${!from?loginCard('この端末では、あなたの登録が見つかりません。登録した方は、名前と暗証番号で入り直すと自分の結果が見られます。'):''}
     ${hostTools()}
-    ${isHost()?`<button class="btn text" data-act="reset">${S.resetPend?'本当にやり直しますか？（もう一度押す）':'登録画面からやり直す（幹事のみ）'}</button>`:''}
+    ${hostReset}
   </main>`;
 }
 
@@ -826,6 +937,14 @@ document.addEventListener('click',e=>{
       tx(r=>applyWinner(r.game,gv,w)); break;
     }
     case 'login': login(); break;
+    case 'reveal': reveal(); break;
+    case 'open': {
+      if(S.cdActive||S.opening) break;
+      S.opening=true; t.classList.remove('ready'); t.classList.add('opening');
+      const g=S.data.game;
+      setTimeout(()=>{ store.set(openKey(g),'1'); S.opening=false; S.key=null; render(); },1250);
+      break;
+    }
     case 'showLogin': S.showLogin=true; render(); break;
     case 'hideLogin': S.showLogin=false; render(); break;
     case 'pinreset': {
