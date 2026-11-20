@@ -293,6 +293,131 @@
   .sw::after{content:"";position:absolute;left:3px;top:3px;width:17px;height:17px;border-radius:50%;background:#fff;transition:left .2s;box-shadow:0 1px 2px rgba(0,0,0,.15)}
   .sw.on{background:var(--forest)} .sw.on::after{left:20px}
   .sndmenu p{font-size:11px;color:var(--mute);padding:8px 10px 4px;border-top:1px solid var(--line);margin-top:2px;line-height:1.6}
+  /* ===== テレビ画面（1920×1080を画面サイズに合わせて拡大縮小） ===== */
+  body.tv{padding:0;overflow:hidden;height:100vh}
+  body.tv.idle{cursor:none}
+  .tvstage{position:fixed;left:50%;top:50%;width:1920px;height:1080px;margin:-540px 0 0 -960px;transform:scale(var(--s,1));
+    padding:54px 96px;display:flex;flex-direction:column;z-index:1}
+  .tv-top{display:flex;align-items:center;gap:20px;height:84px;flex:none;border-bottom:2px solid var(--line)}
+  .tv-logo{font-family:var(--serif);font-weight:700;font-size:44px;letter-spacing:.16em;display:flex;align-items:center;gap:14px}
+  .tv-logo .star{font-size:26px}
+  .tv-code{margin-left:auto;font-family:var(--sans);font-size:28px;color:var(--mute);letter-spacing:.1em}
+  .tv-code b{font-family:var(--latin);font-weight:600;font-size:56px;color:var(--ink);letter-spacing:.22em;margin-left:18px}
+  .tv-body{flex:1;min-height:0;display:flex;flex-direction:column;padding-top:30px}
+  .tv-eyebrow{font-family:var(--latin);font-style:italic;color:var(--gold);font-size:40px;line-height:1.1}
+  .tv-h{font-family:var(--serif);font-weight:700;font-size:64px;letter-spacing:.06em;line-height:1.25}
+  .tv-sub{font-size:30px;color:var(--mute);letter-spacing:.06em}
+  .tv-center{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+  .tv-chip{display:inline-block;border:2px solid var(--line2);border-radius:999px;padding:6px 24px;font-size:30px;color:var(--ink2);margin:0 10px 12px 0;background:var(--paper)}
+  .tv-chip.dash{border-style:dashed;background:transparent}
+  /* 登録 */
+  .tv-reg{flex:1;display:grid;grid-template-columns:1fr 820px;gap:80px;align-items:center}
+  .tv-hero{text-align:center}
+  .tv-hero .wreath{width:200px;height:200px;margin:0 auto 26px}
+  .tv-hero h1{font-size:150px;letter-spacing:.2em}
+  .tv-hero .orn{font-size:20px;margin-top:22px} .tv-hero .orn::before,.tv-hero .orn::after{width:110px;height:2px}
+  .tv-steps{list-style:none;display:inline-grid;gap:16px;margin-top:40px;text-align:left}
+  .tv-steps li{font-size:32px;color:var(--ink2);display:grid;grid-template-columns:70px 1fr;align-items:baseline}
+  .tv-steps b{font-family:var(--latin);font-style:italic;font-weight:500;font-size:44px;color:var(--gold)}
+  .tv-join{background:var(--paper);border:2px solid var(--line);border-radius:36px;padding:48px}
+  .tv-join-top{display:grid;grid-template-columns:300px 1fr;gap:40px;align-items:center;padding-bottom:36px;border-bottom:2px solid var(--line)}
+  .tv-qr{width:300px;height:300px;border-radius:16px;background:#fff;padding:16px;display:grid;place-items:center}
+  .tv-qr svg{display:block}
+  .tv-join .tv-code2{font-size:28px;color:var(--mute);margin-top:18px}
+  .tv-join .tv-code2 b{display:block;font-family:var(--latin);font-weight:600;font-size:96px;color:var(--ink);letter-spacing:.2em;line-height:1.1}
+  .tv-count{display:flex;align-items:baseline;gap:14px;margin:30px 0 18px}
+  .tv-count b{font-family:var(--latin);font-weight:600;font-size:110px;line-height:1;color:var(--forest)}
+  .tv-count span{font-size:32px;color:var(--mute)}
+  /* 箱選び */
+  .tv-row{display:flex;align-items:flex-end;justify-content:space-between;gap:30px}
+  .tv-cnt{font-size:30px;color:var(--mute)}
+  .tv-cnt b{font-family:var(--latin);font-weight:600;font-size:96px;color:var(--ink);line-height:1;margin:0 8px}
+  .tv-cnt span{font-family:var(--latin);font-size:48px}
+  .tv-prog{height:6px;background:var(--line);border-radius:3px;margin:18px 0 18px;overflow:hidden;flex:none}
+  .tv-prog i{display:block;height:100%;background:var(--gold);transition:width .5s}
+  .tv-wait{display:flex;align-items:center;flex-wrap:wrap;min-height:56px;margin-bottom:10px}
+  .tv-wait .lb{font-size:26px;color:var(--mute);margin-right:18px;margin-bottom:12px}
+  .tv-grid{flex:1;min-height:0;display:grid;overflow:hidden;grid-template-columns:repeat(var(--cols,4),minmax(0,1fr));gap:24px;align-content:start}
+  body.tv .box{border-width:2px;border-radius:22px;box-shadow:none}
+  body.tv .wrap{height:70px}
+  body.tv .rib-v{width:11px} body.tv .rib-h{height:11px}
+  body.tv .bow{transform:scale(1.7)}
+  body.tv .tagno{left:14px;top:12px;font-size:30px;padding:6px 12px 6px 22px;clip-path:polygon(12px 0,100% 0,100% 100%,12px 100%,0 50%)}
+  body.tv .tagno small{font-size:19px}
+  body.tv .hints{padding:12px 20px 14px;gap:6px}
+  body.tv .hints li{font-size:24px;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  body.tv .hints li span{font-size:17px}
+  .tv-taken{display:flex;align-items:center;gap:14px;min-height:56px;margin-top:14px;font-size:26px;color:var(--mute)}
+  body.tv .pkg{width:52px;height:52px;border-radius:11px}
+  body.tv .pkg::before{width:7px} body.tv .pkg::after{height:7px}
+  body.tv .pkg b{font-size:26px;left:8px;bottom:4px}
+  /* じゃんけん */
+  .tv-vs{flex:1;min-height:0;display:grid;grid-template-columns:repeat(var(--cols,1),minmax(0,1fr));gap:30px;align-content:center}
+  .tv-vscard{background:var(--paper);border:3px solid var(--wine);border-radius:32px;padding:36px 40px;display:grid;grid-template-columns:300px 1fr;gap:40px;align-items:center}
+  .tv-vscard.done{border-color:var(--gold)}
+  .tv-vscard .box{width:100%}
+  .tv-vscard .eyebrow{font-size:40px;color:var(--wine)}
+  .tv-vscard.done .eyebrow{color:var(--gold)}
+  .tv-vscard .t1{font-family:var(--serif);font-weight:700;font-size:48px;margin:6px 0 14px}
+  .tv-vscard .names{font-family:var(--serif);font-weight:700;font-size:64px;line-height:1.3}
+  .tv-vscard .names em{font-style:italic;font-family:var(--latin);color:var(--gold);font-weight:500;margin:0 14px}
+  .tv-vscard .names .lose{color:#B9B2A4}
+  .tv-vscard .st{font-size:34px;color:var(--mute);margin-top:16px}
+  .tv-vscard .st.st-win{color:var(--forest);font-weight:500}
+  @media (prefers-reduced-motion:no-preference){ .tv-blink{animation:blink 1.6s ease-in-out infinite} }
+  /* 開封前・交換表 */
+  .tv-gifts{display:flex;flex-wrap:wrap;justify-content:center;gap:40px;margin:56px 0}
+  .tv-gift{--c:#23402F;position:relative;width:170px;height:150px}
+  .tv-gift .b{position:absolute;left:10px;right:10px;bottom:0;height:104px;background:var(--c);border-radius:8px}
+  .tv-gift .l{position:absolute;left:0;right:0;top:20px;height:34px;background:var(--c);filter:brightness(1.18);border-radius:7px}
+  .tv-gift .v{position:absolute;left:50%;margin-left:-8px;width:16px;top:20px;bottom:0;background:var(--gold2)}
+  .tv-gift .k1,.tv-gift .k2{position:absolute;top:0;width:34px;height:24px;border:5px solid var(--gold2);border-radius:50% 50% 50% 0}
+  .tv-gift .k1{left:46px;transform:rotate(-14deg)} .tv-gift .k2{right:46px;transform:scaleX(-1) rotate(-14deg)}
+  .tv-gift .n{position:absolute;left:20px;bottom:12px;background:var(--paper);font-family:var(--latin);font-weight:600;font-size:30px;line-height:1;padding:5px 12px 5px 20px;clip-path:polygon(10px 0,100% 0,100% 100%,10px 100%,0 50%)}
+  @media (prefers-reduced-motion:no-preference){ .tv-gift{animation:bob 3s ease-in-out infinite;animation-delay:var(--d,0s)} }
+  @keyframes bob{50%{transform:translateY(-10px)}}
+  .tv-pairs{flex:1;min-height:0;display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:minmax(0,150px);gap:22px 40px;align-content:center;margin-top:20px}
+  .tvpair{display:grid;grid-template-columns:96px 1fr 70px 1fr;align-items:center;gap:22px;background:var(--paper);border:2px solid var(--line);border-radius:26px;padding:20px 34px}
+  .tvpair.in{animation:tagin .8s cubic-bezier(.2,1.3,.4,1) both;animation-delay:var(--d,0s)}
+  @keyframes tagin{from{opacity:0;transform:translateY(30px) rotate(-1.5deg)}to{opacity:1;transform:none}}
+  body.tv .tvpair .pkg{width:84px;height:84px;border-radius:16px}
+  body.tv .tvpair .pkg::before{width:11px} body.tv .tvpair .pkg::after{height:11px}
+  body.tv .tvpair .pkg b{font-size:40px;left:12px;bottom:6px}
+  .tvpair .lb{display:block;font-family:var(--latin);font-style:italic;font-size:26px;color:var(--gold);line-height:1}
+  .tvpair .nm{font-family:var(--serif);font-weight:700;font-size:50px;letter-spacing:.04em;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .tvpair .ar{font-family:var(--latin);font-size:56px;color:var(--gold);text-align:center}
+  .tv-note{font-size:26px;color:var(--ink2);text-align:center;margin-top:18px}
+  /* カウントダウンをテレビ用に大きく */
+  body.tv .cd-n{font-size:440px}
+  body.tv .cd-in .eyebrow{font-size:64px}
+  /* テレビ用エフェクト */
+  @media (prefers-reduced-motion:no-preference){
+    .tv-rise{animation:rise .9s cubic-bezier(.2,1.2,.4,1) both}
+    .tv-cnt b.pop{display:inline-block;animation:cntpop .7s cubic-bezier(.2,1.6,.4,1)}
+    .tw{animation:twinkle 2.6s ease-in-out infinite}
+    .tvburst .glow{animation:bloom 2.6s ease-out both}
+    .tvburst i{animation:fly 2.4s cubic-bezier(.15,.7,.3,1) both}
+  }
+  @keyframes cntpop{from{transform:scale(1.5);color:var(--gold)}to{transform:none}}
+  .tv-giftwrap{position:relative;padding:30px 60px}
+  .tw{position:absolute;color:var(--gold);font-size:var(--fs);opacity:.0;animation-delay:var(--d)}
+  @keyframes twinkle{0%,100%{opacity:0;transform:scale(.5) rotate(0)}50%{opacity:.95;transform:scale(1) rotate(25deg)}}
+  .tvburst{position:fixed;inset:0;z-index:20;pointer-events:none;overflow:hidden}
+  .tvburst .glow{position:absolute;left:50%;top:50%;width:130vmin;height:130vmin;margin:-65vmin 0 0 -65vmin;border-radius:50%;
+    background:radial-gradient(circle,rgba(255,246,222,.95),rgba(255,240,205,.35) 35%,rgba(255,240,205,0) 62%);opacity:0}
+  @keyframes bloom{0%{transform:scale(.15);opacity:0}25%{opacity:1}100%{transform:scale(1.35);opacity:0}}
+  .tvburst i{position:absolute;left:50%;top:52%;font-style:normal;line-height:1;color:var(--c,#B8975A);font-size:var(--fs);opacity:0;animation-delay:var(--d)}
+  @keyframes fly{0%{transform:translate(-50%,-50%) scale(.2);opacity:0}12%{opacity:1}100%{transform:translate(calc(-50% + var(--x)),calc(-50% + var(--y))) scale(1) rotate(var(--r));opacity:0}}
+  /* 開始画面・操作ボタン */
+  .tvstart{position:fixed;inset:0;z-index:40;display:grid;place-items:center;background:rgba(247,243,236,.9);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+  .tvstart .in{text-align:center;max-width:560px;padding:20px}
+  .tvstart .btn{font-size:18px;padding:18px}
+  .tvctl{position:fixed;right:24px;bottom:24px;z-index:35;display:flex;gap:10px;transition:opacity .4s}
+  body.tv.idle .tvctl{opacity:0;pointer-events:none}
+  .tvctl button{background:var(--paper);border:1px solid var(--line2);border-radius:999px;padding:10px 18px;font-size:14px;color:var(--ink2)}
+  .tvctl button.on{border-color:var(--forest);color:var(--forest)}
+  .hm-row{display:flex;gap:10px;margin-top:14px}
+  .hm-row .btn{margin-top:0;padding:12px 8px;font-size:14px;white-space:nowrap;letter-spacing:.06em}
   .toast{position:fixed;left:50%;bottom:calc(30px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--ink);color:#F7F3EC;border-radius:999px;padding:10px 20px;font-size:13px;z-index:20;opacity:0;transition:opacity .2s;pointer-events:none;white-space:nowrap}
   .toast.on{opacity:1}
 </style>
@@ -303,6 +428,1267 @@
 <div class="toast" id="toast"></div>
 <div class="cd" id="cd"></div>
 
+<script>
+/* QRCode for JavaScript — Copyright (c) 2009 Kazuhiko Arase — MIT license (http://www.opensource.org/licenses/mit-license.php)
+   The word "QR Code" is registered trademark of DENSO WAVE INCORPORATED. Bundled from qrcode-terminal's vendor copy. */
+window.NazoQR=(function(){var __m={};
+(function(){var module={exports:{}};
+module.exports = {
+    MODE_NUMBER :       1 << 0,
+    MODE_ALPHA_NUM :    1 << 1,
+    MODE_8BIT_BYTE :    1 << 2,
+    MODE_KANJI :        1 << 3
+};
+
+__m['QRMode']=module.exports;})();
+(function(){var module={exports:{}};
+var QRMath = {
+
+	glog : function(n) {
+	
+		if (n < 1) {
+			throw new Error("glog(" + n + ")");
+		}
+		
+		return QRMath.LOG_TABLE[n];
+	},
+	
+	gexp : function(n) {
+	
+		while (n < 0) {
+			n += 255;
+		}
+	
+		while (n >= 256) {
+			n -= 255;
+		}
+	
+		return QRMath.EXP_TABLE[n];
+	},
+	
+	EXP_TABLE : new Array(256),
+	
+	LOG_TABLE : new Array(256)
+
+};
+	
+for (var i = 0; i < 8; i++) {
+	QRMath.EXP_TABLE[i] = 1 << i;
+}
+for (var i = 8; i < 256; i++) {
+	QRMath.EXP_TABLE[i] = QRMath.EXP_TABLE[i - 4]
+		^ QRMath.EXP_TABLE[i - 5]
+		^ QRMath.EXP_TABLE[i - 6]
+		^ QRMath.EXP_TABLE[i - 8];
+}
+for (var i = 0; i < 255; i++) {
+	QRMath.LOG_TABLE[QRMath.EXP_TABLE[i] ] = i;
+}
+
+module.exports = QRMath;
+
+__m['QRMath']=module.exports;})();
+(function(){var module={exports:{}};
+module.exports = {
+	PATTERN000 : 0,
+	PATTERN001 : 1,
+	PATTERN010 : 2,
+	PATTERN011 : 3,
+	PATTERN100 : 4,
+	PATTERN101 : 5,
+	PATTERN110 : 6,
+	PATTERN111 : 7
+};
+
+__m['QRMaskPattern']=module.exports;})();
+(function(){var module={exports:{}};
+module.exports = {
+	L : 1,
+	M : 0,
+	Q : 3,
+	H : 2
+};
+
+
+__m['QRErrorCorrectLevel']=module.exports;})();
+(function(){var module={exports:{}};
+var QRMath = __m['QRMath'];
+
+function QRPolynomial(num, shift) {
+	if (num.length === undefined) {
+		throw new Error(num.length + "/" + shift);
+	}
+
+	var offset = 0;
+
+	while (offset < num.length && num[offset] === 0) {
+		offset++;
+	}
+
+	this.num = new Array(num.length - offset + shift);
+	for (var i = 0; i < num.length - offset; i++) {
+		this.num[i] = num[i + offset];
+	}
+}
+
+QRPolynomial.prototype = {
+
+	get : function(index) {
+		return this.num[index];
+	},
+	
+	getLength : function() {
+		return this.num.length;
+	},
+	
+	multiply : function(e) {
+	
+		var num = new Array(this.getLength() + e.getLength() - 1);
+	
+		for (var i = 0; i < this.getLength(); i++) {
+			for (var j = 0; j < e.getLength(); j++) {
+				num[i + j] ^= QRMath.gexp(QRMath.glog(this.get(i) ) + QRMath.glog(e.get(j) ) );
+			}
+		}
+	
+		return new QRPolynomial(num, 0);
+	},
+	
+	mod : function(e) {
+	
+		if (this.getLength() - e.getLength() < 0) {
+			return this;
+		}
+	
+		var ratio = QRMath.glog(this.get(0) ) - QRMath.glog(e.get(0) );
+	
+		var num = new Array(this.getLength() );
+		
+		for (var i = 0; i < this.getLength(); i++) {
+			num[i] = this.get(i);
+		}
+		
+		for (var x = 0; x < e.getLength(); x++) {
+			num[x] ^= QRMath.gexp(QRMath.glog(e.get(x) ) + ratio);
+		}
+	
+		// recursive call
+		return new QRPolynomial(num, 0).mod(e);
+	}
+};
+
+module.exports = QRPolynomial;
+
+__m['QRPolynomial']=module.exports;})();
+(function(){var module={exports:{}};
+var QRMode = __m['QRMode'];
+
+function QR8bitByte(data) {
+	this.mode = QRMode.MODE_8BIT_BYTE;
+	this.data = data;
+}
+
+QR8bitByte.prototype = {
+
+	getLength : function() {
+		return this.data.length;
+	},
+	
+	write : function(buffer) {
+		for (var i = 0; i < this.data.length; i++) {
+			// not JIS ...
+			buffer.put(this.data.charCodeAt(i), 8);
+		}
+	}
+};
+
+module.exports = QR8bitByte;
+
+__m['QR8bitByte']=module.exports;})();
+(function(){var module={exports:{}};
+function QRBitBuffer() {
+	this.buffer = [];
+	this.length = 0;
+}
+
+QRBitBuffer.prototype = {
+
+	get : function(index) {
+		var bufIndex = Math.floor(index / 8);
+		return ( (this.buffer[bufIndex] >>> (7 - index % 8) ) & 1) == 1;
+	},
+	
+	put : function(num, length) {
+		for (var i = 0; i < length; i++) {
+			this.putBit( ( (num >>> (length - i - 1) ) & 1) == 1);
+		}
+	},
+	
+	getLengthInBits : function() {
+		return this.length;
+	},
+	
+	putBit : function(bit) {
+	
+		var bufIndex = Math.floor(this.length / 8);
+		if (this.buffer.length <= bufIndex) {
+			this.buffer.push(0);
+		}
+	
+		if (bit) {
+			this.buffer[bufIndex] |= (0x80 >>> (this.length % 8) );
+		}
+	
+		this.length++;
+	}
+};
+
+module.exports = QRBitBuffer;
+
+__m['QRBitBuffer']=module.exports;})();
+(function(){var module={exports:{}};
+var QRErrorCorrectLevel = __m['QRErrorCorrectLevel'];
+
+function QRRSBlock(totalCount, dataCount) {
+	this.totalCount = totalCount;
+	this.dataCount  = dataCount;
+}
+
+QRRSBlock.RS_BLOCK_TABLE = [
+
+	// L
+	// M
+	// Q
+	// H
+
+	// 1
+	[1, 26, 19],
+	[1, 26, 16],
+	[1, 26, 13],
+	[1, 26, 9],
+	
+	// 2
+	[1, 44, 34],
+	[1, 44, 28],
+	[1, 44, 22],
+	[1, 44, 16],
+
+	// 3
+	[1, 70, 55],
+	[1, 70, 44],
+	[2, 35, 17],
+	[2, 35, 13],
+
+	// 4		
+	[1, 100, 80],
+	[2, 50, 32],
+	[2, 50, 24],
+	[4, 25, 9],
+	
+	// 5
+	[1, 134, 108],
+	[2, 67, 43],
+	[2, 33, 15, 2, 34, 16],
+	[2, 33, 11, 2, 34, 12],
+	
+	// 6
+	[2, 86, 68],
+	[4, 43, 27],
+	[4, 43, 19],
+	[4, 43, 15],
+	
+	// 7		
+	[2, 98, 78],
+	[4, 49, 31],
+	[2, 32, 14, 4, 33, 15],
+	[4, 39, 13, 1, 40, 14],
+	
+	// 8
+	[2, 121, 97],
+	[2, 60, 38, 2, 61, 39],
+	[4, 40, 18, 2, 41, 19],
+	[4, 40, 14, 2, 41, 15],
+	
+	// 9
+	[2, 146, 116],
+	[3, 58, 36, 2, 59, 37],
+	[4, 36, 16, 4, 37, 17],
+	[4, 36, 12, 4, 37, 13],
+	
+	// 10		
+	[2, 86, 68, 2, 87, 69],
+	[4, 69, 43, 1, 70, 44],
+	[6, 43, 19, 2, 44, 20],
+	[6, 43, 15, 2, 44, 16],
+
+	// 11
+	[4, 101, 81],
+	[1, 80, 50, 4, 81, 51],
+	[4, 50, 22, 4, 51, 23],
+	[3, 36, 12, 8, 37, 13],
+
+	// 12
+	[2, 116, 92, 2, 117, 93],
+	[6, 58, 36, 2, 59, 37],
+	[4, 46, 20, 6, 47, 21],
+	[7, 42, 14, 4, 43, 15],
+
+	// 13
+	[4, 133, 107],
+	[8, 59, 37, 1, 60, 38],
+	[8, 44, 20, 4, 45, 21],
+	[12, 33, 11, 4, 34, 12],
+
+	// 14
+	[3, 145, 115, 1, 146, 116],
+	[4, 64, 40, 5, 65, 41],
+	[11, 36, 16, 5, 37, 17],
+	[11, 36, 12, 5, 37, 13],
+
+	// 15
+	[5, 109, 87, 1, 110, 88],
+	[5, 65, 41, 5, 66, 42],
+	[5, 54, 24, 7, 55, 25],
+	[11, 36, 12],
+
+	// 16
+	[5, 122, 98, 1, 123, 99],
+	[7, 73, 45, 3, 74, 46],
+	[15, 43, 19, 2, 44, 20],
+	[3, 45, 15, 13, 46, 16],
+
+	// 17
+	[1, 135, 107, 5, 136, 108],
+	[10, 74, 46, 1, 75, 47],
+	[1, 50, 22, 15, 51, 23],
+	[2, 42, 14, 17, 43, 15],
+
+	// 18
+	[5, 150, 120, 1, 151, 121],
+	[9, 69, 43, 4, 70, 44],
+	[17, 50, 22, 1, 51, 23],
+	[2, 42, 14, 19, 43, 15],
+
+	// 19
+	[3, 141, 113, 4, 142, 114],
+	[3, 70, 44, 11, 71, 45],
+	[17, 47, 21, 4, 48, 22],
+	[9, 39, 13, 16, 40, 14],
+
+	// 20
+	[3, 135, 107, 5, 136, 108],
+	[3, 67, 41, 13, 68, 42],
+	[15, 54, 24, 5, 55, 25],
+	[15, 43, 15, 10, 44, 16],
+
+	// 21
+	[4, 144, 116, 4, 145, 117],
+	[17, 68, 42],
+	[17, 50, 22, 6, 51, 23],
+	[19, 46, 16, 6, 47, 17],
+
+	// 22
+	[2, 139, 111, 7, 140, 112],
+	[17, 74, 46],
+	[7, 54, 24, 16, 55, 25],
+	[34, 37, 13],
+
+	// 23
+	[4, 151, 121, 5, 152, 122],
+	[4, 75, 47, 14, 76, 48],
+	[11, 54, 24, 14, 55, 25],
+	[16, 45, 15, 14, 46, 16],
+
+	// 24
+	[6, 147, 117, 4, 148, 118],
+	[6, 73, 45, 14, 74, 46],
+	[11, 54, 24, 16, 55, 25],
+	[30, 46, 16, 2, 47, 17],
+
+	// 25
+	[8, 132, 106, 4, 133, 107],
+	[8, 75, 47, 13, 76, 48],
+	[7, 54, 24, 22, 55, 25],
+	[22, 45, 15, 13, 46, 16],
+
+	// 26
+	[10, 142, 114, 2, 143, 115],
+	[19, 74, 46, 4, 75, 47],
+	[28, 50, 22, 6, 51, 23],
+	[33, 46, 16, 4, 47, 17],
+
+	// 27
+	[8, 152, 122, 4, 153, 123],
+	[22, 73, 45, 3, 74, 46],
+	[8, 53, 23, 26, 54, 24],
+	[12, 45, 15, 28, 46, 16],
+
+	// 28
+	[3, 147, 117, 10, 148, 118],
+	[3, 73, 45, 23, 74, 46],
+	[4, 54, 24, 31, 55, 25],
+	[11, 45, 15, 31, 46, 16],
+
+	// 29
+	[7, 146, 116, 7, 147, 117],
+	[21, 73, 45, 7, 74, 46],
+	[1, 53, 23, 37, 54, 24],
+	[19, 45, 15, 26, 46, 16],
+
+	// 30
+	[5, 145, 115, 10, 146, 116],
+	[19, 75, 47, 10, 76, 48],
+	[15, 54, 24, 25, 55, 25],
+	[23, 45, 15, 25, 46, 16],
+
+	// 31
+	[13, 145, 115, 3, 146, 116],
+	[2, 74, 46, 29, 75, 47],
+	[42, 54, 24, 1, 55, 25],
+	[23, 45, 15, 28, 46, 16],
+
+	// 32
+	[17, 145, 115],
+	[10, 74, 46, 23, 75, 47],
+	[10, 54, 24, 35, 55, 25],
+	[19, 45, 15, 35, 46, 16],
+
+	// 33
+	[17, 145, 115, 1, 146, 116],
+	[14, 74, 46, 21, 75, 47],
+	[29, 54, 24, 19, 55, 25],
+	[11, 45, 15, 46, 46, 16],
+
+	// 34
+	[13, 145, 115, 6, 146, 116],
+	[14, 74, 46, 23, 75, 47],
+	[44, 54, 24, 7, 55, 25],
+	[59, 46, 16, 1, 47, 17],
+
+	// 35
+	[12, 151, 121, 7, 152, 122],
+	[12, 75, 47, 26, 76, 48],
+	[39, 54, 24, 14, 55, 25],
+	[22, 45, 15, 41, 46, 16],
+
+	// 36
+	[6, 151, 121, 14, 152, 122],
+	[6, 75, 47, 34, 76, 48],
+	[46, 54, 24, 10, 55, 25],
+	[2, 45, 15, 64, 46, 16],
+
+	// 37
+	[17, 152, 122, 4, 153, 123],
+	[29, 74, 46, 14, 75, 47],
+	[49, 54, 24, 10, 55, 25],
+	[24, 45, 15, 46, 46, 16],
+
+	// 38
+	[4, 152, 122, 18, 153, 123],
+	[13, 74, 46, 32, 75, 47],
+	[48, 54, 24, 14, 55, 25],
+	[42, 45, 15, 32, 46, 16],
+
+	// 39
+	[20, 147, 117, 4, 148, 118],
+	[40, 75, 47, 7, 76, 48],
+	[43, 54, 24, 22, 55, 25],
+	[10, 45, 15, 67, 46, 16],
+
+	// 40
+	[19, 148, 118, 6, 149, 119],
+	[18, 75, 47, 31, 76, 48],
+	[34, 54, 24, 34, 55, 25],
+	[20, 45, 15, 61, 46, 16]
+];
+
+QRRSBlock.getRSBlocks = function(typeNumber, errorCorrectLevel) {
+	
+	var rsBlock = QRRSBlock.getRsBlockTable(typeNumber, errorCorrectLevel);
+	
+	if (rsBlock === undefined) {
+		throw new Error("bad rs block @ typeNumber:" + typeNumber + "/errorCorrectLevel:" + errorCorrectLevel);
+	}
+
+	var length = rsBlock.length / 3;
+	
+	var list = [];
+	
+	for (var i = 0; i < length; i++) {
+
+		var count = rsBlock[i * 3 + 0];
+		var totalCount = rsBlock[i * 3 + 1];
+		var dataCount  = rsBlock[i * 3 + 2];
+
+		for (var j = 0; j < count; j++) {
+			list.push(new QRRSBlock(totalCount, dataCount) );	
+		}
+	}
+	
+	return list;
+};
+
+QRRSBlock.getRsBlockTable = function(typeNumber, errorCorrectLevel) {
+
+	switch(errorCorrectLevel) {
+	case QRErrorCorrectLevel.L :
+		return QRRSBlock.RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 0];
+	case QRErrorCorrectLevel.M :
+		return QRRSBlock.RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 1];
+	case QRErrorCorrectLevel.Q :
+		return QRRSBlock.RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 2];
+	case QRErrorCorrectLevel.H :
+		return QRRSBlock.RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 3];
+	default :
+		return undefined;
+	}
+};
+
+module.exports = QRRSBlock;
+
+__m['QRRSBlock']=module.exports;})();
+(function(){var module={exports:{}};
+var QRMode = __m['QRMode'];
+var QRPolynomial = __m['QRPolynomial'];
+var QRMath = __m['QRMath'];
+var QRMaskPattern = __m['QRMaskPattern'];
+
+var QRUtil = {
+
+    PATTERN_POSITION_TABLE : [
+        [],
+        [6, 18],
+        [6, 22],
+        [6, 26],
+        [6, 30],
+        [6, 34],
+        [6, 22, 38],
+        [6, 24, 42],
+        [6, 26, 46],
+        [6, 28, 50],
+        [6, 30, 54],        
+        [6, 32, 58],
+        [6, 34, 62],
+        [6, 26, 46, 66],
+        [6, 26, 48, 70],
+        [6, 26, 50, 74],
+        [6, 30, 54, 78],
+        [6, 30, 56, 82],
+        [6, 30, 58, 86],
+        [6, 34, 62, 90],
+        [6, 28, 50, 72, 94],
+        [6, 26, 50, 74, 98],
+        [6, 30, 54, 78, 102],
+        [6, 28, 54, 80, 106],
+        [6, 32, 58, 84, 110],
+        [6, 30, 58, 86, 114],
+        [6, 34, 62, 90, 118],
+        [6, 26, 50, 74, 98, 122],
+        [6, 30, 54, 78, 102, 126],
+        [6, 26, 52, 78, 104, 130],
+        [6, 30, 56, 82, 108, 134],
+        [6, 34, 60, 86, 112, 138],
+        [6, 30, 58, 86, 114, 142],
+        [6, 34, 62, 90, 118, 146],
+        [6, 30, 54, 78, 102, 126, 150],
+        [6, 24, 50, 76, 102, 128, 154],
+        [6, 28, 54, 80, 106, 132, 158],
+        [6, 32, 58, 84, 110, 136, 162],
+        [6, 26, 54, 82, 110, 138, 166],
+        [6, 30, 58, 86, 114, 142, 170]
+    ],
+
+    G15 : (1 << 10) | (1 << 8) | (1 << 5) | (1 << 4) | (1 << 2) | (1 << 1) | (1 << 0),
+    G18 : (1 << 12) | (1 << 11) | (1 << 10) | (1 << 9) | (1 << 8) | (1 << 5) | (1 << 2) | (1 << 0),
+    G15_MASK : (1 << 14) | (1 << 12) | (1 << 10)    | (1 << 4) | (1 << 1),
+
+    getBCHTypeInfo : function(data) {
+        var d = data << 10;
+        while (QRUtil.getBCHDigit(d) - QRUtil.getBCHDigit(QRUtil.G15) >= 0) {
+            d ^= (QRUtil.G15 << (QRUtil.getBCHDigit(d) - QRUtil.getBCHDigit(QRUtil.G15) ) );    
+        }
+        return ( (data << 10) | d) ^ QRUtil.G15_MASK;
+    },
+
+    getBCHTypeNumber : function(data) {
+        var d = data << 12;
+        while (QRUtil.getBCHDigit(d) - QRUtil.getBCHDigit(QRUtil.G18) >= 0) {
+            d ^= (QRUtil.G18 << (QRUtil.getBCHDigit(d) - QRUtil.getBCHDigit(QRUtil.G18) ) );    
+        }
+        return (data << 12) | d;
+    },
+
+    getBCHDigit : function(data) {
+
+        var digit = 0;
+
+        while (data !== 0) {
+            digit++;
+            data >>>= 1;
+        }
+
+        return digit;
+    },
+
+    getPatternPosition : function(typeNumber) {
+        return QRUtil.PATTERN_POSITION_TABLE[typeNumber - 1];
+    },
+
+    getMask : function(maskPattern, i, j) {
+        
+        switch (maskPattern) {
+            
+        case QRMaskPattern.PATTERN000 : return (i + j) % 2 === 0;
+        case QRMaskPattern.PATTERN001 : return i % 2 === 0;
+        case QRMaskPattern.PATTERN010 : return j % 3 === 0;
+        case QRMaskPattern.PATTERN011 : return (i + j) % 3 === 0;
+        case QRMaskPattern.PATTERN100 : return (Math.floor(i / 2) + Math.floor(j / 3) ) % 2 === 0;
+        case QRMaskPattern.PATTERN101 : return (i * j) % 2 + (i * j) % 3 === 0;
+        case QRMaskPattern.PATTERN110 : return ( (i * j) % 2 + (i * j) % 3) % 2 === 0;
+        case QRMaskPattern.PATTERN111 : return ( (i * j) % 3 + (i + j) % 2) % 2 === 0;
+
+        default :
+            throw new Error("bad maskPattern:" + maskPattern);
+        }
+    },
+
+    getErrorCorrectPolynomial : function(errorCorrectLength) {
+
+        var a = new QRPolynomial([1], 0);
+
+        for (var i = 0; i < errorCorrectLength; i++) {
+            a = a.multiply(new QRPolynomial([1, QRMath.gexp(i)], 0) );
+        }
+
+        return a;
+    },
+
+    getLengthInBits : function(mode, type) {
+
+        if (1 <= type && type < 10) {
+
+            // 1 - 9
+
+            switch(mode) {
+            case QRMode.MODE_NUMBER     : return 10;
+            case QRMode.MODE_ALPHA_NUM  : return 9;
+            case QRMode.MODE_8BIT_BYTE  : return 8;
+            case QRMode.MODE_KANJI      : return 8;
+            default :
+                throw new Error("mode:" + mode);
+            }
+
+        } else if (type < 27) {
+
+            // 10 - 26
+
+            switch(mode) {
+            case QRMode.MODE_NUMBER     : return 12;
+            case QRMode.MODE_ALPHA_NUM  : return 11;
+            case QRMode.MODE_8BIT_BYTE  : return 16;
+            case QRMode.MODE_KANJI      : return 10;
+            default :
+                throw new Error("mode:" + mode);
+            }
+
+        } else if (type < 41) {
+
+            // 27 - 40
+
+            switch(mode) {
+            case QRMode.MODE_NUMBER     : return 14;
+            case QRMode.MODE_ALPHA_NUM  : return 13;
+            case QRMode.MODE_8BIT_BYTE  : return 16;
+            case QRMode.MODE_KANJI      : return 12;
+            default :
+                throw new Error("mode:" + mode);
+            }
+
+        } else {
+            throw new Error("type:" + type);
+        }
+    },
+
+    getLostPoint : function(qrCode) {
+        
+        var moduleCount = qrCode.getModuleCount();
+        var lostPoint = 0;
+        var row = 0; 
+        var col = 0;
+
+        
+        // LEVEL1
+        
+        for (row = 0; row < moduleCount; row++) {
+
+            for (col = 0; col < moduleCount; col++) {
+
+                var sameCount = 0;
+                var dark = qrCode.isDark(row, col);
+
+                for (var r = -1; r <= 1; r++) {
+
+                    if (row + r < 0 || moduleCount <= row + r) {
+                        continue;
+                    }
+
+                    for (var c = -1; c <= 1; c++) {
+
+                        if (col + c < 0 || moduleCount <= col + c) {
+                            continue;
+                        }
+
+                        if (r === 0 && c === 0) {
+                            continue;
+                        }
+
+                        if (dark === qrCode.isDark(row + r, col + c) ) {
+                            sameCount++;
+                        }
+                    }
+                }
+
+                if (sameCount > 5) {
+                    lostPoint += (3 + sameCount - 5);
+                }
+            }
+        }
+
+        // LEVEL2
+
+        for (row = 0; row < moduleCount - 1; row++) {
+            for (col = 0; col < moduleCount - 1; col++) {
+                var count = 0;
+                if (qrCode.isDark(row,     col    ) ) count++;
+                if (qrCode.isDark(row + 1, col    ) ) count++;
+                if (qrCode.isDark(row,     col + 1) ) count++;
+                if (qrCode.isDark(row + 1, col + 1) ) count++;
+                if (count === 0 || count === 4) {
+                    lostPoint += 3;
+                }
+            }
+        }
+
+        // LEVEL3
+
+        for (row = 0; row < moduleCount; row++) {
+            for (col = 0; col < moduleCount - 6; col++) {
+                if (qrCode.isDark(row, col) && 
+                        !qrCode.isDark(row, col + 1) && 
+                         qrCode.isDark(row, col + 2) && 
+                         qrCode.isDark(row, col + 3) && 
+                         qrCode.isDark(row, col + 4) && 
+                        !qrCode.isDark(row, col + 5) && 
+                         qrCode.isDark(row, col + 6) ) {
+                    lostPoint += 40;
+                }
+            }
+        }
+
+        for (col = 0; col < moduleCount; col++) {
+            for (row = 0; row < moduleCount - 6; row++) {
+                if (qrCode.isDark(row, col) &&
+                        !qrCode.isDark(row + 1, col) &&
+                         qrCode.isDark(row + 2, col) &&
+                         qrCode.isDark(row + 3, col) &&
+                         qrCode.isDark(row + 4, col) &&
+                        !qrCode.isDark(row + 5, col) &&
+                         qrCode.isDark(row + 6, col) ) {
+                    lostPoint += 40;
+                }
+            }
+        }
+
+        // LEVEL4
+        
+        var darkCount = 0;
+
+        for (col = 0; col < moduleCount; col++) {
+            for (row = 0; row < moduleCount; row++) {
+                if (qrCode.isDark(row, col) ) {
+                    darkCount++;
+                }
+            }
+        }
+        
+        var ratio = Math.abs(100 * darkCount / moduleCount / moduleCount - 50) / 5;
+        lostPoint += ratio * 10;
+
+        return lostPoint;       
+    }
+
+};
+
+module.exports = QRUtil;
+
+__m['QRUtil']=module.exports;})();
+(function(){var module={exports:{}};
+//---------------------------------------------------------------------
+// QRCode for JavaScript
+//
+// Copyright (c) 2009 Kazuhiko Arase
+//
+// URL: http://www.d-project.com/
+//
+// Licensed under the MIT license:
+//   http://www.opensource.org/licenses/mit-license.php
+//
+// The word "QR Code" is registered trademark of 
+// DENSO WAVE INCORPORATED
+//   http://www.denso-wave.com/qrcode/faqpatent-e.html
+//
+//---------------------------------------------------------------------
+// Modified to work in node for this project (and some refactoring)
+//---------------------------------------------------------------------
+
+var QR8bitByte = __m['QR8bitByte'];
+var QRUtil = __m['QRUtil'];
+var QRPolynomial = __m['QRPolynomial'];
+var QRRSBlock = __m['QRRSBlock'];
+var QRBitBuffer = __m['QRBitBuffer'];
+
+function QRCode(typeNumber, errorCorrectLevel) {
+	this.typeNumber = typeNumber;
+	this.errorCorrectLevel = errorCorrectLevel;
+	this.modules = null;
+	this.moduleCount = 0;
+	this.dataCache = null;
+	this.dataList = [];
+}
+
+QRCode.prototype = {
+	
+	addData : function(data) {
+		var newData = new QR8bitByte(data);
+		this.dataList.push(newData);
+		this.dataCache = null;
+	},
+	
+	isDark : function(row, col) {
+		if (row < 0 || this.moduleCount <= row || col < 0 || this.moduleCount <= col) {
+			throw new Error(row + "," + col);
+		}
+		return this.modules[row][col];
+	},
+
+	getModuleCount : function() {
+		return this.moduleCount;
+	},
+	
+	make : function() {
+		// Calculate automatically typeNumber if provided is < 1
+		if (this.typeNumber < 1 ){
+			var typeNumber = 1;
+			for (typeNumber = 1; typeNumber < 40; typeNumber++) {
+				var rsBlocks = QRRSBlock.getRSBlocks(typeNumber, this.errorCorrectLevel);
+
+				var buffer = new QRBitBuffer();
+				var totalDataCount = 0;
+				for (var i = 0; i < rsBlocks.length; i++) {
+					totalDataCount += rsBlocks[i].dataCount;
+				}
+
+				for (var x = 0; x < this.dataList.length; x++) {
+					var data = this.dataList[x];
+					buffer.put(data.mode, 4);
+					buffer.put(data.getLength(), QRUtil.getLengthInBits(data.mode, typeNumber) );
+					data.write(buffer);
+				}
+				if (buffer.getLengthInBits() <= totalDataCount * 8)
+					break;
+			}
+			this.typeNumber = typeNumber;
+		}
+		this.makeImpl(false, this.getBestMaskPattern() );
+	},
+	
+	makeImpl : function(test, maskPattern) {
+		
+		this.moduleCount = this.typeNumber * 4 + 17;
+		this.modules = new Array(this.moduleCount);
+		
+		for (var row = 0; row < this.moduleCount; row++) {
+			
+			this.modules[row] = new Array(this.moduleCount);
+			
+			for (var col = 0; col < this.moduleCount; col++) {
+				this.modules[row][col] = null;//(col + row) % 3;
+			}
+		}
+	
+		this.setupPositionProbePattern(0, 0);
+		this.setupPositionProbePattern(this.moduleCount - 7, 0);
+		this.setupPositionProbePattern(0, this.moduleCount - 7);
+		this.setupPositionAdjustPattern();
+		this.setupTimingPattern();
+		this.setupTypeInfo(test, maskPattern);
+		
+		if (this.typeNumber >= 7) {
+			this.setupTypeNumber(test);
+		}
+	
+		if (this.dataCache === null) {
+			this.dataCache = QRCode.createData(this.typeNumber, this.errorCorrectLevel, this.dataList);
+		}
+	
+		this.mapData(this.dataCache, maskPattern);
+	},
+
+	setupPositionProbePattern : function(row, col)  {
+		
+		for (var r = -1; r <= 7; r++) {
+			
+			if (row + r <= -1 || this.moduleCount <= row + r) continue;
+			
+			for (var c = -1; c <= 7; c++) {
+				
+				if (col + c <= -1 || this.moduleCount <= col + c) continue;
+				
+				if ( (0 <= r && r <= 6 && (c === 0 || c === 6) ) || 
+                     (0 <= c && c <= 6 && (r === 0 || r === 6) ) || 
+                     (2 <= r && r <= 4 && 2 <= c && c <= 4) ) {
+					this.modules[row + r][col + c] = true;
+				} else {
+					this.modules[row + r][col + c] = false;
+				}
+			}		
+		}		
+	},
+	
+	getBestMaskPattern : function() {
+	
+		var minLostPoint = 0;
+		var pattern = 0;
+	
+		for (var i = 0; i < 8; i++) {
+			
+			this.makeImpl(true, i);
+	
+			var lostPoint = QRUtil.getLostPoint(this);
+	
+			if (i === 0 || minLostPoint >  lostPoint) {
+				minLostPoint = lostPoint;
+				pattern = i;
+			}
+		}
+	
+		return pattern;
+	},
+	
+	createMovieClip : function(target_mc, instance_name, depth) {
+	
+		var qr_mc = target_mc.createEmptyMovieClip(instance_name, depth);
+		var cs = 1;
+	
+		this.make();
+
+		for (var row = 0; row < this.modules.length; row++) {
+			
+			var y = row * cs;
+			
+			for (var col = 0; col < this.modules[row].length; col++) {
+	
+				var x = col * cs;
+				var dark = this.modules[row][col];
+			
+				if (dark) {
+					qr_mc.beginFill(0, 100);
+					qr_mc.moveTo(x, y);
+					qr_mc.lineTo(x + cs, y);
+					qr_mc.lineTo(x + cs, y + cs);
+					qr_mc.lineTo(x, y + cs);
+					qr_mc.endFill();
+				}
+			}
+		}
+		
+		return qr_mc;
+	},
+
+	setupTimingPattern : function() {
+		
+		for (var r = 8; r < this.moduleCount - 8; r++) {
+			if (this.modules[r][6] !== null) {
+				continue;
+			}
+			this.modules[r][6] = (r % 2 === 0);
+		}
+	
+		for (var c = 8; c < this.moduleCount - 8; c++) {
+			if (this.modules[6][c] !== null) {
+				continue;
+			}
+			this.modules[6][c] = (c % 2 === 0);
+		}
+	},
+	
+	setupPositionAdjustPattern : function() {
+	
+		var pos = QRUtil.getPatternPosition(this.typeNumber);
+		
+		for (var i = 0; i < pos.length; i++) {
+		
+			for (var j = 0; j < pos.length; j++) {
+			
+				var row = pos[i];
+				var col = pos[j];
+				
+				if (this.modules[row][col] !== null) {
+					continue;
+				}
+				
+				for (var r = -2; r <= 2; r++) {
+				
+					for (var c = -2; c <= 2; c++) {
+					
+						if (Math.abs(r) === 2 || 
+                            Math.abs(c) === 2 ||
+                            (r === 0 && c === 0) ) {
+							this.modules[row + r][col + c] = true;
+						} else {
+							this.modules[row + r][col + c] = false;
+						}
+					}
+				}
+			}
+		}
+	},
+	
+	setupTypeNumber : function(test) {
+	
+		var bits = QRUtil.getBCHTypeNumber(this.typeNumber);
+        var mod;
+	
+		for (var i = 0; i < 18; i++) {
+			mod = (!test && ( (bits >> i) & 1) === 1);
+			this.modules[Math.floor(i / 3)][i % 3 + this.moduleCount - 8 - 3] = mod;
+		}
+	
+		for (var x = 0; x < 18; x++) {
+			mod = (!test && ( (bits >> x) & 1) === 1);
+			this.modules[x % 3 + this.moduleCount - 8 - 3][Math.floor(x / 3)] = mod;
+		}
+	},
+	
+	setupTypeInfo : function(test, maskPattern) {
+	
+		var data = (this.errorCorrectLevel << 3) | maskPattern;
+		var bits = QRUtil.getBCHTypeInfo(data);
+        var mod;
+	
+		// vertical		
+		for (var v = 0; v < 15; v++) {
+	
+			mod = (!test && ( (bits >> v) & 1) === 1);
+	
+			if (v < 6) {
+				this.modules[v][8] = mod;
+			} else if (v < 8) {
+				this.modules[v + 1][8] = mod;
+			} else {
+				this.modules[this.moduleCount - 15 + v][8] = mod;
+			}
+		}
+	
+		// horizontal
+		for (var h = 0; h < 15; h++) {
+	
+			mod = (!test && ( (bits >> h) & 1) === 1);
+			
+			if (h < 8) {
+				this.modules[8][this.moduleCount - h - 1] = mod;
+			} else if (h < 9) {
+				this.modules[8][15 - h - 1 + 1] = mod;
+			} else {
+				this.modules[8][15 - h - 1] = mod;
+			}
+		}
+	
+		// fixed module
+		this.modules[this.moduleCount - 8][8] = (!test);
+	
+	},
+	
+	mapData : function(data, maskPattern) {
+		
+		var inc = -1;
+		var row = this.moduleCount - 1;
+		var bitIndex = 7;
+		var byteIndex = 0;
+		
+		for (var col = this.moduleCount - 1; col > 0; col -= 2) {
+	
+			if (col === 6) col--;
+	
+			while (true) {
+	
+				for (var c = 0; c < 2; c++) {
+					
+					if (this.modules[row][col - c] === null) {
+						
+						var dark = false;
+	
+						if (byteIndex < data.length) {
+							dark = ( ( (data[byteIndex] >>> bitIndex) & 1) === 1);
+						}
+	
+						var mask = QRUtil.getMask(maskPattern, row, col - c);
+	
+						if (mask) {
+							dark = !dark;
+						}
+						
+						this.modules[row][col - c] = dark;
+						bitIndex--;
+	
+						if (bitIndex === -1) {
+							byteIndex++;
+							bitIndex = 7;
+						}
+					}
+				}
+								
+				row += inc;
+	
+				if (row < 0 || this.moduleCount <= row) {
+					row -= inc;
+					inc = -inc;
+					break;
+				}
+			}
+		}
+		
+	}
+
+};
+
+QRCode.PAD0 = 0xEC;
+QRCode.PAD1 = 0x11;
+
+QRCode.createData = function(typeNumber, errorCorrectLevel, dataList) {
+	
+	var rsBlocks = QRRSBlock.getRSBlocks(typeNumber, errorCorrectLevel);
+	
+	var buffer = new QRBitBuffer();
+	
+	for (var i = 0; i < dataList.length; i++) {
+		var data = dataList[i];
+		buffer.put(data.mode, 4);
+		buffer.put(data.getLength(), QRUtil.getLengthInBits(data.mode, typeNumber) );
+		data.write(buffer);
+	}
+
+	// calc num max data.
+	var totalDataCount = 0;
+	for (var x = 0; x < rsBlocks.length; x++) {
+		totalDataCount += rsBlocks[x].dataCount;
+	}
+
+	if (buffer.getLengthInBits() > totalDataCount * 8) {
+		throw new Error("code length overflow. (" + 
+            buffer.getLengthInBits() + 
+            ">" +  
+            totalDataCount * 8 + 
+            ")");
+	}
+
+	// end code
+	if (buffer.getLengthInBits() + 4 <= totalDataCount * 8) {
+		buffer.put(0, 4);
+	}
+
+	// padding
+	while (buffer.getLengthInBits() % 8 !== 0) {
+		buffer.putBit(false);
+	}
+
+	// padding
+	while (true) {
+		
+		if (buffer.getLengthInBits() >= totalDataCount * 8) {
+			break;
+		}
+		buffer.put(QRCode.PAD0, 8);
+		
+		if (buffer.getLengthInBits() >= totalDataCount * 8) {
+			break;
+		}
+		buffer.put(QRCode.PAD1, 8);
+	}
+
+	return QRCode.createBytes(buffer, rsBlocks);
+};
+
+QRCode.createBytes = function(buffer, rsBlocks) {
+
+	var offset = 0;
+	
+	var maxDcCount = 0;
+	var maxEcCount = 0;
+	
+	var dcdata = new Array(rsBlocks.length);
+	var ecdata = new Array(rsBlocks.length);
+	
+	for (var r = 0; r < rsBlocks.length; r++) {
+
+		var dcCount = rsBlocks[r].dataCount;
+		var ecCount = rsBlocks[r].totalCount - dcCount;
+
+		maxDcCount = Math.max(maxDcCount, dcCount);
+		maxEcCount = Math.max(maxEcCount, ecCount);
+		
+		dcdata[r] = new Array(dcCount);
+		
+		for (var i = 0; i < dcdata[r].length; i++) {
+			dcdata[r][i] = 0xff & buffer.buffer[i + offset];
+		}
+		offset += dcCount;
+		
+		var rsPoly = QRUtil.getErrorCorrectPolynomial(ecCount);
+		var rawPoly = new QRPolynomial(dcdata[r], rsPoly.getLength() - 1);
+
+		var modPoly = rawPoly.mod(rsPoly);
+		ecdata[r] = new Array(rsPoly.getLength() - 1);
+		for (var x = 0; x < ecdata[r].length; x++) {
+            var modIndex = x + modPoly.getLength() - ecdata[r].length;
+			ecdata[r][x] = (modIndex >= 0)? modPoly.get(modIndex) : 0;
+		}
+
+	}
+	
+	var totalCodeCount = 0;
+	for (var y = 0; y < rsBlocks.length; y++) {
+		totalCodeCount += rsBlocks[y].totalCount;
+	}
+
+	var data = new Array(totalCodeCount);
+	var index = 0;
+
+	for (var z = 0; z < maxDcCount; z++) {
+		for (var s = 0; s < rsBlocks.length; s++) {
+			if (z < dcdata[s].length) {
+				data[index++] = dcdata[s][z];
+			}
+		}
+	}
+
+	for (var xx = 0; xx < maxEcCount; xx++) {
+		for (var t = 0; t < rsBlocks.length; t++) {
+			if (xx < ecdata[t].length) {
+				data[index++] = ecdata[t][xx];
+			}
+		}
+	}
+
+	return data;
+
+};
+
+module.exports = QRCode;
+
+__m['index']=module.exports;})();
+return {QRCode:__m['index'],Level:__m['QRErrorCorrectLevel']};})();
+</script>
 <script type="module">
 /* =====================================================
    ① Firebaseの設定（ここだけ書き換えてください）
@@ -530,94 +1916,210 @@ function tx(fn){
 }
 
 // ---------- サウンド（音声ファイルは使わず、その場で合成） ----------
-const SND={ ctx:null, master:null, bgmGain:null, noise:null,
+// 本物の楽器に近づけるため：倍音の重ね方を実物の鐘・グロッケン・オルゴールに合わせ、
+// 部屋の響き（リバーブ）・音割れ防止（コンプレッサー）・左右の広がりを加えています。
+const SND={ ctx:null, master:null, rev:null, bgmGain:null, noise:null,
   sfx: store.get('nazo_sfx')==='1', bgm: store.get('nazo_bgm')==='1', timer:null, loopStart:0, idx:0 };
-function actx(){
-  if(!SND.ctx){
-    const C=window.AudioContext||window.webkitAudioContext; if(!C) return null;
-    const c=SND.ctx=new C();
-    SND.master=c.createGain(); SND.master.gain.value=.9; SND.master.connect(c.destination);
-    SND.bgmGain=c.createGain(); SND.bgmGain.gain.value=.5; SND.bgmGain.connect(SND.master);
-    const len=c.sampleRate; const buf=c.createBuffer(1,len,c.sampleRate); const d=buf.getChannelData(0);
-    for(let i=0;i<len;i++) d[i]=Math.random()*2-1;
-    SND.noise=buf;
+
+// 響き：減衰するノイズで作るインパルス応答（高音ほど早く消える）
+function makeIR(c,dur,decay){
+  const len=Math.floor(c.sampleRate*dur), buf=c.createBuffer(2,len,c.sampleRate);
+  for(let ch=0;ch<2;ch++){
+    const d=buf.getChannelData(ch); let lp=0;
+    for(let i=0;i<len;i++){
+      const p=i/len, k=.25+.7*p;                       // 後半ほどこもらせる
+      lp = lp*k + (Math.random()*2-1)*(1-k);
+      d[i]= lp*Math.pow(1-p,decay)*(i<c.sampleRate*.012?0:1)*2.2;
+    }
   }
+  return buf;
+}
+function buildGraph(c){
+  const comp=c.createDynamicsCompressor();
+  comp.threshold.value=-16; comp.knee.value=10; comp.ratio.value=4; comp.attack.value=.003; comp.release.value=.25;
+  const out=c.createGain(); out.gain.value=.9; comp.connect(out); out.connect(c.destination);
+  const master=c.createGain(); master.connect(comp);
+  const rev=c.createConvolver(); rev.buffer=makeIR(c,3.2,2.6);
+  const revOut=c.createGain(); revOut.gain.value=.55; rev.connect(revOut); revOut.connect(comp);
+  const bgmGain=c.createGain(); bgmGain.gain.value=.5; bgmGain.connect(master);
+  const bgmSend=c.createGain(); bgmSend.gain.value=.35; bgmGain.connect(bgmSend); bgmSend.connect(rev);
+  const len=c.sampleRate*2, nb=c.createBuffer(1,len,c.sampleRate), nd=nb.getChannelData(0);
+  for(let i=0;i<len;i++) nd[i]=Math.random()*2-1;
+  Object.assign(SND,{ctx:c,master,rev,bgmGain,noise:nb});
+}
+function actx(){
+  if(!SND.ctx){ const C=window.AudioContext||window.webkitAudioContext; if(!C) return null; buildGraph(new C()); }
   if(SND.ctx.state==='suspended') SND.ctx.resume();
   return SND.ctx;
 }
 const NOTE=n=>{ const m={C:0,'C#':1,D:2,'D#':3,E:4,F:5,'F#':6,G:7,'G#':8,A:9,'A#':10,B:11}; const r=n.match(/^([A-G]#?)(\d)$/);
   return 440*Math.pow(2,(m[r[1]]+(+r[2]-4)*12-9)/12); };
-function tone(f,t,dur,o={}){
-  const c=SND.ctx, osc=c.createOscillator(), g=c.createGain();
-  osc.type=o.type||'sine'; osc.frequency.value=f;
-  g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(o.vol??.2,t+(o.attack??.005)); g.gain.exponentialRampToValueAtTime(.0001,t+dur);
-  osc.connect(g); g.connect(o.dest||SND.master); osc.start(t); osc.stop(t+dur+.05);
+const rnd=(a,b)=>a+Math.random()*(b-a);
+// 出力先へつなぐ（左右の位置・響きの量）
+function route(node,o={}){
+  const c=SND.ctx; let n=node;
+  if(o.pan && c.createStereoPanner){ const p=c.createStereoPanner(); p.pan.value=o.pan; n.connect(p); n=p; }
+  n.connect(o.dest||SND.master);
+  if((o.wet??.25)>0 && !o.dest){ const g=c.createGain(); g.gain.value=o.wet??.25; n.connect(g); g.connect(SND.rev); }
 }
-// 鈴・オルゴールのような音（倍音を重ねる）
-function bell(f,t,dur=1.2,vol=.18,dest){ tone(f,t,dur,{vol,dest}); tone(f*2.76,t,dur*.45,{vol:vol*.35,dest}); tone(f*5.4,t,dur*.25,{vol:vol*.12,dest}); }
-function noiseHit(t,dur,o={}){
-  const c=SND.ctx, src=c.createBufferSource(), f=c.createBiquadFilter(), g=c.createGain();
-  src.buffer=SND.noise; f.type=o.type||'bandpass'; f.frequency.setValueAtTime(o.freq||2000,t);
+function env(g,t,peak,attack,dur){
+  g.gain.setValueAtTime(0.0001,t);
+  g.gain.exponentialRampToValueAtTime(Math.max(peak,.0002),t+attack);
+  g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+}
+// 倍音を重ねた打楽器的な音（鐘・グロッケン・オルゴール共通）
+function partials(f,t,list,o={}){
+  const c=SND.ctx, bus=c.createGain(); bus.gain.value=1; route(bus,o);
+  list.forEach(([ratio,amp,dmul])=>{
+    const fr=f*ratio; if(fr>18000) return;
+    const osc=c.createOscillator(), g=c.createGain();
+    osc.type='sine'; osc.frequency.value=fr; osc.detune.value=rnd(-3,3);
+    env(g,t,(o.vol??.2)*amp,o.attack??.002,(o.dur??1.5)*dmul);
+    osc.connect(g); g.connect(bus); osc.start(t); osc.stop(t+(o.dur??1.5)*dmul+.05);
+  });
+}
+// 鐘：実物のハンドベルに近い倍音比＋うなり
+const BELL=[[1,1,1],[1.003,.5,.95],[2.0,.45,.7],[2.76,.32,.5],[3.0,.14,.45],[5.4,.16,.28],[8.93,.07,.16]];
+function bellTone(f,t,dur=1.8,vol=.16,o={}){ partials(f,t,BELL,{...o,dur,vol,attack:.0015}); strike(t,f*4,vol*.35,o); }
+const bell=(f,t,dur,vol,dest)=>bellTone(f,t,dur,vol,dest?{dest}:{});
+// グロッケン（金属の板）
+const GLOCK=[[1,1,1],[2.76,.22,.35],[5.4,.07,.16],[8.93,.03,.1]];
+function glock(f,t,vol=.12,o={}){ partials(f,t,GLOCK,{...o,dur:o.dur??1.6,vol,attack:.001}); strike(t,f*3,vol*.4,o); }
+// オルゴール（櫛の歯）
+const MBOX=[[1,1,1],[1.0015,.35,.9],[3.98,.16,.25],[9.2,.05,.08]];
+function musicBox(f,t,dur,vol,o={}){ partials(f,t,MBOX,{...o,dur,vol,attack:.0015}); }
+// 叩いた瞬間の「カチッ」という成分
+function strike(t,freq,vol,o={}){
+  const c=SND.ctx, s=c.createBufferSource(), bp=c.createBiquadFilter(), g=c.createGain();
+  s.buffer=SND.noise; bp.type='bandpass'; bp.frequency.value=Math.min(freq,12000); bp.Q.value=2;
+  env(g,t,vol,.0008,.035); s.connect(bp); bp.connect(g); route(g,{...o,wet:(o.wet??.25)*.5});
+  s.start(t,rnd(0,1.5)); s.stop(t+.06);
+}
+function noiseBurst(t,dur,o={}){
+  const c=SND.ctx, s=c.createBufferSource(), f=c.createBiquadFilter(), g=c.createGain();
+  s.buffer=SND.noise; f.type=o.type||'bandpass'; f.frequency.setValueAtTime(o.freq||2000,t);
   if(o.freqEnd) f.frequency.exponentialRampToValueAtTime(o.freqEnd,t+dur);
-  f.Q.value=o.q??1; g.gain.setValueAtTime(o.vol??.2,t); g.gain.exponentialRampToValueAtTime(.0001,t+dur);
-  src.connect(f); f.connect(g); g.connect(SND.master); src.start(t,Math.random()*.5); src.stop(t+dur+.05);
+  f.Q.value=o.q??1; env(g,t,o.vol??.2,o.attack??.001,dur);
+  s.connect(f); f.connect(g); route(g,o); s.start(t,rnd(0,1.4)); s.stop(t+dur+.05);
+  return g;
 }
 // 効果音の間はBGMを小さくする
 function duck(sec){
   if(!SND.bgmGain) return; const g=SND.bgmGain.gain, t=SND.ctx.currentTime;
   g.cancelScheduledValues(t); g.setValueAtTime(g.value,t); g.linearRampToValueAtTime(.12,t+.15);
-  g.setValueAtTime(.12,t+sec); g.linearRampToValueAtTime(.5,t+sec+.8);
+  g.setValueAtTime(.12,t+sec); g.linearRampToValueAtTime(.5,t+sec+1);
+}
+// 小太鼓の一打（皮の音＋響き線のザッという音）
+function snare(t,v,pan){
+  const c=SND.ctx;
+  const o=c.createOscillator(), og=c.createGain(); o.type='triangle';
+  o.frequency.setValueAtTime(210,t); o.frequency.exponentialRampToValueAtTime(165,t+.04);
+  env(og,t,.35*v,.001,.07); o.connect(og); route(og,{pan,wet:.15}); o.start(t); o.stop(t+.1);
+  noiseBurst(t,.11+.05*v,{type:'bandpass',freq:rnd(2600,3400),q:.7,vol:.55*v,pan,wet:.2});
+  noiseBurst(t,.05,{type:'highpass',freq:6500,q:.5,vol:.25*v,pan,wet:.1});
+}
+// シンバル（金属の不協和な倍音＋ノイズ）
+function crash(t,vol){
+  const c=SND.ctx;
+  [-.45,.45].forEach(pan=>{
+    const bus=c.createGain(), hp=c.createBiquadFilter(); hp.type='highpass'; hp.frequency.value=5200;
+    env(bus,t,vol*.5,.002,2.6); hp.connect(bus); route(bus,{pan,wet:.45});
+    [205.3,304.4,369.6,522.7,540,800].forEach(fr=>{ const o=c.createOscillator(); o.type='square'; o.frequency.value=fr*rnd(.995,1.005)*1.7; o.connect(hp); o.start(t); o.stop(t+2.7); });
+    noiseBurst(t,2.4,{type:'highpass',freq:7000,q:.4,vol:vol*.45,pan,wet:.5,attack:.003});
+  });
+}
+// 大太鼓
+function kick(t,vol){
+  const c=SND.ctx, o=c.createOscillator(), g=c.createGain();
+  o.type='sine'; o.frequency.setValueAtTime(140,t); o.frequency.exponentialRampToValueAtTime(46,t+.16);
+  env(g,t,vol,.002,.6); o.connect(g); route(g,{wet:.2}); o.start(t); o.stop(t+.65);
+  noiseBurst(t,.02,{type:'lowpass',freq:3000,vol:vol*.3,wet:0});
+}
+// 金管とストリングスを重ねた和音（オーケストラヒット）
+function stab(t,notes,dur,vol){
+  const c=SND.ctx;
+  notes.forEach((n,i)=>{
+    const lp=c.createBiquadFilter(), g=c.createGain();
+    lp.type='lowpass'; lp.Q.value=1.2;
+    lp.frequency.setValueAtTime(500,t); lp.frequency.exponentialRampToValueAtTime(3200,t+.03); lp.frequency.exponentialRampToValueAtTime(900,t+dur*.6);
+    env(g,t,vol,.012,dur); lp.connect(g); route(g,{pan:(i/(notes.length-1)-.5)*.6,wet:.45});
+    [-9,0,8].forEach(det=>{ const o=c.createOscillator(); o.type='sawtooth'; o.frequency.value=NOTE(n); o.detune.value=det+rnd(-2,2); o.connect(lp); o.start(t); o.stop(t+dur+.05); });
+  });
+}
+function timpani(t,f,vol){
+  const c=SND.ctx, o=c.createOscillator(), g=c.createGain();
+  o.type='sine'; o.frequency.setValueAtTime(f*1.08,t); o.frequency.exponentialRampToValueAtTime(f,t+.08);
+  env(g,t,vol,.004,1.4); o.connect(g); route(g,{wet:.4}); o.start(t); o.stop(t+1.5);
+  noiseBurst(t,.25,{type:'lowpass',freq:500,vol:vol*.5,wet:.3});
 }
 const sfx={
-  // 1. 決定：鈴「チリン」
-  chime(){ if(!SND.sfx||!actx()) return; const t=SND.ctx.currentTime+.01;
-    duck(.8); bell(NOTE('E6'),t,1.1,.16); bell(NOTE('B6'),t+.07,.9,.08); },
-  // 2. 結果発表：ドラムロール → シンバル＋和音
-  drumroll(total){ if(!SND.sfx||!actx()) return; const t0=SND.ctx.currentTime+.02;
-    duck(total+1);
-    for(let t=0;t<total;t+=.045){ const p=t/total; noiseHit(t0+t,.06,{vol:.04+.22*p*p,freq:1700+700*p,q:.8}); }
-    const te=t0+total;
-    noiseHit(te,1.5,{vol:.3,type:'highpass',freq:5500,q:.3});
-    tone(140,te,.35,{vol:.5}); tone(70,te,.4,{vol:.35});
-    ['C5','E5','G5','C6'].forEach((n,i)=>bell(NOTE(n),te+.015*i,1.6,.08)); },
-  // 3. かぶった：「ジャ、ジャーン」
-  jan(){ if(!SND.sfx||!actx()) return; const c=SND.ctx, t=c.currentTime+.02;
+  // 1. 決定：ハンドベル＋鈴のしゃらん
+  chime(){ if(!SND.sfx||!actx()) return; const t=SND.ctx.currentTime+.02;
     duck(1.2);
-    const stab=(st,d,vol)=>['D3','G#3','D4','F4'].forEach(n=>{
-      const o=c.createOscillator(), f=c.createBiquadFilter(), g=c.createGain();
-      o.type='sawtooth'; o.frequency.value=NOTE(n); f.type='lowpass'; f.frequency.value=1500;
-      g.gain.setValueAtTime(0,st); g.gain.linearRampToValueAtTime(vol,st+.012); g.gain.exponentialRampToValueAtTime(.0001,st+d);
-      o.connect(f); f.connect(g); g.connect(SND.master); o.start(st); o.stop(st+d+.05); });
-    stab(t,.13,.06); stab(t+.17,.75,.07); tone(73,t+.17,.6,{vol:.3}); },
-  // 4. 開封：シュルッ → キラララン → ベル
-  open(){ if(!SND.sfx||!actx()) return; const t=SND.ctx.currentTime+.02;
-    duck(3);
-    noiseHit(t,.4,{vol:.16,freq:600,freqEnd:3400,q:2.5});
-    ['C6','E6','G6','C7','E7'].forEach((n,i)=>bell(NOTE(n),t+.55+i*.07,.9,.06));
-    ['C5','E5','G5','C6'].forEach(n=>bell(NOTE(n),t+1.25,2.2,.07)); },
+    bellTone(NOTE('E6'),t,2.2,.2,{pan:-.1,wet:.35});
+    bellTone(NOTE('B6'),t+.09,1.8,.1,{pan:.15,wet:.35});
+    for(let i=0;i<7;i++) noiseBurst(t+i*rnd(.018,.03),.05,{type:'bandpass',freq:rnd(7000,10000),q:6,vol:.16*(1-i/8),pan:rnd(-.4,.4),wet:.3}); },
+  // 2. 結果発表：ドラムロール → シンバル＋大太鼓＋鐘の和音
+  drumroll(total){ if(!SND.sfx||!actx()) return; const t0=SND.ctx.currentTime+.03;
+    duck(total+1.5);
+    let i=0;
+    for(let t=0;t<total;t+=1/24){
+      const p=t/total, v=(.05+.95*Math.pow(p,2.2))*(i%2?.86:1);
+      snare(t0+t+rnd(-.004,.004),v,i%2?.12:-.12); i++;
+    }
+    const te=t0+total;
+    snare(te,1.1,0); kick(te,.9); crash(te,.5);
+    ['C5','E5','G5','C6','E6'].forEach((n,k)=>bellTone(NOTE(n),te+.02+k*.018,3,.07,{pan:(k-2)*.15,wet:.45})); },
+  // 3. かぶった：「ジャ、ジャーン」（減和音のオーケストラヒット＋ティンパニ）
+  jan(){ if(!SND.sfx||!actx()) return; const t=SND.ctx.currentTime+.03;
+    duck(2);
+    const ch=['C3','F#3','C4','D#4','A4'];
+    stab(t,ch,.18,.045); timpani(t,NOTE('C2'),.5);
+    stab(t+.22,ch,1.5,.05); timpani(t+.22,NOTE('C2'),.75); kick(t+.22,.5); },
+  // 4. 開封：リボンのシュルッ → ふたの音 → キラキラ → 鐘の和音
+  open(){ if(!SND.sfx||!actx()) return; const c=SND.ctx, t=c.currentTime+.03;
+    duck(4);
+    const g=noiseBurst(t,.42,{type:'bandpass',freq:450,freqEnd:4200,q:1.4,vol:.22,attack:.22,wet:.2});
+    noiseBurst(t+.05,.3,{type:'highpass',freq:5000,vol:.06,attack:.18,wet:.2,pan:.3});
+    const th=c.createOscillator(), tg=c.createGain(); th.type='sine';
+    th.frequency.setValueAtTime(260,t+.42); th.frequency.exponentialRampToValueAtTime(120,t+.5);
+    env(tg,t+.42,.18,.003,.14); th.connect(tg); route(tg,{wet:.2}); th.start(t+.42); th.stop(t+.6);
+    ['C6','D6','E6','G6','A6','C7','E7','G7'].forEach((n,i)=>glock(NOTE(n),t+.58+i*rnd(.055,.08),.075,{pan:rnd(-.6,.6),wet:.55,dur:1.8}));
+    ['C5','E5','G5','B5','E6'].forEach((n,i)=>bellTone(NOTE(n),t+1.25+i*.025,3.4,.065,{pan:(i-2)*.18,wet:.5})); },
 };
-// BGM：ジングルベル（1857年の曲・パブリックドメイン）をオルゴール風に
+// BGM：ジングルベル（1857年の曲・パブリックドメイン）
+// オルゴールの旋律＋はじいたベース＋そりの鈴
 const JB=(()=>{ const M=[['E5',1],['E5',1],['E5',2],['E5',1],['E5',1],['E5',2],['E5',1],['G5',1],['C5',1.5],['D5',.5],['E5',4],
   ['F5',1],['F5',1],['F5',1.5],['F5',.5],['F5',1],['E5',1],['E5',1],['E5',.5],['E5',.5],['E5',1],['D5',1],['D5',1],['E5',1],['D5',2],['G5',2],
   ['E5',1],['E5',1],['E5',2],['E5',1],['E5',1],['E5',2],['E5',1],['G5',1],['C5',1.5],['D5',.5],['E5',4],
   ['F5',1],['F5',1],['F5',1.5],['F5',.5],['F5',1],['E5',1],['E5',1],['E5',.5],['E5',.5],['G5',1],['G5',1],['F5',1],['D5',1],['C5',4]];
-  const B=['C3','C3','C3','C3','C3','G2','C3','C3','F3','F3','C3','C3','D3','D3','G2','G2','C3','C3','C3','C3','C3','G2','C3','C3','F3','F3','C3','C3','G2','G2','C3','C3'];
+  const B=['C3','G2','C3','G2','C3','G2','C3','G2','F2','C3','C3','G2','D3','A2','G2','D3','C3','G2','C3','G2','C3','G2','C3','G2','F2','C3','C3','G2','G2','D3','C3','G2'];
+  const H=['E4','E4','E4','E4','E4','E4','E4','E4','A4','A4','E4','E4','F#4','F#4','B3','B3','E4','E4','E4','E4','E4','E4','E4','E4','A4','A4','E4','E4','B3','B3','E4','E4'];
   const ev=[]; let b=0; M.forEach(([n,d])=>{ ev.push({b,f:NOTE(n),d,k:'m'}); b+=d; });
   B.forEach((n,i)=>ev.push({b:i*2,f:NOTE(n),d:2,k:'b'}));
+  H.forEach((n,i)=>ev.push({b:i*2+1,f:NOTE(n),d:1,k:'h'}));
+  for(let i=0;i<64;i++) ev.push({b:i,k:'s',acc:i%2===1});
   ev.sort((x,y)=>x.b-y.b); return {ev,len:68}; })();
-const BEAT=.3;
-function bgmTick(){
-  const c=SND.ctx; if(!c) return;
+const BEAT=.32;
+function bgmVoice(e,t){
+  const o={dest:SND.bgmGain};
+  if(e.k==='m') musicBox(e.f,t,Math.max(1.4,e.d*BEAT+1),.11,o);
+  else if(e.k==='h') musicBox(e.f,t,1.1,.035,o);
+  else if(e.k==='b'){ const c=SND.ctx, osc=c.createOscillator(), lp=c.createBiquadFilter(), g=c.createGain();
+    osc.type='triangle'; osc.frequency.value=e.f; lp.type='lowpass'; lp.frequency.setValueAtTime(900,t); lp.frequency.exponentialRampToValueAtTime(300,t+.3);
+    env(g,t,.16,.004,BEAT*1.9); osc.connect(lp); lp.connect(g); g.connect(SND.bgmGain); osc.start(t); osc.stop(t+BEAT*2); }
+  else { for(let i=0;i<3;i++) noiseBurst(t+i*.012,.045,{type:'bandpass',freq:rnd(8000,11000),q:5,vol:(e.acc?.05:.028)*(1-i*.25),dest:SND.bgmGain,pan:rnd(-.3,.3)}); }
+}
+// 指定した時間までの音を予約する（再生用とプレビュー用で共通）
+function bgmSchedule(until){
   while(true){
     const e=JB.ev[SND.idx], t=SND.loopStart+e.b*BEAT;
-    if(t>c.currentTime+.6) break;
-    if(t>=c.currentTime-.05){
-      if(e.k==='m') bell(e.f,t,e.d*BEAT+.5,.12,SND.bgmGain);
-      else tone(e.f,t,BEAT*1.8,{type:'triangle',vol:.09,dest:SND.bgmGain});
-    }
+    if(t>until) break;
+    if(t>=SND.ctx.currentTime-.05) bgmVoice(e,t);
     SND.idx++; if(SND.idx>=JB.ev.length){ SND.idx=0; SND.loopStart+=JB.len*BEAT; }
   }
 }
+function bgmTick(){ if(SND.ctx) bgmSchedule(SND.ctx.currentTime+.6); }
 function bgmStart(){ if(SND.timer||!actx()) return; SND.loopStart=SND.ctx.currentTime+.15; SND.idx=0; SND.timer=setInterval(bgmTick,120); bgmTick(); }
 function bgmStop(){ clearInterval(SND.timer); SND.timer=null; }
 document.addEventListener('visibilitychange',()=>{ if(document.hidden) bgmStop(); else if(SND.bgm&&SND.ctx) bgmStart(); });
@@ -714,6 +2216,11 @@ function hostTools(o={}){
   return `<details class="hostmenu" data-dt ${S.dtOpen?'open':''}>
     <summary><span class="hm-badge">幹事</span>${o.label||'幹事メニュー'}<i class="hm-chev"></i></summary>
     <div class="hm-body">
+      <div class="hm-item">
+        <div class="hm-t">テレビ画面</div>
+        <p class="sub">テレビにつないだPCでこの画面を開くと、進行に合わせた大きな画面を映せます。</p>
+        <div class="hm-row"><button class="btn ghost" data-act="tvopen">画面を開く</button><button class="btn ghost" data-act="tvcopy">URLをコピー</button></div>
+      </div>
       <div class="hm-item">
         <div class="hm-t">暗証番号のリセット</div>
         <p class="sub">番号を忘れた人の名前を押し、もう一度押すとリセット。その人は入り直すときに新しい番号を決められます。</p>
@@ -1045,6 +2552,7 @@ function viewGame(){
 
 function render(){
   const app=document.getElementById('app');
+  if(TV && configured){ renderTV(); return; }
   let key, html, upd=null;
   if(!configured){ key='setup'; html=viewSetup(); }
   else if(!S.code||!S.data){ key='home'; html=viewHome(); }
@@ -1109,6 +2617,14 @@ document.addEventListener('click',e=>{
       tx(r=>applyWinner(r.game,gv,w)); break;
     }
     case 'login': login(); break;
+    case 'tvopen': window.open(location.origin+location.pathname+'?room='+S.code+'&view=tv','_blank'); break;
+    case 'tvcopy': { const u=location.origin+location.pathname+'?room='+S.code+'&view=tv';
+      navigator.clipboard?.writeText(u).then(()=>toast('テレビ画面のURLをコピーしました'),()=>toast(u)); break; }
+    case 'tvstart': tvBegin(true); break;
+    case 'tvsilent': tvBegin(false); break;
+    case 'tvfs': try{ document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen(); }catch(e){} break;
+    case 'tvsfx': SND.sfx=!SND.sfx; if(SND.sfx) actx(); tvCtl(); break;
+    case 'tvbgm': SND.bgm=!SND.bgm; if(SND.bgm) bgmStart(); else bgmStop(); tvCtl(); break;
     case 'reveal': reveal(); break;
     case 'open': {
       if(S.cdActive||S.opening) break;
@@ -1131,6 +2647,184 @@ document.addEventListener('click',e=>{
       break;
   }
 });
+
+// ================= テレビ画面 =================
+const TV = params.get('view')==='tv';
+const tvURL = ()=>location.origin+location.pathname+'?room='+S.code;
+function fitTV(){ document.documentElement.style.setProperty('--s', Math.min(innerWidth/1920, innerHeight/1080)); }
+function tvTop(){ return `<div class="tv-top"><div class="tv-logo"><span class="star">✦</span>ナゾ箱</div>${S.code?`<div class="tv-code">合言葉<b>${S.code}</b></div>`:''}</div>`; }
+const tvChip=(t,dash)=>`<span class="tv-chip ${dash?'dash':''}">${esc(t)}</span>`;
+function tvGift(u,i){ return `<div class="tv-gift" style="--c:${col(u)};--d:${(i*0.37).toFixed(2)}s"><div class="b"></div><div class="l"></div><div class="v"></div><div class="k1"></div><div class="k2"></div><div class="n">${no(u)}</div></div>`; }
+
+function tvHome(){
+  return `<div class="tv-center">
+    <div class="wreath" style="width:180px;height:180px;margin-bottom:24px">${WREATH}</div>
+    <div class="tv-h">ナゾ箱 テレビ画面</div>
+    <p class="tv-sub" style="margin:16px 0 30px">合言葉を入れてください</p>
+    <div class="row" style="width:520px"><input class="inp" id="codeIn" maxlength="4" placeholder="合言葉4文字" autocomplete="off"><button class="btn primary" data-act="join">表示</button></div>
+    <p class="msg ng">${esc(S.err)}</p>
+  </div>`;
+}
+function tvRegister(){
+  const ms=M(), ids=Object.keys(ms);
+  return `<div class="tv-reg">
+    <div class="tv-hero">
+      <div class="wreath">${WREATH}</div>
+      <div class="tv-eyebrow">Christmas gift exchange</div>
+      <h1>ナゾ箱</h1>
+      <div class="orn">✦</div>
+      <ol class="tv-steps">
+        <li><b>i.</b>プレゼントのヒントを3つ登録</li>
+        <li><b>ii.</b>ヒントを見て箱を選ぶ</li>
+        <li><b>iii.</b>かぶったら、じゃんけん</li>
+        <li><b>iv.</b>全員決まったら、贈り主が分かる</li>
+      </ol>
+    </div>
+    <div class="tv-join">
+      <div class="tv-join-top">
+        <div class="tv-qr" id="qr"></div>
+        <div><div class="tv-sub">スマホのカメラで読み取って参加</div>
+          <div class="tv-code2">合言葉<b>${S.code}</b></div></div>
+      </div>
+      <div class="tv-count"><b>${ids.length}</b><span>人が登録済み</span></div>
+      <div>${ids.map(u=>tvChip(ms[u].name)).join('')||'<span class="tv-sub">まだいません</span>'}</div>
+    </div>
+  </div>`;
+}
+function tvPick(g){
+  const {R,B}=remaining(g), asg=g.assigned||{}, picks=g.picks||{};
+  const done=R.filter(r=>picks[r]).length, wait=R.filter(r=>!picks[r]);
+  const boxes=[...B].sort((a,b)=>no(a)-no(b));
+  const taken=Object.values(asg).sort((a,b)=>no(a)-no(b));
+  const cols=boxes.length<=4?boxes.length||1:boxes.length<=8?4:boxes.length<=10?5:6;
+  const pop = S.tvDone!==undefined && done>S.tvDone; S.tvDone=done;
+  return `<div class="tv-row"><div><div class="tv-eyebrow">Round ${g.round}</div><div class="tv-h">箱選び</div></div>
+      <div class="tv-cnt">決定<b class="${pop?'pop':''}">${done}</b><span>/ ${R.length}</span></div></div>
+    <div class="tv-prog"><i style="width:${R.length?done/R.length*100:0}%"></i></div>
+    <div class="tv-wait">${wait.length?`<span class="lb">まだ選んでいない人</span>${wait.map(r=>tvChip(nm(r),true)).join('')}`:'<span class="lb">全員が選びました</span>'}</div>
+    <div class="tv-grid" style="--cols:${cols}">${boxes.map(gv=>boxCard(gv,{disabled:true})).join('')}</div>
+    <div class="tv-taken">${taken.length?`<span>決まった箱</span>${taken.map(t=>noTag(t)).join('')}`:''}</div>`;
+}
+function tvJanken(g){
+  const asg=g.assigned||{}, last=g.lastPicks||{};
+  const by={}; Object.entries(last).forEach(([r,gv])=>{ (by[gv] ||= []).push(r); });
+  const groups=Object.entries(by).filter(([,l])=>l.length>1).sort((a,b)=>no(a[0])-no(b[0]));
+  const settled=Object.keys(last).filter(r=>asg[r]===last[r] && by[last[r]].length===1).sort((a,b)=>no(asg[a])-no(asg[b]));
+  const round=g.lastRound||g.round;
+  const riseNow = !S.cdActive && S.tvJan!==round;
+  if(riseNow){ S.tvJan=round; setTimeout(()=>sfx.jan(),60); }
+  const cards=groups.map(([gv,list],i)=>{
+    const winner=list.find(r=>asg[r]===gv);
+    return `<div class="tv-vscard ${winner?'done':''} ${riseNow?'tv-rise':''}" style="animation-delay:${(i*.18).toFixed(2)}s">
+      <div>${boxCard(gv,{disabled:true})}</div>
+      <div><div class="eyebrow">${winner?'Winner!':'Janken!'}</div>
+        <div class="t1">No.${no(gv)} がかぶりました</div>
+        <div class="names">${list.map(r=>`<span class="${winner&&r!==winner?'lose':''}">${esc(nm(r))}</span>`).join('<em>&amp;</em>')}</div>
+        <div class="st ${winner?'st-win':'tv-blink'}">${winner?`${esc(nm(winner))}さんの勝ち`:'じゃんけん中…'}</div></div>
+    </div>`;
+  }).join('');
+  return `<div class="tv-row"><div><div class="tv-eyebrow">Round ${round}</div><div class="tv-h">結果</div></div>
+      <div class="tv-sub">負けた人は、残りの箱から選び直し</div></div>
+    <div class="tv-vs" style="--cols:${groups.length>1?2:1}">${cards}</div>
+    <div class="tv-taken">${settled.length?`<span>このラウンドで決まった人</span>${settled.map(r=>`${noTag(asg[r])}<span style="color:var(--ink2);margin-right:14px">${esc(nm(r))}</span>`).join('')}`:''}</div>`;
+}
+function tvTwinkles(){
+  const pos=[[4,10],[14,82],[30,6],[47,90],[63,4],[78,86],[93,14],[97,70],[2,60],[55,48]];
+  return pos.map(([x,y],i)=>`<span class="tw" style="left:${x}%;top:${y}%;--fs:${[22,30,18,26][i%4]}px;--d:${(i*0.41).toFixed(2)}s">✦</span>`).join('');
+}
+function tvBurst(){
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const el=document.createElement('div'); el.className='tvburst';
+  const cs=['#B8975A','#D9C49A','#C9B07A','#8A2C2C','#23402F'];
+  let h='<div class="glow"></div>';
+  for(let i=0;i<46;i++){
+    const a=Math.random()*Math.PI*2, d=18+Math.random()*48;
+    h+=`<i style="--x:${(Math.cos(a)*d).toFixed(1)}vmin;--y:${(Math.sin(a)*d*.8-6).toFixed(1)}vmin;--r:${(Math.random()*240-120).toFixed(0)}deg;--fs:${(14+Math.random()*30).toFixed(0)}px;--d:${(Math.random()*.35).toFixed(2)}s;--c:${cs[i%5]}">${i%3?'✦':'❅'}</i>`;
+  }
+  el.innerHTML=h; document.body.append(el); setTimeout(()=>el.remove(),3200);
+}
+function tvClosed(g){
+  const ids=Object.keys(g.players||{}).sort((a,b)=>no(a)-no(b));
+  return `<div class="tv-center">
+    <div class="tv-eyebrow">Merry Christmas</div>
+    <div class="tv-h">全員の行き先が決まりました</div>
+    <div class="tv-giftwrap"><div class="tv-gifts">${ids.map((u,i)=>tvGift(u,i)).join('')}</div>${tvTwinkles()}</div>
+    <div class="tv-sub tv-blink">幹事の合図で、いっせいに開けます</div>
+  </div>`;
+}
+function tvReveal(g){
+  const asg=g.assigned||{};
+  const pairs=Object.keys(asg).sort((a,b)=>no(asg[a])-no(asg[b]));
+  const anim=!S.tvShown; S.tvShown=true;
+  if(anim) setTimeout(tvBurst,30);
+  if(anim) pairs.forEach((_,i)=>setTimeout(()=>{ if(SND.sfx&&actx()) glock(NOTE(['C6','D6','E6','G6','A6','C7','D7','E7','G7','A7','C8','D8'][i%12]),SND.ctx.currentTime+.01,.09,{wet:.5,pan:(i%2?.3:-.3)}); },400+i*700));
+  return `<div class="tv-row"><div><div class="tv-eyebrow">Merry Christmas</div><div class="tv-h">交換表</div></div>
+      <div class="tv-sub">贈る人 → 受け取る人</div></div>
+    <div class="tv-pairs">${pairs.map((r,i)=>`<div class="tvpair ${anim?'in':''}" style="--d:${(0.4+i*0.7).toFixed(1)}s">
+      ${noTag(asg[r])}
+      <div><span class="lb">From</span><div class="nm">${esc(nm(asg[r]))}</div></div>
+      <div class="ar">→</div>
+      <div><span class="lb">To</span><div class="nm">${esc(nm(r))}</div></div></div>`).join('')}</div>
+    ${noteText(g.autoNote)?`<p class="tv-note">${noteText(g.autoNote)}</p>`:''}`;
+}
+function renderTV(){
+  let inner;
+  if(!S.code||!S.data) inner = S.loading ? '<div class="tv-center"><div class="spin"></div></div>' : tvHome();
+  else if(S.data.phase==='register') inner=tvRegister();
+  else{
+    const g=S.data.game||{};
+    if(g.status==='done') inner = (g.revealed && !S.cdActive) ? tvReveal(g) : tvClosed(g);
+    else if(g.status==='janken') inner=tvJanken(g);
+    else inner=tvPick(g);
+  }
+  const keepCode=document.getElementById('codeIn')?.value;
+  document.getElementById('app').innerHTML=`<div class="tvstage">${tvTop()}<div class="tv-body">${inner}</div></div>`;
+  if(keepCode){ const c=document.getElementById('codeIn'); if(c) c.value=keepCode; }
+  fitTV();
+  const q=document.getElementById('qr');
+  if(q){ try{
+    const qr=new NazoQR.QRCode(-1,NazoQR.Level.M); qr.addData(tvURL()); qr.make();
+    const n=qr.getModuleCount(); let d='';
+    for(let r=0;r<n;r++) for(let c=0;c<n;c++) if(qr.isDark(r,c)) d+=`M${c} ${r}h1v1h-1z`;
+    q.innerHTML=`<svg viewBox="0 0 ${n} ${n}" width="100%" height="100%" shape-rendering="crispEdges" role="img" aria-label="参加用QRコード"><path d="${d}" fill="#1F2A24"/></svg>`;
+  }catch(e){ console.error(e); q.innerHTML=`<span class="sub" style="font-size:18px">${esc(tvURL())}</span>`; } }
+}
+let wakeLock=null;
+async function keepAwake(){ try{ if('wakeLock' in navigator) wakeLock=await navigator.wakeLock.request('screen'); }catch(e){} }
+function tvCtl(){
+  const el=document.getElementById('tvctl'); if(!el) return;
+  el.innerHTML=`<button data-act="tvfs">全画面</button><button class="${SND.sfx?'on':''}" data-act="tvsfx">効果音 ${SND.sfx?'ON':'OFF'}</button><button class="${SND.bgm?'on':''}" data-act="tvbgm">BGM ${SND.bgm?'ON':'OFF'}</button>`;
+}
+function tvBegin(withSound){
+  document.getElementById('tvstart')?.remove();
+  try{ document.documentElement.requestFullscreen?.(); }catch(e){}
+  SND.sfx=withSound; SND.bgm=withSound;
+  if(withSound){ actx(); bgmStart(); }
+  keepAwake(); tvCtl();
+}
+if(TV){
+  document.body.classList.add('tv');
+  addEventListener('resize',fitTV);
+  document.addEventListener('visibilitychange',()=>{ if(!document.hidden) keepAwake(); });
+  // 少し多めの雪
+  (function(){ const el=document.getElementById('snow'); const tones=['#C9B07A','#B7C6C8','#D9C49A','#A9BBBE']; const R=(a,b)=>a+Math.random()*(b-a); let h='';
+    for(let i=0;i<40;i++){ const c=tones[i%4], dur=R(16,30), sw=R(3.5,7), op=R(.55,.9), sz=R(8,17).toFixed(1);
+      h+=`<i style="left:${R(0,100).toFixed(1)}%;--y:${R(0,95).toFixed(0)}vh;animation-duration:${dur.toFixed(1)}s;animation-delay:-${R(0,dur).toFixed(1)}s">${i%4===0?`<b class="k" style="--sc:${c};font-size:${R(26,42).toFixed(0)}px;opacity:${op.toFixed(2)};animation-duration:${sw.toFixed(1)}s">❅</b>`:`<b style="--sc:${c};width:${sz}px;height:${sz}px;opacity:${op.toFixed(2)};animation-duration:${sw.toFixed(1)}s"></b>`}</i>`; }
+    el.insertAdjacentHTML('beforeend',h); })();
+  // マウスを動かさなければカーソルと操作ボタンを隠す
+  let idleT; const wake=()=>{ document.body.classList.remove('idle'); clearTimeout(idleT); idleT=setTimeout(()=>document.body.classList.add('idle'),3000); };
+  addEventListener('mousemove',wake); wake();
+  document.body.insertAdjacentHTML('beforeend',`
+    <div class="tvctl" id="tvctl"></div>
+    <div class="tvstart" id="tvstart"><div class="in">
+      <div class="wreath" style="width:96px;height:96px;margin:0 auto 18px">${WREATH}</div>
+      <h2 style="font-size:24px">テレビ画面を始めます</h2>
+      <p class="sub" style="margin-top:6px">全画面になり、効果音とBGMがこのPCから鳴ります。参加者のスマホは音なしのままで大丈夫です。</p>
+      <button class="btn primary" data-act="tvstart">全画面で始める</button>
+      <button class="btn text" data-act="tvsilent">音なしで始める</button>
+    </div></div>`);
+  tvCtl();
+}
 
 // ---------- boot ----------
 if(configured && params.get('room')) joinRoom(params.get('room'));
