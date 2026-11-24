@@ -324,9 +324,15 @@
   .tv-code{margin-left:auto;font-family:var(--sans);font-size:28px;color:var(--mute);letter-spacing:.1em}
   .tv-code b{font-family:var(--latin);font-weight:600;font-size:56px;color:var(--ink);letter-spacing:.22em;margin-left:18px}
   .tv-body{flex:1;min-height:0;display:flex;flex-direction:column;padding-top:30px}
+  .tv-body.notop{padding-top:0}
   .tv-eyebrow{font-family:var(--sans);font-weight:500;letter-spacing:.14em;color:var(--wine);font-size:30px;line-height:1.1}
   .tv-h{font-family:var(--serif);font-weight:700;font-size:64px;letter-spacing:.06em;line-height:1.25}
   .tv-sub{font-size:30px;color:var(--mute);letter-spacing:.06em}
+  .tv-join-row{width:760px;gap:16px}
+  body.tv .tv-join-row .inp{font-size:56px;padding:18px 24px;border-width:2px;border-radius:12px;letter-spacing:.3em}
+  body.tv .tv-join-row .inp::placeholder{font-size:30px;letter-spacing:.08em}
+  body.tv .tv-join-row .btn{font-size:30px;padding:0 48px;border-radius:12px}
+  body.tv .tv-center .msg{font-size:26px;margin-top:18px}
   .tv-center{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
   .tv-chip{display:inline-block;border:2px solid var(--line2);border-radius:999px;padding:6px 24px;font-size:30px;color:var(--ink2);margin:0 10px 12px 0;background:var(--paper)}
   .tv-chip.dash{border-style:dashed;background:transparent}
@@ -360,8 +366,9 @@
   .tv-cnt span{font-family:var(--latin);font-size:48px}
   .tv-prog{height:6px;background:var(--line);border-radius:3px;margin:18px 0 18px;overflow:hidden;flex:none}
   .tv-prog i{display:block;height:100%;background:var(--forest2);transition:width .5s}
-  .tv-wait{display:flex;align-items:center;flex-wrap:wrap;min-height:56px;margin-bottom:10px}
-  .tv-wait .lb{font-size:26px;color:var(--mute);margin-right:18px;margin-bottom:12px}
+  .tv-wait{display:flex;align-items:center;flex-wrap:wrap;min-height:64px;margin:22px 0 14px;padding-top:20px;border-top:2px solid var(--line)}
+  .tv-wait .lb{font-size:28px;color:var(--ink2);font-weight:500;margin-right:20px;margin-bottom:12px}
+  .tv-wait .tv-chip{font-size:34px;padding:6px 26px}
   .tv-grid{flex:1;min-height:0;display:grid;overflow:hidden;grid-template-columns:repeat(var(--cols,4),minmax(0,1fr));gap:24px;align-content:start}
   body.tv .box{border-width:2px;border-radius:14px;box-shadow:none}
   body.tv .wrap{height:70px}
@@ -378,18 +385,24 @@
   body.tv .pkg b{font-size:26px;left:8px;bottom:4px}
   /* じゃんけん */
   .tv-vs{flex:1;min-height:0;display:grid;grid-template-columns:repeat(var(--cols,1),minmax(0,1fr));gap:30px;align-content:center}
-  .tv-vscard{background:var(--paper);border:3px solid var(--wine);border-radius:18px;padding:36px 40px;display:grid;grid-template-columns:300px 1fr;gap:40px;align-items:center}
+  .tv-vscard{background:var(--paper);border:3px solid var(--wine);border-radius:18px;padding:36px 40px;display:grid;grid-template-columns:240px 1fr;gap:40px;align-items:center}
   .tv-vscard.done{border-color:var(--forest)}
   .tv-vscard .box{width:100%}
   .tv-vscard .eyebrow{font-size:28px;color:var(--wine)}
   .tv-vscard.done .eyebrow{color:var(--forest)}
-  .tv-vscard .t1{font-family:var(--serif);font-weight:700;font-size:48px;margin:6px 0 14px}
-  .tv-vscard .names{font-family:var(--serif);font-weight:700;font-size:64px;line-height:1.3}
+  .tv-vscard .t1{font-size:30px;font-weight:500;color:var(--wine);letter-spacing:.08em;margin-bottom:10px}
+  .tv-vscard.done .t1{color:var(--mute)}
+  .vs-gift{display:grid;place-items:center;height:240px}
+  .vs-gift .tv-gift{scale:1.35;animation:none}
+  .tv-vscard .names{font-family:var(--serif);font-weight:700;font-size:54px;line-height:1.35}
+  .tv-vscard .names span{white-space:nowrap}
   .tv-vscard .names em{font-family:var(--sans);font-weight:400;color:var(--mute);font-weight:500;margin:0 14px}
   .tv-vscard .names .lose{color:#B9B2A4}
-  .tv-vscard .st{font-size:34px;color:var(--mute);margin-top:16px}
+  .tv-vscard .st{font-size:36px;color:var(--mute);margin-top:18px}
   .tv-vscard .st.st-win{color:var(--forest);font-weight:500}
-  @media (prefers-reduced-motion:no-preference){ .tv-blink{animation:blink 1.6s ease-in-out infinite} }
+  @media (prefers-reduced-motion:no-preference){ .tv-blink{animation:blink 1.6s ease-in-out infinite} .tv-blink-slow{animation:blinkSoft 3.2s ease-in-out infinite} }
+  @keyframes blinkSoft{50%{opacity:.5}}
+  .tv-wait-msg{font-size:36px;color:var(--ink2);letter-spacing:.08em}
   /* 開封前・交換表 */
   .tv-gifts{display:flex;flex-wrap:wrap;justify-content:center;gap:40px;margin:56px 0}
   .tv-gift{--c:#23402F;position:relative;width:170px;height:150px}
@@ -2016,6 +2029,7 @@ const GLOCK=[[1,1,1],[2.76,.22,.35],[5.4,.07,.16],[8.93,.03,.1]];
 function glock(f,t,vol=.12,o={}){ partials(f,t,GLOCK,{...o,dur:o.dur??1.6,vol,attack:.001}); strike(t,f*3,vol*.4,o); }
 // オルゴール（櫛の歯）
 const MBOX=[[1,1,1],[1.0015,.35,.9],[3.98,.16,.25],[9.2,.05,.08]];
+const MBOX_LIGHT=[[1,1,1],[3.98,.14,.25]];   // 伴奏用（軽め）
 function musicBox(f,t,dur,vol,o={}){ partials(f,t,MBOX,{...o,dur,vol,attack:.0015}); }
 // 叩いた瞬間の「カチッ」という成分
 function strike(t,freq,vol,o={}){
@@ -2033,7 +2047,13 @@ function noiseBurst(t,dur,o={}){
   return g;
 }
 // 効果音の間はBGMを小さくする
+function duckFile(sec){
+  if(!SND.fileGain) return; const g=SND.fileGain.gain, t=SND.ctx.currentTime;
+  g.cancelScheduledValues(t); g.setValueAtTime(g.value,t); g.linearRampToValueAtTime(BGM_VOL*.3,t+.15);
+  g.setValueAtTime(BGM_VOL*.3,t+sec); g.linearRampToValueAtTime(BGM_VOL,t+sec+1);
+}
 function duck(sec){
+  duckFile(sec);
   if(!SND.bgmGain) return; const g=SND.bgmGain.gain, t=SND.ctx.currentTime;
   g.cancelScheduledValues(t); g.setValueAtTime(g.value,t); g.linearRampToValueAtTime(.12,t+.15);
   g.setValueAtTime(.12,t+sec); g.linearRampToValueAtTime(.5,t+sec+1);
@@ -2116,41 +2136,125 @@ const sfx={
     ['C6','D6','E6','G6','A6','C7','E7','G7'].forEach((n,i)=>glock(NOTE(n),t+.58+i*rnd(.055,.08),.075,{pan:rnd(-.6,.6),wet:.55,dur:1.8}));
     ['C5','E5','G5','B5','E6'].forEach((n,i)=>bellTone(NOTE(n),t+1.25+i*.025,3.4,.065,{pan:(i-2)*.18,wet:.5})); },
 };
-// BGM：ジングルベル（1857年の曲・パブリックドメイン）
-// オルゴールの旋律＋はじいたベース＋そりの鈴
-const JB=(()=>{ const M=[['E5',1],['E5',1],['E5',2],['E5',1],['E5',1],['E5',2],['E5',1],['G5',1],['C5',1.5],['D5',.5],['E5',4],
-  ['F5',1],['F5',1],['F5',1.5],['F5',.5],['F5',1],['E5',1],['E5',1],['E5',.5],['E5',.5],['E5',1],['D5',1],['D5',1],['E5',1],['D5',2],['G5',2],
-  ['E5',1],['E5',1],['E5',2],['E5',1],['E5',1],['E5',2],['E5',1],['G5',1],['C5',1.5],['D5',.5],['E5',4],
-  ['F5',1],['F5',1],['F5',1.5],['F5',.5],['F5',1],['E5',1],['E5',1],['E5',.5],['E5',.5],['G5',1],['G5',1],['F5',1],['D5',1],['C5',4]];
-  const B=['C3','G2','C3','G2','C3','G2','C3','G2','F2','C3','C3','G2','D3','A2','G2','D3','C3','G2','C3','G2','C3','G2','C3','G2','F2','C3','C3','G2','G2','D3','C3','G2'];
-  const H=['E4','E4','E4','E4','E4','E4','E4','E4','A4','A4','E4','E4','F#4','F#4','B3','B3','E4','E4','E4','E4','E4','E4','E4','E4','A4','A4','E4','E4','B3','B3','E4','E4'];
-  const ev=[]; let b=0; M.forEach(([n,d])=>{ ev.push({b,f:NOTE(n),d,k:'m'}); b+=d; });
-  B.forEach((n,i)=>ev.push({b:i*2,f:NOTE(n),d:2,k:'b'}));
-  H.forEach((n,i)=>ev.push({b:i*2+1,f:NOTE(n),d:1,k:'h'}));
-  for(let i=0;i<64;i++) ev.push({b:i,k:'s',acc:i%2===1});
-  ev.sort((x,y)=>x.b-y.b); return {ev,len:68}; })();
-const BEAT=.32;
+// BGM：クリスマスの定番曲メドレー（どれも作曲から100年以上たったパブリックドメインの曲）
+// オルゴールの旋律＋はじいたベース＋和音（＋明るい曲はそりの鈴）。全体で約5分で一周します。
+const CHORD={C:['C','E','G'],F:['F','A','C'],G:['G','B','D'],G7:['G','B','D','F'],D7:['D','F#','A','C'],
+  Am:['A','C','E'],Em:['E','G','B'],E7:['E','G#','B','D'],B7:['B','D#','F#','A']};
+const SONGS=[
+  { name:'ジングルベル（1857）', unit:.3, meter:4, pickup:0, reps:2, bells:true,
+    mel:[['G4',1],['E5',1],['D5',1],['C5',1],['G4',3],['G4',.5],['G4',.5],['G4',1],['E5',1],['D5',1],['C5',1],['A4',4],
+      ['A4',1],['F5',1],['E5',1],['D5',1],['B4',4],['G5',1],['G5',1],['F5',1],['D5',1],['E5',4],
+      ['G4',1],['E5',1],['D5',1],['C5',1],['G4',4],['G4',1],['E5',1],['D5',1],['C5',1],['A4',3],['A4',1],
+      ['A4',1],['F5',1],['E5',1],['D5',1],['G5',1],['G5',1],['G5',1],['G5',1],['A5',1],['G5',1],['F5',1],['D5',1],['C5',4],
+      ['E5',1],['E5',1],['E5',2],['E5',1],['E5',1],['E5',2],['E5',1],['G5',1],['C5',1.5],['D5',.5],['E5',4],
+      ['F5',1],['F5',1],['F5',1.5],['F5',.5],['F5',1],['E5',1],['E5',1],['E5',.5],['E5',.5],['E5',1],['D5',1],['D5',1],['E5',1],['D5',2],['G5',2],
+      ['E5',1],['E5',1],['E5',2],['E5',1],['E5',1],['E5',2],['E5',1],['G5',1],['C5',1.5],['D5',.5],['E5',4],
+      ['F5',1],['F5',1],['F5',1.5],['F5',.5],['F5',1],['E5',1],['E5',1],['E5',.5],['E5',.5],['G5',1],['G5',1],['F5',1],['D5',1],['C5',4]],
+    ch:['C','C','C','F','F','G','G','C','C','C','C','F','F','G','G7','C',
+        'C','C','C','C','F','C','D7','G','C','C','C','C','F','C','G7','C'] },
+  { name:'おめでとうクリスマス（伝承曲）', unit:.33, meter:3, pickup:1, reps:3, bells:false,
+    mel:[['G4',1],['C5',1],['C5',.5],['D5',.5],['C5',.5],['B4',.5],['A4',1],['F4',1],['F4',1],['D5',1],['D5',.5],['E5',.5],['D5',.5],['C5',.5],
+      ['B4',1],['G4',1],['G4',1],['E5',1],['E5',.5],['F5',.5],['E5',.5],['D5',.5],['C5',1],['A4',1],['G4',.5],['G4',.5],['A4',1],['D5',1],['B4',1],['C5',2],['G4',1],
+      ['C5',1],['C5',1],['C5',1],['B4',2],['B4',1],['C5',1],['B4',1],['A4',1],['G4',2],['D5',1],['E5',1],['D5',1],['C5',1],
+      ['G5',1],['G4',1],['G4',.5],['G4',.5],['A4',1],['D5',1],['B4',1],['C5',3]],
+    ch:['C','F','D7','G','E7','Am','G7','C','C','G','Am','G','C','C','G7','C'] },
+  { name:'きよしこの夜（1818）', unit:.24, meter:6, pickup:0, reps:2, bells:false,
+    mel:[['G5',3],['A5',1],['G5',2],['E5',6],['G5',3],['A5',1],['G5',2],['E5',6],['D6',4],['D6',2],['B5',6],['C6',4],['C6',2],['G5',6],
+      ['A5',4],['A5',2],['C6',3],['B5',1],['A5',2],['G5',3],['A5',1],['G5',2],['E5',6],
+      ['A5',4],['A5',2],['C6',3],['B5',1],['A5',2],['G5',3],['A5',1],['G5',2],['E5',6],
+      ['D6',4],['D6',2],['F6',3],['D6',1],['B5',2],['C6',6],['E6',6],['C6',3],['G5',1],['E5',2],['G5',3],['F5',1],['D5',2],['C5',12]],
+    ch:['C','C','C','C','G','G','C','C','F','F','C','C','F','F','C','C','G','G7','C','C','C','G7','C','C'] },
+  { name:'ひいらぎかざろう（伝承曲）', unit:.3, meter:4, pickup:0, reps:3, bells:true,
+    mel:[['G5',1.5],['F5',.5],['E5',1],['D5',1],['C5',1],['D5',1],['E5',1],['C5',1],['D5',.5],['E5',.5],['F5',.5],['D5',.5],['E5',1.5],['D5',.5],['C5',1],['B4',1],['C5',2],
+      ['G5',1.5],['F5',.5],['E5',1],['D5',1],['C5',1],['D5',1],['E5',1],['C5',1],['D5',.5],['E5',.5],['F5',.5],['D5',.5],['E5',1.5],['D5',.5],['C5',1],['B4',1],['C5',2],
+      ['D5',1.5],['E5',.5],['F5',1],['D5',1],['E5',1.5],['F5',.5],['G5',1],['D5',1],['E5',.5],['F#5',.5],['G5',1],['A5',.5],['B5',.5],['C6',1],['B5',1],['A5',1],['G5',2],
+      ['G5',1.5],['F5',.5],['E5',1],['D5',1],['C5',1],['D5',1],['E5',1],['C5',1],['A5',.5],['A5',.5],['A5',.5],['A5',.5],['G5',1.5],['F5',.5],['E5',1],['D5',1],['C5',2]],
+    ch:['C','C','G7','C','C','C','G7','C','G','C','D7','G','C','C','F','C'] },
+  { name:'世の人忘るな（伝承曲）', unit:.3, meter:4, pickup:1, reps:2, bells:false,
+    mel:[['E5',1],['E5',1],['B5',1],['B5',1],['A5',1],['G5',1],['F#5',1],['E5',1],['D5',1],['E5',1],['F#5',1],['G5',1],['A5',1],['B5',3],['E5',1],
+      ['E5',1],['B5',1],['B5',1],['A5',1],['G5',1],['F#5',1],['E5',1],['D5',1],['E5',1],['F#5',1],['G5',1],['A5',1],['B5',3],['B5',1],
+      ['C6',1],['A5',1],['B5',1],['C6',1],['D6',1],['E6',1],['B5',1],['A5',1],['G5',1],['E5',1],['F#5',1],['G5',1],['A5',2],['G5',1],['A5',1],
+      ['B5',2],['C6',1],['B5',1],['B5',1],['A5',1],['G5',1],['F#5',1],['E5',2],['G5',.5],['F#5',.5],['E5',1],['A5',2],['G5',1],['A5',1],
+      ['B5',1],['C6',1],['D6',1],['E6',1],['B5',1],['A5',1],['G5',1],['F#5',1],['E5',3]],
+    ch:['Em','Em','C','B7','Em','Em','C','B7','Am','G','Em','D7','G','B7','Em','D7','G','B7','Em'] },
+];
+const bassF=n=>NOTE(n+(['C','C#','D','D#'].includes(n)?'3':'2'));
+function buildPlaylist(){
+  const ev=[]; let t=0;
+  SONGS.forEach(sg=>{
+    const u=sg.unit, total=sg.mel.reduce((a,[,d])=>a+d,0);
+    for(let r=0;r<sg.reps;r++){
+      let b=0;
+      sg.mel.forEach(([n,d])=>{ ev.push({t:t+b*u,k:'m',f:NOTE(n),d:d*u}); b+=d; });
+      sg.ch.forEach((c,i)=>{
+        const bs=sg.pickup+i*sg.meter, tones=CHORD[c], root=bassF(tones[0]), fifth=bassF(tones[2]);
+        const at=(x)=>t+(bs+x)*u, hm=(x,ts,v)=>{ if(bs+x<total) ts.forEach(n=>ev.push({t:at(x),k:'h',f:NOTE(n+'4'),v})); };
+        const arp=r%2===1;   // 2回目以降は分散和音にして変化をつける
+        if(sg.meter===4){
+          ev.push({t:at(0),k:'b',f:root,d:2*u});
+          if(bs+2<total) ev.push({t:at(2),k:'b',f:fifth,d:2*u});
+          if(arp){ [.5,1,1.5,2.5,3,3.5].forEach((x,j)=>hm(x,[tones[1+(j%(tones.length-1))]],.03)); }
+          else { hm(1,tones.slice(1,3),.028); hm(3,tones.slice(1,3),.028); }
+        }else if(sg.meter===3){
+          ev.push({t:at(0),k:'b',f:root,d:3*u});
+          if(arp){ [1,1.5,2,2.5].forEach((x,j)=>hm(x,[tones[1+(j%2)]],.03)); }
+          else { hm(1,tones.slice(1,3),.028); hm(2,tones.slice(1,3),.028); }
+        }else{ // 6/8：ゆったり揺れる伴奏
+          ev.push({t:at(0),k:'b',f:root,d:6*u});
+          [1,2,3,4,5].forEach((x,j)=>hm(x,[[tones[1],tones[2],tones[0],tones[2],tones[1]][j]],.026));
+        }
+      });
+      if(sg.bells) for(let q=0;q<total;q++) ev.push({t:t+q*u,k:'s',acc:q%2===1});
+      t+=total*u;
+    }
+    t+=1.8;   // 曲と曲の間
+  });
+  ev.sort((a,b)=>a.t-b.t);
+  return {ev,len:t};
+}
+const PL=buildPlaylist();
 function bgmVoice(e,t){
   const o={dest:SND.bgmGain};
-  if(e.k==='m') musicBox(e.f,t,Math.max(1.4,e.d*BEAT+1),.11,o);
-  else if(e.k==='h') musicBox(e.f,t,1.1,.035,o);
+  if(e.k==='m') musicBox(e.f,t,Math.max(1.3,e.d+.9),.11,o);
+  else if(e.k==='h') partials(e.f,t,MBOX_LIGHT,{...o,dur:1.1,vol:e.v||.03,attack:.0015});
   else if(e.k==='b'){ const c=SND.ctx, osc=c.createOscillator(), lp=c.createBiquadFilter(), g=c.createGain();
     osc.type='triangle'; osc.frequency.value=e.f; lp.type='lowpass'; lp.frequency.setValueAtTime(900,t); lp.frequency.exponentialRampToValueAtTime(300,t+.3);
-    env(g,t,.16,.004,BEAT*1.9); osc.connect(lp); lp.connect(g); g.connect(SND.bgmGain); osc.start(t); osc.stop(t+BEAT*2); }
+    env(g,t,.16,.004,Math.max(.5,e.d*.95)); osc.connect(lp); lp.connect(g); g.connect(SND.bgmGain); osc.start(t); osc.stop(t+e.d+.05); }
   else { for(let i=0;i<3;i++) noiseBurst(t+i*.012,.045,{type:'bandpass',freq:rnd(8000,11000),q:5,vol:(e.acc?.05:.028)*(1-i*.25),dest:SND.bgmGain,pan:rnd(-.3,.3)}); }
 }
 // 指定した時間までの音を予約する（再生用とプレビュー用で共通）
 function bgmSchedule(until){
   while(true){
-    const e=JB.ev[SND.idx], t=SND.loopStart+e.b*BEAT;
+    const e=PL.ev[SND.idx], t=SND.loopStart+e.t;
     if(t>until) break;
     if(t>=SND.ctx.currentTime-.05) bgmVoice(e,t);
-    SND.idx++; if(SND.idx>=JB.ev.length){ SND.idx=0; SND.loopStart+=JB.len*BEAT; }
+    SND.idx++; if(SND.idx>=PL.ev.length){ SND.idx=0; SND.loopStart+=PL.len; }
   }
 }
 function bgmTick(){ if(SND.ctx) bgmSchedule(SND.ctx.currentTime+.6); }
-function bgmStart(){ if(SND.timer||!actx()) return; SND.loopStart=SND.ctx.currentTime+.15; SND.idx=0; SND.timer=setInterval(bgmTick,120); bgmTick(); }
-function bgmStop(){ clearInterval(SND.timer); SND.timer=null; }
+function bgmSynthStart(){ if(SND.timer||!actx()) return; SND.loopStart=SND.ctx.currentTime+.15; SND.idx=0; SND.timer=setInterval(bgmTick,120); bgmTick(); }
+function bgmSynthStop(){ clearInterval(SND.timer); SND.timer=null; }
+
+// ---- BGM本体：フュージョン編曲の音声ファイル（index.html と同じ場所の bgm.mp3）----
+// 読み込めないとき（ファイルを置き忘れた等）は、上のオルゴール版を合成して流す
+const BGM_FILE='bgm.mp3', BGM_VOL=.42;
+function bgmFileStart(){
+  if(SND.fileFailed) return false;
+  if(!SND.file){
+    const a=new Audio(BGM_FILE); a.loop=true; a.preload='auto';
+    a.addEventListener('error',()=>{ SND.fileFailed=true; SND.file=null; if(SND.bgm&&!document.hidden) bgmSynthStart(); });
+    SND.file=a;
+    try{
+      const src=SND.ctx.createMediaElementSource(a);
+      SND.fileGain=SND.ctx.createGain(); SND.fileGain.gain.value=BGM_VOL;
+      src.connect(SND.fileGain); SND.fileGain.connect(SND.ctx.destination);
+    }catch(e){ a.volume=BGM_VOL; }
+  }
+  if(SND.file.paused) SND.file.play().catch(()=>{});   // スマホでは次のタップで再試行される
+  return true;
+}
+function bgmStart(){ if(!actx()) return; if(!bgmFileStart()) bgmSynthStart(); }
+function bgmStop(){ bgmSynthStop(); if(SND.file) SND.file.pause(); }
 document.addEventListener('visibilitychange',()=>{ if(document.hidden) bgmStop(); else if(SND.bgm&&SND.ctx) bgmStart(); });
 // スマホは最初のタップまで音を出せないので、タップ時に準備する
 document.addEventListener('pointerdown',()=>{ if(SND.sfx||SND.bgm){ actx(); if(SND.bgm) bgmStart(); } },{passive:true});
@@ -2163,7 +2267,7 @@ function soundUI(){
     <button class="share snd ${any?'on':''}" data-act="sndmenu" aria-label="サウンド設定">${any?ICON_SND_ON:ICON_SND_OFF}</button>
     <div class="sndmenu">
       <button class="swrow" data-act="sfx"><span>効果音</span><i class="sw ${SND.sfx?'on':''}"></i></button>
-      <button class="swrow" data-act="bgm"><span>BGM<small>ジングルベル</small></span><i class="sw ${SND.bgm?'on':''}"></i></button>
+      <button class="swrow" data-act="bgm"><span>BGM<small>クリスマス・メドレー</small></span><i class="sw ${SND.bgm?'on':''}"></i></button>
       <p>マナーモード中は鳴らないことがあります</p>
     </div></div>`;
 }
@@ -2685,9 +2789,9 @@ function tvGift(u,i){ return `<div class="tv-gift" style="--c:${col(u)};--d:${(i
 function tvHome(){
   return `<div class="tv-center">
     <div class="tagart" style="width:130px;margin-bottom:24px">${TAGART}</div>
-    <div class="tv-h">ひみつのギフト テレビ画面</div>
+    <div class="tv-h">テレビ画面</div>
     <p class="tv-sub" style="margin:16px 0 30px">合言葉を入れてください</p>
-    <div class="row" style="width:520px"><input class="inp" id="codeIn" maxlength="4" placeholder="合言葉4文字" autocomplete="off"><button class="btn primary" data-act="join">表示</button></div>
+    <div class="row tv-join-row"><input class="inp" id="codeIn" maxlength="4" placeholder="合言葉4文字" autocomplete="off"><button class="btn primary" data-act="join">表示</button></div>
     <p class="msg ng">${esc(S.err)}</p>
   </div>`;
 }
@@ -2726,7 +2830,6 @@ function tvPick(g){
   const pop = S.tvDone!==undefined && done>S.tvDone; S.tvDone=done;
   return `<div class="tv-row"><div><div class="tv-eyebrow">${g.round}回目</div><div class="tv-h">箱選び</div></div>
       <div class="tv-cnt">決定<b class="${pop?'pop':''}">${done}</b><span>/ ${R.length}</span></div></div>
-    <div class="tv-prog"><i style="width:${R.length?done/R.length*100:0}%"></i></div>
     <div class="tv-wait">${wait.length?`<span class="lb">まだ選んでいない人</span>${wait.map(r=>tvChip(nm(r),true)).join('')}`:'<span class="lb">全員が選びました</span>'}</div>
     <div class="tv-grid" style="--cols:${cols}">${boxes.map(gv=>boxCard(gv,{disabled:true})).join('')}</div>
     <div class="tv-taken">${taken.length?`<span>決まった箱</span>${taken.map(t=>noTag(t)).join('')}`:''}</div>`;
@@ -2742,10 +2845,9 @@ function tvJanken(g){
   const cards=groups.map(([gv,list],i)=>{
     const winner=list.find(r=>asg[r]===gv);
     return `<div class="tv-vscard ${winner?'done':''} ${riseNow?'tv-rise':''}" style="animation-delay:${(i*.18).toFixed(2)}s">
-      <div>${boxCard(gv,{disabled:true})}</div>
-      <div><div class="eyebrow">${winner?'決着':'じゃんけん'}</div>
-        <div class="t1">No.${no(gv)} がかぶりました</div>
-        <div class="names">${list.map(r=>`<span class="${winner&&r!==winner?'lose':''}">${esc(nm(r))}</span>`).join('<em>&amp;</em>')}</div>
+      <div class="vs-gift">${tvGift(gv,0)}</div>
+      <div><div class="t1">かぶりました</div>
+        <div class="names">${list.map(r=>`<span class="${winner&&r!==winner?'lose':''}">${esc(nm(r))}</span>`).join('<em>×</em>')}</div>
         <div class="st ${winner?'st-win':'tv-blink'}">${winner?`${esc(nm(winner))}さんの勝ち`:'じゃんけん中…'}</div></div>
     </div>`;
   }).join('');
@@ -2770,7 +2872,7 @@ function tvClosed(g){
   return `<div class="tv-center">
     <div class="tv-h">全員の行き先が決まりました</div>
     <div class="tv-giftwrap"><div class="tv-gifts">${ids.map((u,i)=>tvGift(u,i)).join('')}</div></div>
-    <div class="tv-sub tv-blink">幹事の合図で、いっせいに開けます</div>
+    <div class="tv-wait-msg tv-blink-slow">幹事の合図で、いっせいに開けます</div>
   </div>`;
 }
 function tvReveal(g){
@@ -2780,7 +2882,7 @@ function tvReveal(g){
   if(anim) setTimeout(tvBurst,30);
   if(anim) pairs.forEach((_,i)=>setTimeout(()=>{ if(SND.sfx&&actx()) glock(NOTE(['C6','D6','E6','G6','A6','C7','D7','E7','G7','A7','C8','D8'][i%12]),SND.ctx.currentTime+.01,.09,{wet:.5,pan:(i%2?.3:-.3)}); },400+i*700));
   return `<div class="tv-row"><div><div class="tv-eyebrow">Merry Christmas</div><div class="tv-h">交換表</div></div>
-      <div class="tv-sub">贈る人 → 受け取る人</div></div>
+</div>
     <div class="tv-pairs">${pairs.map((r,i)=>`<div class="tvpair ${anim?'in':''}" style="--d:${(0.4+i*0.7).toFixed(1)}s">
       ${noTag(asg[r])}
       <div><span class="lb">From</span><div class="nm">${esc(nm(asg[r]))}</div></div>
@@ -2799,7 +2901,8 @@ function renderTV(){
     else inner=tvPick(g);
   }
   const keepCode=document.getElementById('codeIn')?.value;
-  document.getElementById('app').innerHTML=`<div class="tvstage">${tvTop()}<div class="tv-body">${inner}</div></div>`;
+  const showTop = !(S.data && S.data.phase==='register');
+  document.getElementById('app').innerHTML=`<div class="tvstage">${showTop?tvTop():''}<div class="tv-body ${showTop?'':'notop'}">${inner}</div></div>`;
   if(keepCode){ const c=document.getElementById('codeIn'); if(c) c.value=keepCode; }
   fitTV();
   const q=document.getElementById('qr');
